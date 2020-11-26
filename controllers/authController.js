@@ -13,15 +13,24 @@ module.exports.recoverPassword = function (req, res, next) {
   });
 };
 
-exports.authLoginUser = async (req, res, next) => {
-  const emailOrUserName = req.body.emailOrUserName;
-
+exports.authLogin = async (req, res, next) => {
+  const email = req.body.email;
   const pass = req.body.password;
-  const err = await authModel.authLoginAcc(emailOrUserName, pass);
 
-  if (err) {
-    res.render("pages/login", { title: "Login", err: err });
+  const acc = await authModel.authLoginAcc(email, pass);
+
+  if (!acc) {
+    //res.json(err);
+    res.render("pages/login", {
+      title: "Login",
+      err: "Username and password is not match",
+      layout: "loginLayout",
+      title: "Login",
+    });
   } else {
-    res.redirect("/");
+    req.session.userId = acc._id;
+    req.session.username = acc.name;
+    req.session.sessionID = req.sessionID;
+    res.redirect("/admin/dashboard");
   }
 };

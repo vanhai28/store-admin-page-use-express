@@ -1,28 +1,19 @@
 const bcrypt = require("bcrypt");
-const userMongooseModel = require("./mongooseModel/userMongooseModel");
+const adminMongooseModel = require("./mongooseModel/adminModel");
 
-exports.authLoginAcc = async (emailOrUserName, pass) => {
-  let err = "";
-  //----------------- tim trong database ---------------
+exports.authLoginAcc = async (email, pass) => {
+  //----------------- find in database ---------------
 
-  let isHasUsername = await userMongooseModel.findOne({
-    user_name: emailOrUserName,
-  });
-  let isHasEmail = await userMongooseModel.findOne({
-    user_email: emailOrUserName,
+  let account = await adminMongooseModel.findOne({
+    email: email,
   });
 
-  let user = isHasUsername || isHasEmail;
-  console.log("user : ----- " + user);
-  if (user) {
-    console.log(user.password);
-    let checkPassword = await bcrypt.compare(pass, user.password);
-    console.log("checl : ", checkPassword);
+  if (account) {
+    let checkPassword = await bcrypt.compare(pass, account.password);
     if (checkPassword) {
-      return null;
+      return account; //right password
     }
   }
-  err = "Username and password is not match";
 
-  return err;
+  return null;
 };
