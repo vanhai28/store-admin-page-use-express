@@ -11,6 +11,8 @@ router.get("/bar", function (req, res, next) {
 
 router.get("/login", authController.login);
 
+router.post("/logout", authController.logout);
+
 router.post("/auth/admin", (req, res, next) => {
   authController.authLogin(req, res);
 });

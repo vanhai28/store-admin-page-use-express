@@ -34,3 +34,11 @@ exports.authLogin = async (req, res, next) => {
     res.redirect("/admin/dashboard");
   }
 };
+
+exports.logout = (req, res, next) => {
+  req.session.destroy(function (err) {
+    console.log(err);
+  });
+
+  res.redirect("/login");
+};

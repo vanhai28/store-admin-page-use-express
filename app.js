@@ -9,9 +9,10 @@ const hbs = require("express-handlebars");
 const hbshelpers = require("handlebars-helpers");
 const multihelpers = hbshelpers();
 var session = require("express-session");
+const MongoDBStore = require("connect-mongodb-session")(session);
 
 const adminRouter = require("./routes/admin");
-//onst usersRouter = require("./routes/users");
+//const usersRouter = require("./routes/users");
 const loginRouter = require("./routes/login");
 const defaultAcc = require("./model/accModel");
 
@@ -19,8 +20,6 @@ const mongoose = require("./config/db");
 
 const app = express();
 const bodyParser = require("body-parser");
-// const multer = require('multer') // v1.0.5
-// const upload = multer() // for parsing multipart/form-data
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
@@ -49,8 +48,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
-
-const MongoDBStore = require("connect-mongodb-session")(session);
 
 app.use(
   session({
