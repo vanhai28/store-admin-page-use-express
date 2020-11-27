@@ -1,0 +1,71 @@
+<main>
+    <div class="container-fluid">
+        <h1 class="mt-4">Quản lí tài khoản khách hàng</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+            <li class="breadcrumb-item active">Khách hàng</li>
+        </ol>
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-table mr-1"></i>
+                Danh sách tài khoản
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Tên đăng nhập</th>
+                                <th>Email</th>
+                                <th>Ngày truy cập gần nhất</th>
+                                <th>Age</th>
+                                <th>Chỉnh sửa</th>
+                                <th>Khoá</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>Tên đăng nhập</th>
+                                <th>Email</th>
+                                <th>Ngày truy cập gần nhất</th>
+                                <th>Age</th>
+                                <th>Chỉnh sửa</th>
+                                <th>Khoá</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            {{#each user}}
+                            <tr>
+                                <td>{{user_name}}</td>
+                                <td>{{user_email}}</td>
+                                <td>18</td> <!-- variable -->
+                                <td>12/12/2020</td><!-- variable -->
+                                <td>
+                                    <button type="button" class="btn btn-sm btn-icon btn-flat btn-default" data-toggle="tooltip" data-original-title="Edit">
+                                        <i class="fas fa-trash-alt"aria-hidden="true"></i>
+                                    </button>
+                                </td>
+                                <td>
+                                    <div class="input-group">
+                                        <span class="badge badge-success">Hoạt động</span>
+                                        {{!-- <button type="button" class="btn btn-success">Hoạt động</button>       --}}
+                                        <div class="input-group-append">
+                                        <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="#">Khoá tài khoản <i class="fas fa-ban text-danger"></i> </a>
+                                            <a class="dropdown-item" href="#">Mở tài khoản <i class="fas fa-check text-success"></i></a>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
