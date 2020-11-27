@@ -1,3 +1,4 @@
+const { request } = require("express");
 const sessionModel = require("../model/mongooseModel/sessionModel");
 
 exports.authenUser = async (req, res, next) => {
@@ -8,7 +9,7 @@ exports.authenUser = async (req, res, next) => {
       return;
     }
 
-    let session = await sessionModel.find({ _id: req.session.id });
+    const session = await sessionModel.find({ _id: req.sessionID });
     console.log("kich thuoc ", session.length, "  ", session);
     if (session.length > 0) {
       next();
