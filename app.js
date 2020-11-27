@@ -38,6 +38,10 @@ app.engine(
     defaultView: "default",
     layoutsDir: path.join(__dirname, "/views/layout/"),
     partialsDir: __dirname + "/views/partials/",
+    runtimeOptions: {
+      allowProtoPropertiesByDefault: true,
+      allowProtoMethodsByDefault: true,
+    },
   })
 );
 

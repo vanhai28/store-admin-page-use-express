@@ -1,6 +1,9 @@
-module.exports.listBook = () => {};
+const bookModel = require("../model/mongooseModel/bookModel");
 
-module.exports.getDisplayedBook = (page) => {};
+module.exports.getListBook = async () => {
+  let bookList = await bookModel.find({}, "title price category"); //add auther
+  return bookList;
+};
 
 module.exports.getNewProduct = () => {};
 module.exports.getBestSellerBook = () => {};

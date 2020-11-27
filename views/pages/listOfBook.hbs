@@ -1,0 +1,67 @@
+<main>
+    <div class="container-fluid">
+        <h1 class="mt-4">Danh sách sản phẩm</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+            <li class="breadcrumb-item active">Sách</li>
+        </ol>
+        <div class="text-right mb-4">
+            <a href="/admin/book/add-book" class=" btn btn-primary ">Thêm sản phẩm</a>
+        </div>
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-table mr-1"></i>
+                Danh sách sản phẩm
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Tiêu đề</th>
+                                <th>Tác giả</th>
+                                <th>Loại sách</th>
+                                <th>Giá bán</th>
+                                <th>Lượt mua</th>
+                                <th>Lượt xem</th>
+                                <th>Chỉnh sửa</th>    
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>Tiêu đề</th>
+                                <th>Tác giả</th>
+                                <th>Loại sách</th>
+                                <th>Giá bán</th>
+                                <th>Lượt mua</th>
+                                <th>Lượt xem</th>
+                                <th>Chỉnh sửa</th>    
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            {{#each book}}
+                                <tr>
+                                    <td>{{title}}</td>
+                                    <td>Auther</td>
+                                    <td>{{category}}</td>
+                                    <td>{{toFloat price}}</td>
+                                    <td>21</td>
+                                    <td>212</td>
+                                    <td>
+                                        <button type="button" class="btn btn-sm btn-icon btn-flat btn-default" data-toggle="tooltip" data-original-title="xoá">
+                                            <i class="fas fa-trash-alt"aria-hidden="true"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-icon btn-flat btn-default" data-toggle="tooltip" data-original-title="sửa">
+                                            <i class="fas fa-edit" aria-hidden="true"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            {{/each}}
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
