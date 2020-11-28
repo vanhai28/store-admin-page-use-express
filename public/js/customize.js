@@ -88,7 +88,7 @@ function deleteBook(id) {
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
       location.reload();
-    } else {
+    } else if (this.readyState == 4) {
       let mesg = document.getElementsByClassName("messageDelete")[0];
       mesg.innerHTML = this.responseText;
       mesg.className = mesg.className.replace("d-none", " ");
@@ -106,7 +106,8 @@ function deleteUserAcc(id) {
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
       location.reload();
-    } else {
+    } else if (this.readyState == 4) {
+      console.log("status ", this.status);
       let mesg = document.getElementsByClassName("messageDelete")[0];
       mesg.innerHTML = this.responseText;
       mesg.className = mesg.className.replace("d-none", " ");
@@ -131,7 +132,7 @@ function blockAccount(id) {
         "badge-success",
         "badge-danger"
       );
-    } else {
+    } else if (this.readyState == 4) {
       let mesg = document.getElementsByClassName("messageBlock")[0];
       mesg.innerHTML = this.responseText;
       mesg.className = mesg.className.replace("d-none", " ");
@@ -156,7 +157,7 @@ function unBlockAccount(id) {
         "badge-danger",
         "badge-success"
       );
-    } else {
+    } else if (this.readyState == 4) {
       let mesg = document.getElementsByClassName("messageBlock")[0];
       mesg.innerHTML = this.responseText;
       mesg.className = mesg.className.replace("d-none", " ");

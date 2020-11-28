@@ -12,14 +12,13 @@ var session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
 
 const adminRouter = require("./routes/admin");
-//const usersRouter = require("./routes/users");
+const bodyParser = require("body-parser");
 const loginRouter = require("./routes/login");
 const defaultAcc = require("./model/accModel");
 
 const mongoose = require("./config/db");
 
 const app = express();
-const bodyParser = require("body-parser");
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded

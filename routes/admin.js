@@ -7,39 +7,67 @@ const userController = require("../controllers/userController");
 const sessionModel = require("../model/mongooseModel/sessionModel");
 
 /* GET home page. */
-router.get("/dashboard", controllerDef.index);
+router.get("/dashboard", autheMiddleware.authenUser, controllerDef.index);
 
 /* GET table page. */
-router.get("/tables", controllerDef.table);
+router.get("/tables", autheMiddleware.authenUser, controllerDef.table);
 
 /* GET edit book page. */
-router.get("/book/edit/:id", controllerDef.table);
+router.get("/book/edit/:id", autheMiddleware.authenUser, controllerDef.table);
 
 /* GET list book page. */
-router.get("/book/list-book", bookController.listBook);
+router.get(
+  "/book/list-book",
+  autheMiddleware.authenUser,
+  bookController.listBook
+);
 
 /* GET add book page. */
-router.get("/book/add-book", bookController.addBookPage);
+router.get(
+  "/book/add-book",
+  autheMiddleware.authenUser,
+  bookController.addBookPage
+);
 
 /* GET add book page. */
-router.post("/book/add-book", bookController.addBook);
+router.post(
+  "/book/add-book",
+  autheMiddleware.authenUser,
+  bookController.addBook
+);
 
 /* GET delete book page. */
-router.post("/book/delete-book", bookController.deleteBook);
+router.post(
+  "/book/delete-book",
+  autheMiddleware.authenUser,
+  bookController.deleteBook
+);
 
 /* GET chart page. */
 router.get("/charts", autheMiddleware.authenUser, controllerDef.chart);
 
 /* GET user page. */
-router.get("/user/list", userController.listUser);
+router.get("/user/list", autheMiddleware.authenUser, userController.listUser);
 
 /* GET delete user  page. */
-router.post("/user/delete", userController.deleteUser);
+router.post(
+  "/user/delete",
+  autheMiddleware.authenUser,
+  userController.deleteUser
+);
 
 /* GET block user page. */
-router.post("/user/block", userController.blockUser);
+router.post(
+  "/user/block",
+  autheMiddleware.authenUser,
+  userController.blockUser
+);
 
 /* GET un-block user page. */
-router.post("/user/un-block", userController.unBlockUser);
+router.post(
+  "/user/un-block",
+  autheMiddleware.authenUser,
+  userController.unBlockUser
+);
 
 module.exports = router;

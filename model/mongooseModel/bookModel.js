@@ -9,6 +9,7 @@ const book = new Schema(
     detail: String,
     price: String,
     images: Array,
+    cover: String,
   },
   { collection: "books" }
 );

@@ -6,12 +6,7 @@ module.exports.getListBook = async () => {
 };
 
 module.exports.addBook = async (bookInfor) => {
-  console.log("bookinfor ", bookInfor);
-  let images = [
-    bookInfor.linkImage1,
-    bookInfor.linkImage2,
-    bookInfor.linkImage3,
-  ];
+  let images = [bookInfor.linkImage1, bookInfor.linkImage2];
   let auther = bookInfor.auther ? bookInfor.auther.split(",") : "";
   let newBook = new bookModel({
     title: bookInfor.title,
@@ -19,6 +14,7 @@ module.exports.addBook = async (bookInfor) => {
     category: bookInfor.category,
     price: bookInfor.price,
     images: images,
+    cover: bookInfor.coverImage,
   });
   let result = false;
   newBook
