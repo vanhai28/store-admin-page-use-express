@@ -21,8 +21,6 @@ module.exports.addBook = (req, res, next) => {
       result: "Thêm Thất bại",
     });
   }
-  //res.redirect("/admin/book/add-book");
-  // res.render("pages/addBook", { title: "Thêm sách" });
 };
 
 module.exports.deleteBook = function (req, res, next) {
@@ -30,10 +28,10 @@ module.exports.deleteBook = function (req, res, next) {
 
   if (req.body.id) {
     bookModel.deleteBook(req.body.id);
-    res.status = 200;
+    res.statusCode = 200;
     res.send();
   } else {
-    res.status = 404;
+    res.statusCode = 404;
     res.send();
   }
 };

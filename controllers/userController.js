@@ -8,3 +8,39 @@ module.exports.listUser = async (req, res, next) => {
     user: listUser,
   });
 };
+
+module.exports.deleteUser = async (req, res, next) => {
+  let isSuccess = await userModel.removeUserAcc(req.body.id);
+
+  if (isSuccess) {
+    res.statusCode = 200;
+    res.send();
+  } else {
+    res.statusCode = 500;
+    res.send("an error happen when remove account");
+  }
+};
+
+module.exports.blockUser = async (req, res, next) => {
+  let isSuccess = await userModel.blockAccount(req.body.id);
+
+  if (isSuccess) {
+    res.statusCode = 200;
+    res.send();
+  } else {
+    res.statusCode = 500;
+    res.send("an error happen when updating status");
+  }
+};
+
+module.exports.unBlockUser = async (req, res, next) => {
+  let isSuccess = await userModel.unBlockAccount(req.body.id);
+
+  if (isSuccess) {
+    res.statusCode = 200;
+    res.send();
+  } else {
+    res.statusCode = 500;
+    res.send("an error happen when updating status");
+  }
+};

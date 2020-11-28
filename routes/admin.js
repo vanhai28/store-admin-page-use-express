@@ -23,6 +23,7 @@ router.get("/book/add-book", bookController.addBookPage);
 
 /* GET add book page. */
 router.post("/book/add-book", bookController.addBook);
+
 /* GET delete book page. */
 router.post("/book/delete-book", bookController.deleteBook);
 
@@ -31,5 +32,14 @@ router.get("/charts", autheMiddleware.authenUser, controllerDef.chart);
 
 /* GET user page. */
 router.get("/user/list", userController.listUser);
+
+/* GET delete user  page. */
+router.post("/user/delete", userController.deleteUser);
+
+/* GET block user page. */
+router.post("/user/block", userController.blockUser);
+
+/* GET un-block user page. */
+router.post("/user/un-block", userController.unBlockUser);
 
 module.exports = router;

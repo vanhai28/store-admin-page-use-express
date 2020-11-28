@@ -20,7 +20,6 @@ exports.authLogin = async (req, res, next) => {
   const acc = await authModel.authLoginAcc(email, pass);
 
   if (!acc) {
-    //res.json(err);
     res.render("pages/login", {
       title: "Login",
       err: "Username and password is not match",
