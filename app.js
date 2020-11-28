@@ -59,20 +59,17 @@ app.use(
     name: process.env.SESS_NAME,
     secret: process.env.SESS_SECRET,
     saveUninitialized: false,
-    // resave: true,
     resave: false,
     store: new MongoDBStore({
       uri: process.env.URI,
       collection: "session",
       ttl: parseInt(process.env.SESS_LIFETIME),
     }),
-    saveUninitialized: true,
     unset: "destroy",
     cookie: {
       sameSite: true,
       secure: process.env.NODE_ENV === "production",
       maxAge: parseInt(process.env.SESS_LIFETIME),
-      sessionID: String,
     },
   })
 );
