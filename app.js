@@ -68,6 +68,7 @@ app.use(
       sameSite: true,
       secure: process.env.NODE_ENV === "production",
       maxAge: parseInt(process.env.SESS_LIFETIME),
+      sessionID: String,
     },
   })
 );
