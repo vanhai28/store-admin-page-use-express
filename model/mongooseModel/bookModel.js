@@ -5,8 +5,10 @@ const book = new Schema(
   {
     title: String,
     category: String,
+    auther: Array,
     detail: String,
     price: String,
+    images: Array,
   },
   { collection: "books" }
 );

@@ -21,32 +21,13 @@ router.get("/book/list-book", bookController.listBook);
 /* GET add book page. */
 router.get("/book/add-book", bookController.addBookPage);
 
+/* GET add book page. */
+router.post("/book/add-book", bookController.addBook);
+/* GET delete book page. */
+router.post("/book/delete-book", bookController.deleteBook);
+
 /* GET chart page. */
-router.get(
-  "/charts",
-  async (req, res, next) => {
-    {
-      console.log("session in admin.js", req.session);
-      let req_session = req.session;
-      console.log("sessID ", req_session.sessionID);
-      console.log("cookie ", req_session.cookie);
-      if (!req_session || !req_session.sessionID) {
-        console.log("redirect");
-        res.redirect("/login");
-        return;
-      }
-      console.log("sessID ", req_session.sessionID);
-      const session = await sessionModel.find({ _id: req_session.sessionID });
-      console.log("kich thuoc ", session.length, "  ", session);
-      if (session.length > 0) {
-        next();
-      } else {
-        res.redirect("/login");
-      }
-    }
-  },
-  controllerDef.chart
-);
+router.get("/charts", autheMiddleware.authenUser, controllerDef.chart);
 
 /* GET user page. */
 router.get("/user/list", userController.listUser);
