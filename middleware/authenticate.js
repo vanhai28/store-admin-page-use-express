@@ -3,8 +3,8 @@ const sessionModel = require("../model/mongooseModel/sessionModel");
 
 exports.authenUser = async (req, res, next) => {
   {
-    console.log("session ", req.session.cookie);
-    if (!req.session || !req.session.sessionID) {
+    console.log("cookie ", req.session.cookie);
+    if (!req.session.cookie || !req.session.cookie.sessionID) {
       console.log("da log");
       res.redirect("/login");
       return;
