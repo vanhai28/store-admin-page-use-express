@@ -53,17 +53,21 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+app.set("trust proxy", 1);
 app.use(
   session({
     name: process.env.SESS_NAME,
     secret: process.env.SESS_SECRET,
     saveUninitialized: false,
-    resave: true,
+    // resave: true,
+    resave: false,
     store: new MongoDBStore({
       uri: process.env.URI,
       collection: "session",
       ttl: parseInt(process.env.SESS_LIFETIME),
     }),
+    saveUninitialized: true,
+    unset: "destroy",
     cookie: {
       sameSite: true,
       secure: process.env.NODE_ENV === "production",
