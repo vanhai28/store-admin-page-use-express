@@ -26,10 +26,12 @@ router.get(
   "/charts",
   async (req, res, next) => {
     {
+      console.log("session in admin.js", req.session);
       let req_session = req.session;
+      console.log("sessID ", req_session.sessionID);
       console.log("cookie ", req_session.cookie);
       if (!req_session || !req_session.sessionID) {
-        console.log("da log");
+        console.log("redirect");
         res.redirect("/login");
         return;
       }

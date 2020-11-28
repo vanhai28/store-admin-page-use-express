@@ -14,6 +14,9 @@ router.get("/login", authController.login);
 router.post("/logout", authController.logout);
 
 router.post("/auth/admin", (req, res, next) => {
+  req.session.sessionID = req.sessionID;
+  req.session.cookie.sessionID = req.sessionID;
+  console.log("session in login ", req.session);
   authController.authLogin(req, res);
 });
 

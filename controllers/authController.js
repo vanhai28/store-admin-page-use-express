@@ -32,6 +32,7 @@ exports.authLogin = async (req, res, next) => {
     req.session.username = acc.name;
     req.session.sessionID = req.sessionID;
     req.session.cookie.sessionID = req.sessionID;
+    console.log("session in authen ", req.session);
     res.redirect("/admin/dashboard");
   }
 };
