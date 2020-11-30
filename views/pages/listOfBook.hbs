@@ -43,17 +43,20 @@
                             {{#each book}}
                                 <tr>
                                     <td>{{title}}</td>
-                                    <td>Auther</td>
+                                   <td>
+                                       {{join author }}
+                                           
+                                    </td>
                                     <td>{{category}}</td>
                                     <td>{{toFloat price}}</td>
-                                    <td>21</td>
-                                    <td>212</td>
+                                    <td>{{views}}</td>
+                                    <td>{{orders}}</td>
                                     <td>
                                         <button type="button" onclick="deleteBook(name)" name={{_id}} class="btn btn-sm btn-icon btn-flat btn-default" data-toggle="tooltip" data-original-title="xoá">
-                                            <i class="fas fa-trash-alt"aria-hidden="true"></i>
+                                            <i class="fas fa-trash-alt text-danger"aria-hidden="true"></i>
                                         </button>
                                         <button type="button" class="btn btn-sm btn-icon btn-flat btn-default" data-toggle="tooltip" data-original-title="sửa">
-                                            <a href="/admin/book/edit/:{{_id}}"><i class="fas fa-edit" aria-hidden="true"></i></a>
+                                            <a href="/admin/book/edit?id={{_id}}"><i class="fas fa-edit text-success" aria-hidden="true"></i></a>
                                         </button>
                                     </td>
                                 </tr>

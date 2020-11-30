@@ -35,3 +35,33 @@ module.exports.deleteBook = function (req, res, next) {
     res.send();
   }
 };
+
+module.exports.editBook = async function (req, res, next) {
+  let id = req.query.id;
+  let book = await bookModel.getOneBook(id);
+  console.log("book ", book.old_price);
+  if (!book) {
+    res.send("cannot find book ", id);
+    return;
+  }
+
+  res.render("pages/editBook", {
+    titlePage: "Chỉnh sửa thông tin sách",
+    _id: book._id,
+    title: book.title,
+    author: book.auther,
+    category: book.category,
+    price: book.price,
+    old_price: book.old_price,
+    detail: book.detail,
+    images: book.images.join(" , "),
+    cover: book.cover,
+  });
+};
+
+module.exports.saveEditBook = async (req, res, next) => {
+  console.log("body ", req.body);
+
+  await bookModel.modifyBook(req.body.id, req.body);
+  res.redirect("/admin/book/list-book");
+};

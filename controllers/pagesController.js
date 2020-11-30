@@ -4,12 +4,6 @@ module.exports.index = function (req, res, next) {
   });
 };
 
-module.exports.table = function (req, res, next) {
-  res.render("pages/tables", {
-    title: "Tables",
-  });
-};
-
 module.exports.chart = function (req, res, next) {
   res.render("pages/chart", {
     title: "Chart",

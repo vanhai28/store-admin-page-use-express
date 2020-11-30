@@ -1,0 +1,68 @@
+<main>
+    <div class="container-fluid">
+        <h1 class="mt-4">Chỉnh sửa thông tin sản phẩm</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
+            <li class="breadcrumb-item active">Sách</li>
+            <li class="breadcrumb-item active">Chỉnh sửa thông tin sản phẩm</li>
+        </ol>
+        {{#if result}}
+        <div class="alert alert-primary " id="addSucess" role="alert">{{result}}</div>
+        {{/if}}
+        <div class="alert alert-danger d-none" id="addFail" role="alert"></div>
+        <div class="card mb-4">
+            <div class="card-body">
+              <div class="example-wrap">
+                <div class="example">
+                  <form id="formInforBook" action="/admin/book/edit" method="POST">
+                    <div class="row">
+                      <div class="form-group col-md-6">
+                        <label for="title">Title</label>
+                        <input required type="text" class="form-control" name="title" id="title" value="{{title}}"" >
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="auther">Tác giả</label>
+                        <input required type="text" class="form-control" name="author" id="auther" value="{{author}}" autocomplete="off">
+                        <span>Tên các tác giả phân cách bằng dầu phẩy</span>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group col-md-4">
+                        <label required for="category">Loại sách</label>
+                        <input type="text" class="form-control" id="category" name="category" value="{{category}}" autocomplete="off">
+                      </div>
+                      <div class="form-group col-md-4">
+                        <label for="price">Giá sản phẩm</label>
+                        <input required type="number" class="form-control" id="price" name="price" value="{{price}}" autocomplete="off">
+                      </div>
+                      <div class="form-group col-md-4">
+                        <label for="price">Giá cũ</label>
+                        <input required type="number" class="form-control" id="old_price" name="old_price" value="{{old_price}}" autocomplete="off">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="detail">Mô tả</label>
+                      <textarea class="form-control" name="detail" rows="5" id="detail">{{detail}}</textarea>
+                    </div>
+                
+                      <div class="form-group">
+                        <label required for="images">Link ảnh</label>
+                        <textarea class="form-control" name="images" id="images" rows="4" autocomplete="off">{{images}}</textarea>
+                    </div>
+               
+                        <div class="form-group">
+                        <label for="coverImage">Link ảnh cover</label>
+                        <input type="text" class="form-control" name="coverImage" id = "coverImage" value="{{cover}}" autocomplete="off">
+                    </div>
+                     <div class="form-group">
+                      <button type="submit" class="btn btn-primary">Lưu</button>
+                    </div>
+                  </form>
+                 
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script src="/js/customize.js"></script>
