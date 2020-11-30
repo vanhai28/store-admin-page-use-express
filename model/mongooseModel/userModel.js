@@ -7,6 +7,8 @@ const user = new Schema(
     user_email: String,
     password: String,
     status: String,
+    birthday: Date,
+    lastest_access_date: Date,
   },
   { collection: "users" }
 );

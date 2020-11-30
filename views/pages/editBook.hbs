@@ -16,6 +16,9 @@
                 <div class="example">
                   <form id="formInforBook" action="/admin/book/edit" method="POST">
                     <div class="row">
+                        <div class="form-group col-md-6 d-none">
+                        <input type="text" class="form-control" name="id" id="title" value="{{_id}}"" >
+                      </div>
                       <div class="form-group col-md-6">
                         <label for="title">Title</label>
                         <input required type="text" class="form-control" name="title" id="title" value="{{title}}"" >

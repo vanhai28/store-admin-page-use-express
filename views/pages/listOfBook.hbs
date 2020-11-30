@@ -5,8 +5,24 @@
             <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
             <li class="breadcrumb-item active">Sách</li>
         </ol>
-        <div class="text-right mb-4">
-            <a href="/admin/book/add-book" class=" btn btn-primary ">Thêm sản phẩm</a>
+     
+        <div class="row text-right mb-4"> 
+            <div class="col-sm-6 input-group d-inline-flex">            
+                <div class="dropdown">
+                    <button class="btn btn-light dropdown-toggle col-sm-12" type="button" id="dropdownCategory" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        All
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownCategory">
+                        <button  name = "All" class="dropdown-item" onclick="filterByCategory(name)" >All </button>
+                        {{#each category}}
+                            <button name="{{nameOfCategory}}" class="dropdown-item" onclick="filterByCategory(name)"  >{{nameOfCategory}} - {{numberOfProduct}} </button>
+                        {{/each}}                        
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                    <a href="/admin/book/add-book" class=" btn btn-success ">Thêm sản phẩm</a>
+            </div> 
         </div>
         <div class="alert alert-danger d-none messageDelete"></div>
         <div class="card mb-4">
@@ -70,3 +86,4 @@
     </div>
 </main>
 <script src="/js/customize.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>

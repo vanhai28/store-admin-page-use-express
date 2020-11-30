@@ -1,4 +1,6 @@
 const bookModel = require("../model/mongooseModel/bookModel");
+const catalogModel = require("../model/categoryModel");
+const catalog = require("../model/mongooseModel/catalogModel");
 
 module.exports.getListBook = async () => {
   let bookList = await bookModel.find(
@@ -28,7 +30,21 @@ module.exports.addBook = async (bookInfor) => {
       i--;
     }
   }
+  //find category, return null if not found
+  let category = await catalog.findOne({ nameOfCategory: bookInfor.category });
+  // add new category into catalog
 
+  if (!category) {
+    await catalogModel.addCategory(bookInfor.category);
+  } else {
+    try {
+      await catalog.findByIdAndUpdate(category._id, {
+        numberOfProduct: category.numberOfProduct + 1,
+      });
+    } catch (error) {
+      console.log("error when update number of product: ", error);
+    }
+  }
   let newBook = new bookModel({
     title: bookInfor.title,
     author: author.length > 0 ? author : [],
@@ -40,7 +56,7 @@ module.exports.addBook = async (bookInfor) => {
     orders: 0,
   });
   let result = false;
-  newBook
+  await newBook
     .save()
     .then((doc) => {
       result = true;
@@ -56,8 +72,18 @@ module.exports.addBook = async (bookInfor) => {
 };
 
 module.exports.deleteBook = async (id) => {
-  let result = await bookModel.findByIdAndDelete({ _id: id });
-  console.log("result : ", result);
+  let book = await bookModel.findById(id);
+  let category = await catalog.findOne({ nameOfCategory: book.category });
+
+  if (category.numberOfProduct - 1 == 0) {
+    await catalog.findByIdAndDelete(category._id);
+  } else {
+    await catalog.findByIdAndUpdate(category._id, {
+      numberOfProduct: category.numberOfProduct - 1,
+    });
+  }
+
+  await bookModel.findByIdAndDelete(id);
 };
 
 module.exports.getBookByCatory = (catory, number = -1) => {
@@ -77,6 +103,35 @@ module.exports.getOneBook = async (id) => {
 };
 
 module.exports.modifyBook = async (id, book) => {
+  let oldBook = await bookModel.findById(id);
+  let oldCategory = await catalog.findOne({ nameOfCategory: oldBook.category });
+
+  if (oldCategory.nameOfCategory != book.category) {
+    // update numberOfProduct of old category
+    if (oldCategory.numberOfProduct - 1 == 0) {
+      //empty
+      await catalog.findByIdAndRemove(oldCategory._id);
+    } else {
+      await catalog.findByIdAndUpdate(oldCategory._id, {
+        numberOfProduct: oldCategory.numberOfProduct - 1,
+      });
+    }
+
+    //find category, return null if not found
+    let category = await catalog.findOne({ nameOfCategory: book.category });
+    // add new category into catalog
+    if (!category) {
+      await catalogModel.addCategory(book.category);
+    } else {
+      try {
+        await catalog.findByIdAndUpdate(category._id, {
+          numberOfProduct: category.numberOfProduct + 1,
+        });
+      } catch (error) {
+        console.log("error when update number of product: ", error);
+      }
+    }
+  }
   try {
     if (book._id) delete book._id;
     book.images = book.images.split(",");

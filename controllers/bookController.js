@@ -1,8 +1,15 @@
 const bookModel = require("../model/bookModel");
+const catalog = require("../model/categoryModel");
 
 module.exports.listBook = async function (req, res, next) {
   let listOfBook = await bookModel.getListBook();
-  res.render("pages/listOfBook", { title: "Sách", book: listOfBook });
+  let category = await catalog.getAllCategory();
+
+  res.render("pages/listOfBook", {
+    title: "Sách",
+    book: listOfBook,
+    category: category,
+  });
 };
 
 module.exports.addBookPage = (req, res, next) => {
@@ -39,7 +46,7 @@ module.exports.deleteBook = function (req, res, next) {
 module.exports.editBook = async function (req, res, next) {
   let id = req.query.id;
   let book = await bookModel.getOneBook(id);
-  console.log("book ", book.old_price);
+
   if (!book) {
     res.send("cannot find book ", id);
     return;
@@ -49,7 +56,7 @@ module.exports.editBook = async function (req, res, next) {
     titlePage: "Chỉnh sửa thông tin sách",
     _id: book._id,
     title: book.title,
-    author: book.auther,
+    author: book.author.join(", "),
     category: book.category,
     price: book.price,
     old_price: book.old_price,
