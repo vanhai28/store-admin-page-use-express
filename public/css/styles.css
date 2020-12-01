@@ -10247,3 +10247,19 @@ body {
 .sb-sidenav-light .sb-sidenav-footer {
   background-color: #e9ecef;
 }
+
+.container a.see-more-btn {
+  background-color: #e59285;
+  position: absolute;
+  right: 0px;
+  color: #fff;
+  padding: 7px 16px;
+  border-radius: 20px;
+}
+a.see-more-btn:hover {
+  background-color: rgba(229, 146, 133, 0.8);
+}
+
+.product__thumb a.first__img {
+  height: 210px;
+}
