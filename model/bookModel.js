@@ -21,11 +21,15 @@ module.exports.addBook = async (bookInfor) => {
       i--;
     }
   }
+  console.log("image 0", images);
   //add cover link to array at the first element
-  images.push(bookInfor.cover);
-  images[images.length - 1] = images[0];
-  images[0] = bookInfor.cover;
-
+  if (images.length > 0) {
+    images.push(images[0]);
+    images[0] = bookInfor.cover;
+  } else {
+    images.push(bookInfor.cover);
+  }
+  console.log("image 1111", images);
   let author = bookInfor.author ? bookInfor.author.split(",") : "";
   // remove element is invalid
   for (let i = 0; i < author.length; i++) {
@@ -56,7 +60,8 @@ module.exports.addBook = async (bookInfor) => {
     category: bookInfor.category,
     price: bookInfor.price,
     images: images.length > 0 ? images : [],
-    cover: bookInfor.coverImage,
+    detail: bookInfor.detail,
+    cover: bookInfor.cover,
     views: 0,
     orders: 0,
   });
