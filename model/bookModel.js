@@ -21,6 +21,11 @@ module.exports.addBook = async (bookInfor) => {
       i--;
     }
   }
+  //add cover link to array at the first element
+  images.push(bookInfor.cover);
+  images[images.length - 1] = images[0];
+  images[0] = bookInfor.cover;
+
   let author = bookInfor.author ? bookInfor.author.split(",") : "";
   // remove element is invalid
   for (let i = 0; i < author.length; i++) {
@@ -86,9 +91,6 @@ module.exports.deleteBook = async (id) => {
   await bookModel.findByIdAndDelete(id);
 };
 
-module.exports.getBookByCatory = (catory, number = -1) => {
-  //number = -1 is get all
-};
 module.exports.getOneBook = async (id) => {
   let book;
 

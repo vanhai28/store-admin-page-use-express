@@ -18,8 +18,9 @@ module.exports.removeUserAcc = async (_id) => {
 };
 
 module.exports.blockAccount = async (_id) => {
+  console.log("block id ", _id);
   try {
-    await userMongoose.findOneAndUpdate({ _id: _id }, { status: "blocked" });
+    await userMongoose.findByIdAndUpdate(_id, { status: "blocked" });
   } catch (error) {
     console.log("cannot update status ", error);
     return false;

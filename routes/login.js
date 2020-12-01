@@ -1,17 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const authController = require("../controllers/authController");
+const authenticate = require("../middleware/authenticate");
 
 router.get("/", authController.login);
 
 router.get("/login", authController.login);
 
-router.post("/logout", authController.logout);
+router.post("/logout", authenticate.authenUser, authController.logout);
 
-router.post("/auth/admin", (req, res, next) => {
-  req.session.sessionID = req.sessionID;
-  req.session.cookie.sessionID = req.sessionID;
-  authController.authLogin(req, res);
-});
+router.post("/auth/admin", authController.authLogin);
 
 module.exports = router;
