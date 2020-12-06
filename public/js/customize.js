@@ -34,21 +34,37 @@ function modifyStatusAccount() {
 modifyStatusAccount();
 
 function deleteBook(id) {
-  let xhttp = new XMLHttpRequest();
+  let boxDelete = document.getElementsByClassName("box-delete-item")[0];
+  boxDelete.className = boxDelete.className.replace("d-none", "");
+  document
+    .getElementsByClassName("btn__confirm-delete")[0]
+    .addEventListener("click", () => {
+      let xhttp = new XMLHttpRequest();
 
-  xhttp.onreadystatechange = function () {
-    if (this.readyState == 4 && this.status == 200) {
-      location.reload();
-    } else if (this.readyState == 4) {
-      let mesg = document.getElementsByClassName("messageDelete")[0];
-      mesg.innerHTML = this.responseText;
-      mesg.className = mesg.className.replace("d-none", " ");
-    }
-  };
+      xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          location.reload();
+        } else if (this.readyState == 4) {
+          let mesg = document.getElementsByClassName("messageDelete")[0];
+          mesg.innerHTML = this.responseText;
+          mesg.className = mesg.className.replace("d-none", " ");
+        }
+      };
 
-  xhttp.open("post", "/admin/book/delete-book", true);
-  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhttp.send("id=" + id);
+      xhttp.open("post", "/admin/book/delete-book", true);
+      xhttp.setRequestHeader(
+        "Content-type",
+        "application/x-www-form-urlencoded"
+      );
+      xhttp.send("id=" + id);
+    });
+
+  document
+    .getElementsByClassName("btn__back")[0]
+    .addEventListener("click", () => {
+      if (!boxDelete.className.includes("d-none"))
+        boxDelete.className += "d-none";
+    });
 }
 
 function deleteUserAcc(id) {

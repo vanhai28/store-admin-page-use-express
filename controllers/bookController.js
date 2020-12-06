@@ -1,14 +1,23 @@
 const bookModel = require("../model/bookModel");
 const catalog = require("../model/categoryModel");
+const ITEM_PER_PAGE = 20;
 
 module.exports.listBook = async function (req, res, next) {
-  let listOfBook = await bookModel.getListBook();
+  let page = +req.query.page || 1;
+  let listOfBook = await bookModel.getBookByPage({}, page, ITEM_PER_PAGE);
   let category = await catalog.getAllCategory();
 
   res.render("pages/listOfBook", {
     title: "Sách",
-    book: listOfBook,
+    book: listOfBook.docs,
     category: category,
+    hasNextPage: listOfBook.hasNextPage,
+    hasPreviousPage: listOfBook.hasPrevPage > 1,
+    nextPage: listOfBook.nextPage,
+    prevPage: listOfBook.prevPage,
+    lastPage: listOfBook.totalPages,
+    ITEM_PER_PAGE: ITEM_PER_PAGE,
+    currentPage: listOfBook.page,
   });
 };
 
@@ -30,15 +39,13 @@ module.exports.addBook = (req, res, next) => {
   }
 };
 
-module.exports.deleteBook = function (req, res, next) {
-  console.log("req delete ", req.body);
-
+module.exports.deleteBook = async function (req, res, next) {
   if (req.body.id) {
-    bookModel.deleteBook(req.body.id);
+    await bookModel.deleteBook(req.body.id);
     res.statusCode = 200;
     res.send();
   } else {
-    res.statusCode = 404;
+    res.statusCode = 400;
     res.send();
   }
 };

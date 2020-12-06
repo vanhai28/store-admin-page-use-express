@@ -10263,3 +10263,7 @@ a.see-more-btn:hover {
 .product__thumb a.first__img {
   height: 210px;
 }
+
+.dataTables_paginate.paging_simple_numbers {
+  display: none;
+}

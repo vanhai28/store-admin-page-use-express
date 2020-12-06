@@ -6,6 +6,27 @@
 	Note: This is custom css. All custom styles (user styles) declare here.
 
 **********************************************************************************/
-.forget_pass  {
-	display: inline;
+.forget_pass {
+  display: inline;
+}
+
+.box-delete-item {
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  background-color: rgba(5, 56, 151, 0.3);
+  z-index: 10;
+}
+.box-delete-item .container-content {
+  justify-content: center;
+  justify-items: center;
+  position: fixed;
+  height: 100vh;
+  align-content: center;
+}
+.box-delete-item .container-content .box-content {
+  background-color: rgb(255, 255, 255);
+  padding: 20px 40px;
+  border-radius: 20px;
+  transform: translateY(-50%);
 }

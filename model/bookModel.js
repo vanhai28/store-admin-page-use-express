@@ -2,11 +2,22 @@ const bookModel = require("../model/mongooseModel/bookModel");
 const catalogModel = require("../model/categoryModel");
 const catalog = require("../model/mongooseModel/catalogModel");
 
-module.exports.getListBook = async () => {
-  let bookList = await bookModel.find(
-    {},
-    "title price category author views orders"
-  ); //add auther
+module.exports.getBookByPage = async (filter, pageIndex, numberItem) => {
+  const options = {
+    page: pageIndex,
+    limit: numberItem,
+  };
+
+  filter.isDelete = false;
+  let bookList;
+
+  await bookModel.paginate(filter, options, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      bookList = result;
+    }
+  }); //add auther
 
   return bookList;
 };
@@ -29,7 +40,7 @@ module.exports.addBook = async (bookInfor) => {
   } else {
     images.push(bookInfor.cover);
   }
-  console.log("image 1111", images);
+
   let author = bookInfor.author ? bookInfor.author.split(",") : "";
   // remove element is invalid
   for (let i = 0; i < author.length; i++) {
@@ -82,18 +93,17 @@ module.exports.addBook = async (bookInfor) => {
 };
 
 module.exports.deleteBook = async (id) => {
+  console.log("id : ", id);
   let book = await bookModel.findById(id);
   let category = await catalog.findOne({ nameOfCategory: book.category });
 
-  if (category.numberOfProduct - 1 == 0) {
-    await catalog.findByIdAndDelete(category._id);
-  } else {
+  if (category.numberOfProduct - 1 >= 0) {
     await catalog.findByIdAndUpdate(category._id, {
       numberOfProduct: category.numberOfProduct - 1,
     });
   }
 
-  await bookModel.findByIdAndDelete(id);
+  await bookModel.findByIdAndUpdate(id, { isDelete: true });
 };
 
 module.exports.getOneBook = async (id) => {
