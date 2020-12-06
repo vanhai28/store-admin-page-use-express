@@ -5,11 +5,6 @@ const autheMiddleware = require("../middleware/authenticate");
 const bookController = require("../controllers/bookController");
 const userController = require("../controllers/userController");
 const sessionModel = require("../model/mongooseModel/sessionModel");
-const fileController = require("../controllers/fileController");
-
-router.post("/api/upload-image", (req, res, next) => {
-  fileController.uploadImage(req, res);
-});
 
 /* GET home page. */
 router.get("/dashboard", controllerDef.index);
@@ -35,11 +30,9 @@ router.get(
 );
 
 /* GET add book page. */
-router.post(
-  "/book/add-book",
-
-  bookController.addBook
-);
+router.post("/book/add-book", (req, res, next) => {
+  bookController.addBook(req, res, next);
+});
 
 /* GET delete book page. */
 router.post(

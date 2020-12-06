@@ -1,5 +1,8 @@
+const formidable = require("formidable");
+
 const bookModel = require("../model/bookModel");
 const catalog = require("../model/categoryModel");
+const upload = require("../service/uploadFile");
 const ITEM_PER_PAGE = 20;
 
 module.exports.listBook = async function (req, res, next) {
@@ -25,18 +28,36 @@ module.exports.addBookPage = (req, res, next) => {
   res.render("pages/addBook", { title: "Thêm sách" });
 };
 module.exports.addBook = (req, res, next) => {
-  let isSucess = bookModel.addBook(req.body);
-  if (isSucess) {
-    res.render("pages/addBook", {
-      title: "Thêm sách",
-      result: "Thêm thành công",
+  let newBook = {};
+  const form = new formidable.IncomingForm({ multiples: true });
+  form.parse(req, async (err, fields, files) => {
+    if (err) {
+      res.send("error " + err);
+      return;
+    }
+    newBook = fields;
+    const temp = await upload.uploadFile(files, async (err, image) => {
+      if (err) {
+        res.send(err);
+      } else {
+        newBook.images = image.images;
+        newBook.cover = image.cover;
+
+        const isSucess = await bookModel.addBook(newBook);
+        if (isSucess) {
+          res.render("pages/addBook", {
+            title: "Thêm sách",
+            result: "Thêm thành công",
+          });
+        } else {
+          res.render("pages/addBook", {
+            title: "Thêm sách",
+            result: "Thêm Thất bại",
+          });
+        }
+      }
     });
-  } else {
-    res.render("pages/addBook", {
-      title: "Thêm sách",
-      result: "Thêm Thất bại",
-    });
-  }
+  });
 };
 
 module.exports.deleteBook = async function (req, res, next) {
@@ -74,8 +95,6 @@ module.exports.editBook = async function (req, res, next) {
 };
 
 module.exports.saveEditBook = async (req, res, next) => {
-  console.log("body ", req.body);
-
   await bookModel.modifyBook(req.body.id, req.body);
   res.redirect("/admin/book/list-book");
 };

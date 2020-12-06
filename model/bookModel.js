@@ -23,24 +23,6 @@ module.exports.getBookByPage = async (filter, pageIndex, numberItem) => {
 };
 
 module.exports.addBook = async (bookInfor) => {
-  let images = bookInfor.images.split(",");
-  // remove element is invalid
-  for (let i = 0; i < images.length; i++) {
-    if (images[i].replace(/ /g, "") == "") {
-      images[i] = images[images.length - 1];
-      images.pop();
-      i--;
-    }
-  }
-  console.log("image 0", images);
-  //add cover link to array at the first element
-  if (images.length > 0) {
-    images.push(images[0]);
-    images[0] = bookInfor.cover;
-  } else {
-    images.push(bookInfor.cover);
-  }
-
   let author = bookInfor.author ? bookInfor.author.split(",") : "";
   // remove element is invalid
   for (let i = 0; i < author.length; i++) {
@@ -70,12 +52,14 @@ module.exports.addBook = async (bookInfor) => {
     author: author.length > 0 ? author : [],
     category: bookInfor.category,
     price: bookInfor.price,
-    images: images.length > 0 ? images : [],
+    images: bookInfor.images,
     detail: bookInfor.detail,
     cover: bookInfor.cover,
     views: 0,
     orders: 0,
+    isDelete: false,
   });
+
   let result = false;
   await newBook
     .save()
