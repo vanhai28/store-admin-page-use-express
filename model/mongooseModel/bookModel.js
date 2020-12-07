@@ -16,6 +16,7 @@ const book = new Schema(
     views: Number,
     orders: Number,
     isDelete: Boolean,
+    idCategory: String,
   },
   { collection: "books" }
 );

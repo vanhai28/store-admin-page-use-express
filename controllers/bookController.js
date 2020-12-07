@@ -1,19 +1,34 @@
 const formidable = require("formidable");
-
+const bookMongoose = require("../model/mongooseModel/bookModel");
 const bookModel = require("../model/bookModel");
 const catalog = require("../model/categoryModel");
 const upload = require("../service/uploadFile");
-const ITEM_PER_PAGE = 20;
+const ITEM_PER_PAGE = 10;
 
 module.exports.listBook = async function (req, res, next) {
-  let page = +req.query.page || 1;
-  let listOfBook = await bookModel.getBookByPage({}, page, ITEM_PER_PAGE);
-  let category = await catalog.getAllCategory();
+  console.log("query ------------", req.query);
+  const page = +req.query.page || 1;
+  let currCategoryView = undefined;
+  const filter = { isDelete: false };
+  const listCategory = await catalog.getAllCategory();
+
+  if (req.query.category) {
+    filter.idCategory = req.query.category;
+
+    listCategory.forEach((cat) => {
+      if (req.query.category == cat._id) {
+        currCategoryView = cat;
+        return true;
+      }
+    });
+  }
+
+  let listOfBook = await bookModel.getBookByPage(filter, page, ITEM_PER_PAGE);
 
   res.render("pages/listOfBook", {
     title: "Sách",
     book: listOfBook.docs,
-    category: category,
+    category: listCategory,
     hasNextPage: listOfBook.hasNextPage,
     hasPreviousPage: listOfBook.hasPrevPage > 1,
     nextPage: listOfBook.nextPage,
@@ -21,6 +36,7 @@ module.exports.listBook = async function (req, res, next) {
     lastPage: listOfBook.totalPages,
     ITEM_PER_PAGE: ITEM_PER_PAGE,
     currentPage: listOfBook.page,
+    curentCategoryView: currCategoryView,
   });
 };
 
@@ -98,7 +114,7 @@ module.exports.editBook = async function (req, res, next) {
     price: book.price,
     old_price: book.old_price,
     detail: book.detail,
-    images: book.images.join(" , "),
+    images: book.images,
     cover: book.cover,
   });
 };

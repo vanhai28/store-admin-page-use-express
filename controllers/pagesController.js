@@ -4,8 +4,8 @@ module.exports.index = function (req, res, next) {
   });
 };
 
-module.exports.chart = function (req, res, next) {
-  res.render("pages/chart", {
-    title: "Chart",
+module.exports.profile = function (req, res, next) {
+  res.render("pages/profileAdmin", {
+    title: "Thông tin Admin",
   });
 };

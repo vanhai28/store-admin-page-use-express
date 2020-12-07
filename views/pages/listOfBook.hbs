@@ -8,20 +8,36 @@
         </ol>
      
         <div class="row text-right mb-4"> 
-            <div class="col-sm-6 input-group d-inline-flex">            
+            <div class="col-sm-3 input-group d-inline-flex">            
                 <div class="dropdown">
-                    <button class="btn btn-light dropdown-toggle col-sm-12" type="button" id="dropdownCategory" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        All
-                    </button>
+                    {{#if curentCategoryView}}
+                        <button class="btn btn-light dropdown-toggle col-sm-12" type="button" id="dropdownCategory" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{curentCategoryView.nameOfCategory}}
+                        </button>
+                    {{else}}
+                        <button class="btn btn-light dropdown-toggle col-sm-12" type="button" id="dropdownCategory" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            All
+                        </button>
+                    {{/if}}
+                   
                     <div class="dropdown-menu" aria-labelledby="dropdownCategory">
-                        <button  name = "All" class="dropdown-item" onclick="filterByCategory(name)" >All </button>
+                        <a  href="/admin/book/list-book?page=1&&category=" class="dropdown-item" >All </a>
                         {{#each category}}
-                            <button name="{{nameOfCategory}}" class="dropdown-item" onclick="filterByCategory(name)"  >{{nameOfCategory}} - {{numberOfProduct}} </button>
+                            <a name="{{nameOfCategory}}" href="/admin/book/list-book?page=1&&category={{_id}}"  class="dropdown-item"  >{{nameOfCategory}} - {{numberOfProduct}} </a>
                         {{/each}}                        
                     </div>
                 </div>
             </div>
             <div class="col-sm-6">
+               <div class="input-group mb-3">
+                   <input type="text" class="form-control" placeholder="Tìm trên toàn bộ danh sách" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                    <div class="input-group-prepend">
+                        <button class="input-group-text" id="inputGroup-sizing-default">Tìm kiếm</button>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="col-sm-3">
                     <a href="/admin/book/add-book" class=" btn btn-success ">Thêm sản phẩm</a>
             </div> 
         </div>
@@ -88,19 +104,19 @@
                             
                             {{#isnt currentPage 1}}
                             <li class="page-item">
-                                <a class="page-link" href="/admin/book/list-book?page={{prevPage}}" aria-label="Previous">
+                                <a class="page-link" href="/admin/book/list-book?page={{prevPage}}&&category={{curentCategoryView._id}}" aria-label="Previous">
                                     <span aria-hidden="true">&laquo;</span>
                                     <span class="sr-only">Previous</span>
                                 </a>
                             </li>
                             {{/isnt}}
 
-
-
                             {{#if hasPreviousPage}}
-                            <li class="page-item"><a class="page-link"
-                                    href="/admin/book/list-book?page={{prevPage}}">{{prevPage}}</a></li>
-
+                            <li class="page-item">
+                                <a class="page-link"
+                                    href="/admin/book/list-book?page={{prevPage}}&&category={{curentCategoryView._id}}">{{prevPage}}
+                                </a>
+                            </li>
                             {{/if}}
 
                             <li class="page-item active">
@@ -109,12 +125,12 @@
 
                             {{#if hasNextPage}}
                             <li class="page-item"><a class="page-link"
-                                    href="/admin/book/list-book?page={{nextPage}}">{{nextPage}}</a></li>
+                                    href="/admin/book/list-book?page={{nextPage}}&&category={{curentCategoryView._id}}">{{nextPage}}</a></li>
                             {{/if}}
 
                             {{#gt lastPage currentPage }}
                             <li class="page-item">
-                                <a class="page-link" href="/admin/book/list-book?page={{nextPage}}" aria-label="Next">
+                                <a class="page-link" href="/admin/book/list-book?page={{nextPage}}&&category={{curentCategoryView._id}}" aria-label="Next">
                                     <span aria-hidden="true">&raquo;</span>
                                     <span class="sr-only">Next</span>
                                 </a>

@@ -30,3 +30,10 @@
   border-radius: 20px;
   transform: translateY(-50%);
 }
+/*--------------- START EDIT PAGE ---------------*/
+.cover-image img,
+.image-item img {
+  width: 100%;
+}
+
+/*--------------- END OF EDIT PAGE ---------------*/

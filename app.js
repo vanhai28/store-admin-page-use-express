@@ -10,12 +10,18 @@ const hbshelpers = require("handlebars-helpers");
 const multihelpers = hbshelpers();
 var session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
-
-const adminRouter = require("./routes/admin");
 const bodyParser = require("body-parser");
-const loginRouter = require("./routes/login");
+
+// -------- Import router ----------
+const adminRouter = require("./routes/adminPageRouter");
+const loginRouter = require("./routes/loginRouter");
+const userRouter = require("./routes/uerRouter");
+const bookRouter = require("./routes/bookRouter");
+
+//import module create default account for admin
 const defaultAcc = require("./model/accModel");
 
+// import module connect database
 const mongoose = require("./config/db");
 
 const app = express();
@@ -23,6 +29,7 @@ const app = express();
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 const pt = path.resolve(__dirname, "public", "view");
+
 // run mongoose
 mongoose.mongoose();
 
@@ -44,14 +51,13 @@ app.engine(
   })
 );
 
-//require("./routes/login")(app);
-
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+// --------   SETUP SESSION --------------
 app.set("trust proxy", 1);
 app.use(
   session({
@@ -73,10 +79,13 @@ app.use(
   })
 );
 
+//--------- USE ROUTER ------------
 app.use("/", loginRouter);
 app.use("/admin", adminRouter);
-//app.use("/users", usersRouter);
+app.use("/admin/user", userRouter);
+app.use("/admin/book", bookRouter);
 
+// --- Create default account for admin
 defaultAcc.createDefaultAcc();
 
 // catch 404 and forward to error handler

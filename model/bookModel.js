@@ -8,7 +8,6 @@ module.exports.getBookByPage = async (filter, pageIndex, numberItem) => {
     limit: numberItem,
   };
 
-  filter.isDelete = false;
   let bookList;
 
   await bookModel.paginate(filter, options, (err, result) => {
