@@ -1,20 +1,30 @@
-function filterByCategory(value) {
-  document.getElementById("dropdownCategory").innerText = value;
-  let table = $("#dataTable").DataTable({
-    paging: false,
-    retrieve: true,
-    searching: false,
-  });
+// $(document).ready(function () {
+//   var result;
 
-  if (value == "All") {
-    table.column(2).search("").draw();
-    return;
-  }
+//   Handlebars.registerHelper("uppercase", function (val) {
+//     return val.toUpperCase();
+//   });
 
-  if (table.column(2).search() !== value) {
-    table.column(2).search(value).draw();
-  }
-}
+//   $.ajax({
+//     url: "http://107.109.98.48:8080/test.json",
+//     jsonpCallback: "my_callback",
+//     contentType: "application/json",
+//     dataType: "s",
+//     success: function (data) {
+//       result = data;
+//       console.log(result);
+//       var currentTemplateHtml = $("#mytemplate").html();
+//       var compliledTemplateHtml = Handlebars.compile(currentTemplateHtml);
+
+//       var contextualHtml = compliledTemplateHtml(result);
+//       $(".content-placeholder").html(contextualHtml);
+//       console.log(result);
+//     },
+//     error: function (e) {
+//       console.log(e.message);
+//     },
+//   });
+// });
 
 function modifyStatusAccount() {
   let status = document.getElementsByClassName("status-account");
@@ -34,37 +44,21 @@ function modifyStatusAccount() {
 modifyStatusAccount();
 
 function deleteBook(id) {
-  let boxDelete = document.getElementsByClassName("box-delete-item")[0];
-  boxDelete.className = boxDelete.className.replace("d-none", "");
-  document
-    .getElementsByClassName("btn__confirm-delete")[0]
-    .addEventListener("click", () => {
-      let xhttp = new XMLHttpRequest();
+  let xhttp = new XMLHttpRequest();
 
-      xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-          location.reload();
-        } else if (this.readyState == 4) {
-          let mesg = document.getElementsByClassName("messageDelete")[0];
-          mesg.innerHTML = this.responseText;
-          mesg.className = mesg.className.replace("d-none", " ");
-        }
-      };
+  xhttp.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      location.reload();
+    } else if (this.readyState == 4) {
+      let mesg = document.getElementsByClassName("messageDelete")[0];
+      mesg.innerHTML = this.responseText;
+      mesg.className = mesg.className.replace("d-none", " ");
+    }
+  };
 
-      xhttp.open("post", "/admin/book/delete-book", true);
-      xhttp.setRequestHeader(
-        "Content-type",
-        "application/x-www-form-urlencoded"
-      );
-      xhttp.send("id=" + id);
-    });
-
-  document
-    .getElementsByClassName("btn__back")[0]
-    .addEventListener("click", () => {
-      if (!boxDelete.className.includes("d-none"))
-        boxDelete.className += "d-none";
-    });
+  xhttp.open("post", "/admin/book/delete", true);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.send("id=" + id);
 }
 
 function deleteUserAcc(id) {
@@ -113,7 +107,6 @@ function blockAccount(id) {
 
 function unBlockAccount(id) {
   let xhttp = new XMLHttpRequest();
-  console.log("id la ", id);
 
   let badge = document.getElementById(id);
 
@@ -131,7 +124,7 @@ function unBlockAccount(id) {
     }
   };
 
-  xhttp.open("post", "/admin/user/un-block", true);
+  xhttp.open("post", "/admin/user/unblock", true);
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhttp.send("id=" + id);
 }

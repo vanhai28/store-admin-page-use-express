@@ -1,6 +1,7 @@
 const bookModel = require("../model/mongooseModel/bookModel");
 const catalogModel = require("../model/categoryModel");
 const catalog = require("../model/mongooseModel/catalogModel");
+const { model } = require("../model/mongooseModel/bookModel");
 
 module.exports.getBookByPage = async (filter, pageIndex, numberItem) => {
   const options = {
@@ -103,7 +104,6 @@ module.exports.getOneBook = async (id) => {
 };
 
 module.exports.modifyBook = async (book) => {
-  console.log("dang chay modifyBook      -----------------------");
   let oldBook = await bookModel.findById(book.id);
   let oldCategory = await catalog.findOne({ nameOfCategory: oldBook.category });
 
@@ -143,6 +143,25 @@ module.exports.modifyBook = async (book) => {
     console.log(error);
     return false;
   }
-  console.log(" chay xong modifyBook      -----------------------");
+
   return true;
+};
+
+module.exports.searchBook = async (value) => {
+  const options = {
+    page: 1,
+    limit: 10,
+  };
+
+  let bookList = [];
+
+  await bookModel.paginate({ title: value }, options, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      bookList = result;
+    }
+  }); //add auther
+
+  return bookList;
 };

@@ -4,11 +4,7 @@ const userController = require("../controllers/userController");
 //--------------------- POST -------------------------------
 
 /* POST block user page. */
-router.post(
-  "/un-block",
-
-  userController.unBlockUser
-);
+router.post("/unblock", userController.unBlockUser);
 
 /* POST block user page. */
 router.post(

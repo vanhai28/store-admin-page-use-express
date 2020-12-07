@@ -14,31 +14,28 @@ router.post(
 );
 
 /* GET add book page. */
-router.post("/add-book", (req, res, next) => {
+router.post("/add", (req, res, next) => {
   bookController.addBook(req, res, next);
 });
 
-/* GET delete book page. */
-router.post(
-  "/delete-book",
-
-  bookController.deleteBook
-);
+/* Post delete book page. */
+router.post("/delete", bookController.deleteBook);
 //--------------------- GET -------------------------------
+router.get("/search", bookController.searchBook);
 
 /* GET edit book page. */
 router.get("/edit", bookController.editBook);
 
 /* GET list book page. */
 router.get(
-  "/list-book",
+  "/list",
 
   bookController.listBook
 );
 
 /* GET add book page. */
 router.get(
-  "/add-book",
+  "/add",
 
   bookController.addBookPage
 );

@@ -6,7 +6,6 @@ const upload = require("../service/uploadFile");
 const ITEM_PER_PAGE = 10;
 
 module.exports.listBook = async function (req, res, next) {
-  console.log("query ------------", req.query);
   const page = +req.query.page || 1;
   let currCategoryView = undefined;
   const filter = { isDelete: false };
@@ -169,5 +168,29 @@ module.exports.saveEditBook = async (req, res, next) => {
         });
       });
     });
+  });
+};
+
+module.exports.searchBook = async (req, res, next) => {
+  const listCategory = await catalog.getAllCategory();
+
+  let value = req.query.value || "";
+  let listOfBook = await bookModel.searchBook(value);
+  console.log("value ----", value);
+  let mesg = "tìm thấy " + listOfBook.docs.length + " kết quả";
+
+  res.render("pages/listOfBook", {
+    title: "Sách",
+    book: listOfBook.docs,
+    category: listCategory,
+    hasNextPage: listOfBook.hasNextPage,
+    hasPreviousPage: listOfBook.hasPrevPage > 1,
+    nextPage: listOfBook.nextPage,
+    prevPage: listOfBook.prevPage,
+    lastPage: listOfBook.totalPages,
+    ITEM_PER_PAGE: ITEM_PER_PAGE,
+    currentPage: 1,
+    curentCategoryView: "",
+    mesg: mesg,
   });
 };
