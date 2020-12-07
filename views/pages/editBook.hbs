@@ -14,7 +14,7 @@
             <div class="card-body">
               <div class="example-wrap">
                 <div class="example">
-                  <form id="formInforBook" action="/admin/book/edit" method="POST">
+                  <form enctype="multipart/form-data" id="formInforBook" action="/admin/book/edit" method="POST">
                     <div class="row">
                         <div class="form-group col-md-6 d-none">
                         <input type="text" class="form-control" name="id" id="title" value="{{_id}}"" >
@@ -45,17 +45,22 @@
                     </div>
                     <div class="form-group">
                       <label for="detail">Mô tả</label>
-                      <textarea required class="form-control" name="detail" rows="5" id="detail">{{detail}}</textarea>
+                      <textarea  class="form-control" name="detail" rows="5" id="detail">{{detail}}</textarea>
                     </div>
                 
-                      <div class="form-group">
-                        <label  for="images">Link ảnh</label>
-                        <textarea class="form-control" name="images" id="images" rows="4" autocomplete="off">{{images}}</textarea>
+                      <div class="row form-group">
+                        <label class="col-sm-2" for="fileImageCover">Tải ảnh </label>
+                        <div class="custom-file col-sm-6">    
+                            <input  name="upload" multiple autocomplete="off" type="file" id="fileImageCover" class="custom-file-input">
+                            <label for="fileImageCover" class="custom-file-label">Choose file</label>
+                        </div>
                     </div>
-               
-                        <div class="form-group">
-                        <label for="cover">Link ảnh cover</label>
-                        <input required type="text" class="form-control" name="cover" id = "cover" value="{{cover}}" autocomplete="off">
+                      <div class=" row form-group">
+                        <label class="col-sm-2" for="fileImageCover">Tải ảnh cover </label>
+                        <div class="custom-file  col-sm-6">
+                          <input  name="cover" type="file" autocomplete="off" id="coverImage" class="custom-file-input">
+                          <label for="cover" class="custom-file-label">Choose file cover</label>
+                        </div>
                     </div>
                      <div class="form-group">
                       <button type="submit" class="btn btn-primary">Lưu</button>

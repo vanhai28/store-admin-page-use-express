@@ -28,34 +28,43 @@ module.exports.addBookPage = (req, res, next) => {
   res.render("pages/addBook", { title: "Thêm sách" });
 };
 module.exports.addBook = (req, res, next) => {
-  let newBook = {};
   const form = new formidable.IncomingForm({ multiples: true });
   form.parse(req, async (err, fields, files) => {
     if (err) {
       res.send("error " + err);
       return;
     }
-    newBook = fields;
-    const temp = await upload.uploadFile(files, async (err, image) => {
+    let newBook = fields;
+    await upload.uploadFile(files.upload, async (err, urls) => {
       if (err) {
         res.send(err);
-      } else {
-        newBook.images = image.images;
-        newBook.cover = image.cover;
-
-        const isSucess = await bookModel.addBook(newBook);
-        if (isSucess) {
-          res.render("pages/addBook", {
-            title: "Thêm sách",
-            result: "Thêm thành công",
-          });
-        } else {
-          res.render("pages/addBook", {
-            title: "Thêm sách",
-            result: "Thêm Thất bại",
-          });
-        }
       }
+      if (urls) {
+        newBook.images = urls;
+      }
+
+      await upload.uploadFile(Array(files.cover), async (err, url) => {
+        if (err) {
+          res.send("error when upload cover image" + err);
+          return;
+        }
+
+        if (url) {
+          newBook.cover = url[0];
+        }
+        const isSucess = await bookModel.addBook(newBook);
+        let reesult = "";
+        if (isSucess) {
+          result = "Thêm thành công";
+        } else {
+          result = "Có lỗi trong quá trình thêm sách";
+        }
+
+        res.render("pages/addBook", {
+          titlePage: "Thêm sách",
+          result: result,
+        });
+      });
     });
   });
 };
@@ -95,6 +104,54 @@ module.exports.editBook = async function (req, res, next) {
 };
 
 module.exports.saveEditBook = async (req, res, next) => {
-  await bookModel.modifyBook(req.body.id, req.body);
-  res.redirect("/admin/book/list-book");
+  let newBook = {};
+  const form = new formidable.IncomingForm({ multiples: true });
+  form.parse(req, async (err, fields, files) => {
+    if (err) {
+      res.send("error " + err);
+      return;
+    }
+    newBook = fields;
+
+    await upload.uploadFile(files.upload, async (err, urls) => {
+      if (err) {
+        res.send("err  " + err);
+        return;
+      }
+
+      if (urls) {
+        newBook.images = urls;
+      }
+
+      await upload.uploadFile(Array(files.cover), async (err, url) => {
+        if (err) {
+          res.send("error happen when upload cover image" + err);
+          return;
+        }
+
+        if (url) {
+          newBook.cover = url[0];
+        }
+        const isSucess = await bookModel.modifyBook(newBook);
+        let result = "";
+
+        if (isSucess) {
+          result = "Lưu thành công";
+        } else {
+          result = "Có lỗi trong quá trình lưu";
+        }
+        res.render("pages/editBook", {
+          titlePage: "Chinh sửa sách",
+          _id: fields.id,
+          title: fields.title,
+          author: fields.author,
+          category: fields.category,
+          price: fields.price,
+          old_price: fields.old_price,
+          detail: fields.detail,
+          result: result,
+        });
+      });
+    });
+  });
 };

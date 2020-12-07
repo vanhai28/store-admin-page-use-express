@@ -6,46 +6,85 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-module.exports.uploadFile = async (files, callback) => {
-  imageArray = files.upload;
-  let count = 0;
-  let image = {
-    images: [],
-    cover: "",
-  };
-  await imageArray.forEach(async (file) => {
-    await cloudinary.uploader.upload(
-      file.path,
-      {
-        resource_type: "auto",
-        folder: "sample",
-      },
-      (err, result) => {
-        if (err) {
-          callback(err, {});
-        } else {
-          count++;
-          image.images.push(result.url);
-        }
-      }
-    );
+module.exports.uploadFile = async (arrayfiles, callback) => {
+  console.log(
+    "dang chay upload file       -----------------------" + arrayfiles
+  );
+  if (!arrayfiles || !arrayfiles[0] || arrayfiles[0].name == "") {
+    callback(null, null);
+    return;
+  }
 
-    if (count == imageArray.length) {
+  let count = 0;
+  let urls = [];
+  try {
+    await arrayfiles.forEach(async (file) => {
       await cloudinary.uploader.upload(
-        files.coverImage.path,
+        file.path,
         {
           resource_type: "auto",
           folder: "sample",
         },
         (err, result) => {
           if (err) {
-            callback("error when upload cover image", {});
+            callback(err, {});
           } else {
-            image.cover = result.url;
-            callback(null, image);
+            count++;
+            urls.push(result.url);
           }
         }
       );
-    }
-  });
+
+      if (count == arrayfiles.length) {
+        console.log(urls);
+        callback(null, urls);
+      }
+    });
+  } catch (error) {
+    callback(error, null);
+  }
 };
+// module.exports.uploadFile = async (files, callback) => {
+
+//   let imageArray = files.upload;
+//   let count = 0;
+//   let image = {
+//     images: [],
+//     cover: "",
+//   };
+//   await imageArray.forEach(async (file) => {
+//     await cloudinary.uploader.upload(
+//       file.path,
+//       {
+//         resource_type: "auto",
+//         folder: "sample",
+//       },
+//       (err, result) => {
+//         if (err) {
+//           callback(err, {});
+//         } else {
+//           count++;
+//           image.images.push(result.url);
+//         }
+//       }
+//     );
+
+//     if (count == imageArray.length) {
+//       await cloudinary.uploader.upload(
+//         files.coverImage.path,
+//         {
+//           resource_type: "auto",
+//           folder: "sample",
+//         },
+//         (err, result) => {
+//           if (err) {
+//             callback("error when upload cover image", {});
+//           } else {
+//             image.cover = result.url;
+//             callback(null, image);
+//           }
+//         }
+//       );
+//     }
+//   });
+// };

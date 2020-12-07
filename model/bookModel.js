@@ -103,8 +103,9 @@ module.exports.getOneBook = async (id) => {
   return book;
 };
 
-module.exports.modifyBook = async (id, book) => {
-  let oldBook = await bookModel.findById(id);
+module.exports.modifyBook = async (book) => {
+  console.log("dang chay modifyBook      -----------------------");
+  let oldBook = await bookModel.findById(book.id);
   let oldCategory = await catalog.findOne({ nameOfCategory: oldBook.category });
 
   if (oldCategory.nameOfCategory != book.category) {
@@ -134,10 +135,15 @@ module.exports.modifyBook = async (id, book) => {
     }
   }
   try {
-    if (book._id) delete book._id;
-    book.images = book.images.split(",");
-    await bookModel.findByIdAndUpdate(id, book);
+    if (book.id) delete book._id;
+    if (!book.images) delete book.images;
+    if (!book.cover) delete book.cover;
+
+    await bookModel.findByIdAndUpdate(book.id, book);
   } catch (error) {
-    console.log("error ", error);
+    console.log(error);
+    return false;
   }
+  console.log(" chay xong modifyBook      -----------------------");
+  return true;
 };
