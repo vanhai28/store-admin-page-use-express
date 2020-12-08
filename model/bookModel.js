@@ -104,25 +104,23 @@ module.exports.getOneBook = async (_id) => {
 module.exports.modifyBook = async (book) => {
   let oldBook = await bookModel.findById(book._id);
   let oldCategory = await catalog.findOne({ nameOfCategory: oldBook.category });
-
+  console.log("loai ", oldCategory.nameOfCategory);
+  console.log("loai moi ", book.category);
   if (oldCategory.nameOfCategory != book.category) {
     // update numberOfProduct of old category
-    if (oldCategory.numberOfProduct - 1 == 0) {
-      //empty
-      await catalog.findByIdAndRemove(oldCategory._id);
-    } else {
-      await catalog.findByIdAndUpdate(oldCategory._id, {
-        numberOfProduct: oldCategory.numberOfProduct - 1,
-      });
-    }
+
+    await catalog.findByIdAndUpdate(oldCategory._id, {
+      numberOfProduct: oldCategory.numberOfProduct - 1,
+    });
 
     //find category, return null if not found
     let category = await catalog.findOne({ nameOfCategory: book.category });
-    // add new category into catalog
     if (!category) {
       await catalogModel.addCategory(book.category);
     } else {
       try {
+        book.idCategory = category._id; //update new id of category
+        // increase number of book of category
         await catalog.findByIdAndUpdate(category._id, {
           numberOfProduct: category.numberOfProduct + 1,
         });
@@ -131,11 +129,12 @@ module.exports.modifyBook = async (book) => {
       }
     }
   }
-  try {
-    if (!book.images) delete book.images;
-    if (!book.cover) delete book.cover;
 
-    await bookModel.findByIdAndUpdate(book._id, book);
+  try {
+    if (!book.images) delete book.images; //if admin don't update image
+    if (!book.cover) delete book.cover; // if admin don't update cover image
+
+    await bookModel.findByIdAndUpdate(book._id, book); //update book
   } catch (error) {
     console.log(error);
     return false;
