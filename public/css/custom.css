@@ -37,3 +37,12 @@
 }
 
 /*--------------- END OF EDIT PAGE ---------------*/
+
+/*--------------- START ADD PAGE ---------------*/
+.form-group .dropdown__category {
+  max-width: 200px;
+  overflow: auto;
+  max-height: 350px;
+}
+
+/*--------------- END OF EDIT PAGE ---------------*/

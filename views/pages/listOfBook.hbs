@@ -23,9 +23,9 @@
                     {{/if}}
                    
                     <div class="dropdown-menu" aria-labelledby="dropdownCategory">
-                        <a  href="/admin/book/list?page=1&&category=" class="dropdown-item" >All </a>
+                        <a  href="/admin/book/list?page=1&&idCat=" class="dropdown-item" >All </a>
                         {{#each category}}
-                            <a name="{{nameOfCategory}}" href="/admin/book/list?page=1&&category={{_id}}"  class="dropdown-item"  >{{nameOfCategory}} - {{numberOfProduct}} </a>
+                            <a name="{{nameOfCategory}}" href="/admin/book/list?page=1&&idCat={{_id}}"  class="dropdown-item"  >{{nameOfCategory}} - {{numberOfProduct}} </a>
                         {{/each}}                        
                     </div>
                 </div>
@@ -87,54 +87,6 @@
                                     <td>{{item.views}}</td>
                                     <td>{{item.orders}}</td>
                                     <td>
-                                        {{!-- <button type="button"  data-toggle="modal" data-target="#{{_id}}" class="btn btn-sm btn-icon btn-flat btn-default"  data-original-title="xoá">
-                                            <i class="fas fa-trash-alt text-danger"aria-hidden="true"></i>
-                                        </button>
-                                        <div class="modal fade" id="{{_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel"></h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Quay lại</button>
-                                                    <button type="button" class="btn btn-danger" name={{_id}} onclick="deleteBook(name)" >Xoá</button>
-                                                </div>
-                                                </div>
-                                            </div>
-                                        </div> --}}
-
-                                        {{!-- <button type="button" data-toggle="modal" data-target="#item_{{index}}" 
-                                            class="btn btn-sm btn-icon btn-flat btn-default" data-original-title="Edit">
-                                            <i class="fas fa-trash-alt text-danger"aria-hidden="true"></i>
-                                        </button>
-                                    <!-- Modal -->
-                                        <div class="modal fade" id="{{_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel"></h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    Sản phẩm đã xoá sẽ không được thể hiện trên trang web 
-                                                    Bạn có chắc muốn xoá?   
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Quay lại</button>
-                                                    <button type="button" class="btn btn-danger" name={{_id}} onclick="deleteBook(name)" >Xoá</button>
-                                                </div>
-                                                </div>
-                                            </div>
-                                        </div> --}}
                                         <button type="button" data-toggle="modal" data-target="#item_{{index}}" 
                                             class="btn btn-sm btn-icon btn-flat btn-default" data-original-title="Edit">
                                             <i class="fas fa-trash-alt text-danger"aria-hidden="true"></i>
@@ -162,7 +114,7 @@
                                         </div>
                                         </div>
                                         <button type="button" class="btn btn-sm btn-icon btn-flat btn-default" data-toggle="tooltip" data-original-title="sửa">
-                                            <a href="/admin/book/edit?id={{_id}}"><i class="fas fa-edit text-success" aria-hidden="true"></i></a>
+                                            <a href="/admin/book/edit?id={{item._id}}"><i class="fas fa-edit text-success" aria-hidden="true"></i></a>
                                         </button>
                                     </td>
                                 </tr>
@@ -177,7 +129,7 @@
                             
                             {{#isnt currentPage 1}}
                             <li class="page-item">
-                                <a class="page-link" href="/admin/book/list?page={{prevPage}}&&category={{curentCategoryView._id}}" aria-label="Previous">
+                                <a class="page-link" href="/admin/book/list?page={{prevPage}}&&idCat={{curentCategoryView._id}}" aria-label="Previous">
                                     <span aria-hidden="true">&laquo;</span>
                                     <span class="sr-only">Previous</span>
                                 </a>
@@ -187,7 +139,7 @@
                             {{#if hasPreviousPage}}
                             <li class="page-item">
                                 <a class="page-link"
-                                    href="/admin/book/list?page={{prevPage}}&&category={{curentCategoryView._id}}">{{prevPage}}
+                                    href="/admin/book/list?page={{prevPage}}&&idCat={{curentCategoryView._id}}">{{prevPage}}
                                 </a>
                             </li>
                             {{/if}}
@@ -198,12 +150,12 @@
 
                             {{#if hasNextPage}}
                             <li class="page-item"><a class="page-link"
-                                    href="/admin/book/list?page={{nextPage}}&&category={{curentCategoryView._id}}">{{nextPage}}</a></li>
+                                    href="/admin/book/list?page={{nextPage}}&&idCat={{curentCategoryView._id}}">{{nextPage}}</a></li>
                             {{/if}}
 
                             {{#gt lastPage currentPage }}
                             <li class="page-item">
-                                <a class="page-link" href="/admin/book/list?page={{nextPage}}&&category={{curentCategoryView._id}}" aria-label="Next">
+                                <a class="page-link" href="/admin/book/list?page={{nextPage}}&&idCat={{curentCategoryView._id}}" aria-label="Next">
                                     <span aria-hidden="true">&raquo;</span>
                                     <span class="sr-only">Next</span>
                                 </a>

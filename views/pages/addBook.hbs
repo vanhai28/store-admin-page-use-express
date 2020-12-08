@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="/css/custom.css">
+
 <main>
     <div class="container-fluid">
         <h1 class="mt-4">Thêm sản phẩm</h1>
@@ -14,7 +16,7 @@
             <div class="card-body">
               <div class="example-wrap">
                 <div class="example">
-                  <form enctype="multipart/form-data"  id="formInforBook" action="/admin/book/add-book" method="POST">
+                  <form enctype="multipart/form-data"  id="formInforBook" action="/admin/book/add" method="POST">
                     <div class="row">
                       <div class="form-group col-md-6">
                         <label for="title">Title</label>
@@ -28,8 +30,20 @@
                     </div>
                     <div class="row">
                       <div class="form-group col-md-6">
-                        <label  for="category">Loại sách</label>
-                        <input required type="text" class="form-control" id="category" name="category" placeholder="Loại sách" autocomplete="off">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" 
+                                    data-toggle="dropdown" aria-haspopup="true"  aria-expanded="false">Loại sách</button>
+                                <div class="dropdown__category dropdown-menu">
+                                    {{#each catalog}} 
+                                        <a class="dropdown-item" onclick="selectCategory(name)" name="{{nameOfCategory}}">{{nameOfCategory}}</a>
+                                    {{/each}}
+                                </div>
+                            </div>
+                            <label for="category"></label>
+                            <input required name="category"  type="text" id="input__category" class="form-control" aria-label="Text input with dropdown button">
+                        </div>
+                       
                       </div>
                       <div class="form-group col-md-6">
                         <label for="price">Giá sản phẩm</label>
@@ -57,7 +71,7 @@
                     </div>
                      <div class="form-group">
                       <button type="submit" value="Upload" class="btn btn-primary">Thêm</button>
-                    </div>
+                    </div> 
                   </form>
                  
                 </div>

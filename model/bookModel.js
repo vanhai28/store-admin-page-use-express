@@ -1,7 +1,6 @@
 const bookModel = require("../model/mongooseModel/bookModel");
 const catalogModel = require("../model/categoryModel");
 const catalog = require("../model/mongooseModel/catalogModel");
-const { model } = require("../model/mongooseModel/bookModel");
 
 module.exports.getBookByPage = async (filter, pageIndex, numberItem) => {
   const options = {
@@ -58,6 +57,7 @@ module.exports.addBook = async (bookInfor) => {
     views: 0,
     orders: 0,
     isDelete: false,
+    idCategory: category._id,
   });
 
   let result = false;
@@ -77,7 +77,6 @@ module.exports.addBook = async (bookInfor) => {
 };
 
 module.exports.deleteBook = async (id) => {
-  console.log("id : ", id);
   let book = await bookModel.findById(id);
   let category = await catalog.findOne({ nameOfCategory: book.category });
 
@@ -90,13 +89,12 @@ module.exports.deleteBook = async (id) => {
   await bookModel.findByIdAndUpdate(id, { isDelete: true });
 };
 
-module.exports.getOneBook = async (id) => {
+module.exports.getOneBook = async (_id) => {
   let book;
-
   try {
-    book = await bookModel.findOne({ _id: id });
+    book = await bookModel.findOne({ _id: _id });
   } catch (error) {
-    console.log(err);
+    console.log(error);
     return null;
   }
 
@@ -104,7 +102,7 @@ module.exports.getOneBook = async (id) => {
 };
 
 module.exports.modifyBook = async (book) => {
-  let oldBook = await bookModel.findById(book.id);
+  let oldBook = await bookModel.findById(book._id);
   let oldCategory = await catalog.findOne({ nameOfCategory: oldBook.category });
 
   if (oldCategory.nameOfCategory != book.category) {
@@ -134,11 +132,10 @@ module.exports.modifyBook = async (book) => {
     }
   }
   try {
-    if (book.id) delete book._id;
     if (!book.images) delete book.images;
     if (!book.cover) delete book.cover;
 
-    await bookModel.findByIdAndUpdate(book.id, book);
+    await bookModel.findByIdAndUpdate(book._id, book);
   } catch (error) {
     console.log(error);
     return false;

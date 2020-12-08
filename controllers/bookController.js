@@ -1,5 +1,4 @@
 const formidable = require("formidable");
-const bookMongoose = require("../model/mongooseModel/bookModel");
 const bookModel = require("../model/bookModel");
 const catalog = require("../model/categoryModel");
 const upload = require("../service/uploadFile");
@@ -11,11 +10,11 @@ module.exports.listBook = async function (req, res, next) {
   const filter = { isDelete: false };
   const listCategory = await catalog.getAllCategory();
 
-  if (req.query.category) {
-    filter.idCategory = req.query.category;
+  if (req.query.idCat) {
+    filter.idCategory = req.query.idCat;
 
     listCategory.forEach((cat) => {
-      if (req.query.category == cat._id) {
+      if (req.query.idCat == cat._id) {
         currCategoryView = cat;
         return true;
       }
@@ -39,8 +38,13 @@ module.exports.listBook = async function (req, res, next) {
   });
 };
 
-module.exports.addBookPage = (req, res, next) => {
-  res.render("pages/addBook", { title: "Thêm sách" });
+module.exports.addBookPage = async (req, res, next) => {
+  let categoryList = await catalog.getAllCategory();
+
+  res.render("pages/addBook", {
+    titlePage: "Thêm sách",
+    catalog: categoryList,
+  });
 };
 module.exports.addBook = (req, res, next) => {
   const form = new formidable.IncomingForm({ multiples: true });
@@ -49,8 +53,17 @@ module.exports.addBook = (req, res, next) => {
       res.send("error " + err);
       return;
     }
+    // res.send(fields);
+    // return;
     let newBook = fields;
-    await upload.uploadFile(files.upload, async (err, urls) => {
+    let images = files.upload;
+
+    if (!images[0]) {
+      // images is not an Array
+      images = Array(images);
+    }
+
+    await upload.uploadFile(images, async (err, urls) => {
       if (err) {
         res.send(err);
       }
@@ -58,26 +71,30 @@ module.exports.addBook = (req, res, next) => {
         newBook.images = urls;
       }
 
-      await upload.uploadFile(Array(files.cover), async (err, url) => {
+      await upload.uploadFile(Array(files.coverImage), async (err, url) => {
         if (err) {
           res.send("error when upload cover image" + err);
           return;
         }
 
         if (url) {
+          // upload sucess
           newBook.cover = url[0];
         }
         const isSucess = await bookModel.addBook(newBook);
-        let reesult = "";
+        let result = "";
+
         if (isSucess) {
           result = "Thêm thành công";
         } else {
           result = "Có lỗi trong quá trình thêm sách";
         }
 
+        let categoryList = await catalog.getAllCategory();
         res.render("pages/addBook", {
           titlePage: "Thêm sách",
           result: result,
+          catalog: categoryList,
         });
       });
     });
@@ -96,25 +113,18 @@ module.exports.deleteBook = async function (req, res, next) {
 };
 
 module.exports.editBook = async function (req, res, next) {
-  let id = req.query.id;
-  let book = await bookModel.getOneBook(id);
-
+  let _id = req.query.id;
+  let book = await bookModel.getOneBook(_id);
+  let categoryList = await catalog.getAllCategory();
   if (!book) {
-    res.send("cannot find book ", id);
+    res.send("cannot find book " + _id);
     return;
   }
 
   res.render("pages/editBook", {
     titlePage: "Chỉnh sửa thông tin sách",
-    _id: book._id,
-    title: book.title,
-    author: book.author.join(", "),
-    category: book.category,
-    price: book.price,
-    old_price: book.old_price,
-    detail: book.detail,
-    images: book.images,
-    cover: book.cover,
+    book: book,
+    catalog: categoryList,
   });
 };
 
@@ -147,24 +157,23 @@ module.exports.saveEditBook = async (req, res, next) => {
         if (url) {
           newBook.cover = url[0];
         }
+
         const isSucess = await bookModel.modifyBook(newBook);
         let result = "";
-
         if (isSucess) {
           result = "Lưu thành công";
         } else {
           result = "Có lỗi trong quá trình lưu";
         }
+
+        let currentBook = await bookModel.getOneBook(newBook._id);
+        let categoryList = await catalog.getAllCategory();
+
         res.render("pages/editBook", {
           titlePage: "Chinh sửa sách",
-          _id: fields.id,
-          title: fields.title,
-          author: fields.author,
-          category: fields.category,
-          price: fields.price,
-          old_price: fields.old_price,
-          detail: fields.detail,
+          book: currentBook,
           result: result,
+          catalog: categoryList,
         });
       });
     });
@@ -176,7 +185,7 @@ module.exports.searchBook = async (req, res, next) => {
 
   let value = req.query.value || "";
   let listOfBook = await bookModel.searchBook(value);
-  console.log("value ----", value);
+
   let mesg = "tìm thấy " + listOfBook.docs.length + " kết quả";
 
   res.render("pages/listOfBook", {

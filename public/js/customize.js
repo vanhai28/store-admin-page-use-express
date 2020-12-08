@@ -68,7 +68,6 @@ function deleteUserAcc(id) {
     if (this.readyState == 4 && this.status == 200) {
       location.reload();
     } else if (this.readyState == 4) {
-      console.log("status ", this.status);
       let mesg = document.getElementsByClassName("messageDelete")[0];
       mesg.innerHTML = this.responseText;
       mesg.className = mesg.className.replace("d-none", " ");
@@ -82,7 +81,6 @@ function deleteUserAcc(id) {
 
 function blockAccount(id) {
   let xhttp = new XMLHttpRequest();
-  console.log("id la ", id);
 
   let badge = document.getElementById(id);
 
@@ -127,4 +125,9 @@ function unBlockAccount(id) {
   xhttp.open("post", "/admin/user/unblock", true);
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhttp.send("id=" + id);
+}
+
+function selectCategory(value) {
+  document.getElementById("input__category").value = value;
+  //document.getElementById("input__category").innerText = value;
 }

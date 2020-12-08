@@ -18,44 +18,59 @@
                   <form enctype="multipart/form-data" id="formInforBook" action="/admin/book/edit" method="POST">
                     <div class="row">
                         <div class="form-group col-md-6 d-none">
-                        <input type="text" class="form-control" name="id" id="title" value="{{_id}}"" >
+                        <input type="text" class="form-control" name="_id" id="title" value="{{book._id}}"" >
                       </div>
                       <div class="form-group col-md-6">
                         <label for="title">Title</label>
-                        <input required type="text" class="form-control" name="title" id="title" value="{{title}}"" >
+                        <input required type="text" class="form-control" name="title" id="title" value="{{book.title}}"" >
                       </div>
                       <div class="form-group col-md-6">
                         <label for="auther">Tác giả</label>
-                        <input required type="text" class="form-control" name="author" id="auther" value="{{author}}" autocomplete="off">
+                        <input required type="text" class="form-control" name="author" id="auther" value="{{book.author}}" autocomplete="off">
                         <span>Tên các tác giả phân cách bằng dầu phẩy</span>
                       </div>
                     </div>
                     <div class="row">
                       <div class="form-group col-md-4">
-                        <label required for="category">Loại sách</label>
-                        <input type="text" class="form-control" id="category" name="category" value="{{category}}" autocomplete="off">
+                         <label for="category">Loại sách</label>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" 
+                                    data-toggle="dropdown" aria-haspopup="true"  aria-expanded="false">Chọn</button>
+                                <div class="dropdown__category dropdown-menu">
+                                    {{#each catalog}} 
+                                        <a class="dropdown-item" onclick="selectCategory(name)" name="{{nameOfCategory}}">{{nameOfCategory}}</a>
+                                    {{/each}}
+                                </div>
+                            </div>
+                            
+                            <input required name="category" value="{{book.category}}" disabled type="text" id="input__category" class="form-control" aria-label="Text input with dropdown button">
+                        </div>
+                       
                       </div>
                       <div class="form-group col-md-4">
-                        <label for="price">Giá sản phẩm</label>
-                        <input required type="number" class="form-control" id="price" name="price" value="{{price}}" autocomplete="off">
+                        <label for="price">Giá hiện tại</label>
+                        <input required type="number" class="form-control" id="price" 
+                          name="price" value="{{book.price}}" autocomplete="off">
                       </div>
                       <div class="form-group col-md-4">
                         <label for="old_price">Giá cũ</label>
-                        <input required type="number" class="form-control" id="old_price" name="old_price" value="{{old_price}}" autocomplete="off">
+                        <input  type="number" class="form-control" id="old_price" 
+                          name="old_price" value="{{book.old_price}}" autocomplete="off">
                       </div>
                     </div>
                     <div class="form-group">
                       <label for="detail">Mô tả</label>
-                      <textarea  class="form-control" name="detail" rows="5" id="detail">{{detail}}</textarea>
+                      <textarea  class="form-control" name="detail" rows="5" id="detail">{{book.detail}}</textarea>
                     </div>
                     <div class="form-group cover-image col-sm-3">
                       <label for=""> Ảnh cover</label>
-                      <img src="{{cover}}" alt="ảnh cover">
+                      <img src="{{book.cover}}" alt="ảnh cover">
                     </div>
                     <div class="form-group">
                       <label for=""> Ảnh thực tế</label>
                       <div class="row list-image">
-                         {{#each images}}
+                         {{#each book.images}}
                           <div class="col-sm-2 image-item">
                             <img src="{{this}}" alt="ảnh thực tế">
                           </div>

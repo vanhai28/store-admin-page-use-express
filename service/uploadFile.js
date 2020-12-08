@@ -7,9 +7,6 @@ cloudinary.config({
 });
 
 module.exports.uploadFile = async (arrayfiles, callback) => {
-  console.log(
-    "dang chay upload file       -----------------------" + arrayfiles
-  );
   if (!arrayfiles || !arrayfiles[0] || arrayfiles[0].name == "") {
     callback(null, null);
     return;
@@ -36,7 +33,6 @@ module.exports.uploadFile = async (arrayfiles, callback) => {
       );
 
       if (count == arrayfiles.length) {
-        console.log(urls);
         callback(null, urls);
       }
     });
