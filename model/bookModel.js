@@ -149,9 +149,17 @@ module.exports.searchBook = async (value) => {
     limit: 10,
   };
 
-  let bookList = [];
+  let filter;
 
-  await bookModel.paginate({ title: value }, options, (err, result) => {
+  if(value){
+    filter = {$text: {$search: value} };
+  }
+  else{
+    filter ={};
+  }
+  let bookList;
+
+  await bookModel.paginate(filter, options, (err, result) => {
     if (err) {
       console.log(err);
     } else {
