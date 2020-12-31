@@ -9,7 +9,7 @@ const user = new Schema(
     password: String,
     status: String,
     birthday: Date,
-    lastest_access_date: Date,
+    Lastest_Time_Access: Date,
   },
   { collection: "users" }
 );
