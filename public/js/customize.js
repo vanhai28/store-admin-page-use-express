@@ -137,10 +137,15 @@ function unBlockAccount(id) {
 //   }
 // }
 
+//-------------  USE ajax for list of BOOKS page
+
+//-------------- FOR PAGINATION ----------------
+
+// get data of books from server by page
+// @param : page : the page number to get data
 function getAPIBooks(page) {
   let id_category = document.getElementById("id_Current_category").value;
   let api_link = "/admin/book/api/list?page=" + page + "&idCat=" + id_category;
-  console.log("gia tri : ", api_link);
 
   let xhttp = new XMLHttpRequest();
 
@@ -160,6 +165,8 @@ function getAPIBooks(page) {
   xhttp.send();
 }
 
+// update new data got from server by using AJAX
+// @param products : data got from server
 function replaceBook(products) {
   // console.log("boo ", products);
   products = JSON.parse(products);
@@ -171,11 +178,11 @@ function replaceBook(products) {
   products.books = products.book;
 
   var html = templateScript(products);
-  //html = 'My name is Ritesh Kumar . I am a developer.'
-  console.log("html pag : ", html);
+
   document.getElementById("pagination").innerHTML = html;
 }
 
+// FOR test , this will be added into function replaceBook
 function replaceBook2(products) {
   Handlebars.registerHelper("join", function (arr) {
     let result = "";
@@ -198,3 +205,38 @@ function replaceBook2(products) {
 
   document.getElementById("tbody__data").innerHTML = html;
 }
+
+// use AJAX for category book -------------------------
+
+// Get data of books by category from server
+(function getAPIBooksByCategory(category) {
+  const btnCategory = document.getElementsByClassName("btn--category");
+  for (let index = 0; index < btnCategory.length; index++) {
+    const element = btnCategory[index];
+    element.onclick = function () {
+      let api_link = "/admin/book/api/list?page=1&&idCat=" + element.value;
+      let xhttp = new XMLHttpRequest();
+      console.log("------------", api_link);
+      xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          replaceBook(this.responseText);
+          replaceBook2(this.responseText);
+          let data = JSON.parse(this.responseText);
+          console.log(data.curentCategoryView.nameOfCategory);
+          $("#dropdownCategory").html(data.curentCategoryView.nameOfCategory);
+        } else if (this.readyState == 4) {
+          $("#message-from-sever").removeClass("d-none");
+          $("#message-from-sever").innerHTML =
+            "error when get data category from server";
+        }
+      };
+
+      xhttp.open("GET", api_link, true);
+      xhttp.setRequestHeader(
+        "Content-type",
+        "application/x-www-form-urlencoded"
+      );
+      xhttp.send();
+    };
+  }
+})();

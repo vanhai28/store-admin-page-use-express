@@ -7,7 +7,7 @@
             <li class="breadcrumb-item active">Sách</li>
         </ol>
 
-        <div class="alert alert-primary d-none " id="resultSearch" role="alert"></div>
+        <div class="alert alert-primary d-none " id="message-from-sever" role="alert"></div>
 
         <div class="row text-right mb-4"> 
             <div class="col-sm-3 input-group d-inline-flex">            
@@ -25,9 +25,9 @@
                     {{/if}}
                    
                     <div class="dropdown-menu" aria-labelledby="dropdownCategory">
-                        <a  href="/admin/book/list?page=1&&idCat=" class="dropdown-item" >All </a>
+                        <button  value="0" class="dropdown-item btn--category" >All </button>
                         {{#each category}}
-                            <a name="{{nameOfCategory}}" href="/admin/book/list?page=1&&idCat={{_id}}"  class="dropdown-item"  >{{nameOfCategory}} - {{numberOfProduct}} </a>
+                            <button name="{{nameOfCategory}}" value="{{_id}}"   class="dropdown-item btn--category"  >{{nameOfCategory}} - {{numberOfProduct}} </button>
                         {{/each}}                        
                     </div>
                 </div>
@@ -166,6 +166,7 @@
 
 <!-- Include Handlebars from a CDN -->
 <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script  type="text/x-handlebars-template" id="table_data">
 
