@@ -146,16 +146,15 @@ module.exports.modifyBook = async (book) => {
 module.exports.searchBook = async (value) => {
   const options = {
     page: 1,
-    limit: 10,
+    limit: 2,
   };
 
   let filter;
 
-  if(value){
-    filter = {$text: {$search: value} };
-  }
-  else{
-    filter ={};
+  if (value) {
+    filter = { $text: { $search: value } };
+  } else {
+    filter = {};
   }
   let bookList;
 

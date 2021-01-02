@@ -38,6 +38,43 @@ module.exports.listBook = async function (req, res, next) {
   });
 };
 
+module.exports.getAPIBook = async function (req, res, next) {
+  const page = +req.query.page || 1;
+  let currCategoryView = undefined;
+  const filter = { isDelete: false };
+  const listCategory = await catalog.getAllCategory();
+
+  if (req.query.idCat) {
+    filter.idCategory = req.query.idCat;
+
+    listCategory.forEach((cat) => {
+      if (req.query.idCat == cat._id) {
+        currCategoryView = cat;
+        return true;
+      }
+    });
+  }
+
+  let listOfBook = await bookModel.getBookByPage(filter, page, ITEM_PER_PAGE);
+  let NotFirstPage = listOfBook.nextPage > 2;
+  let NotLastPage = !(listOfBook.page == listOfBook.totalPages);
+  //let hasPrevPage = listOfBook.hasPrevPage > 1;
+  res.statusCode = 200;
+  res.send({
+    book: listOfBook.docs,
+    hasNextPage: listOfBook.hasNextPage,
+    hasPreviousPage: listOfBook.hasPrevPage,
+    nextPage: listOfBook.nextPage,
+    prevPage: listOfBook.prevPage,
+    lastPage: listOfBook.totalPages,
+    ITEM_PER_PAGE: ITEM_PER_PAGE,
+    currentPage: listOfBook.page,
+    curentCategoryView: currCategoryView,
+    NotFirstPage: NotFirstPage,
+    NotLastPage: NotLastPage,
+  });
+};
+
 module.exports.addBookPage = async (req, res, next) => {
   let categoryList = await catalog.getAllCategory();
 

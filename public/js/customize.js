@@ -126,8 +126,75 @@ function unBlockAccount(id) {
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhttp.send("id=" + id);
 }
+// function setOnclickPaginate() {
+//   let pageLinkClass = document.getElementsByClassName("btn--pagination");
+//   for (let index = 0; index < pageLinkClass.length; index++) {
+//     let page = pageLinkClass[index].value;
+//     pageLinkClass[index].onclick = function (event) {
+//       event.preventDefault();
+//       getAPIBooks(page);
+//     };
+//   }
+// }
 
-function selectCategory(value) {
-  document.getElementById("input__category").value = value;
-  //document.getElementById("input__category").innerText = value;
+function getAPIBooks(page) {
+  let id_category = document.getElementById("id_Current_category").value;
+  let api_link = "/admin/book/api/list?page=" + page + "&idCat=" + id_category;
+  console.log("gia tri : ", api_link);
+
+  let xhttp = new XMLHttpRequest();
+
+  let tableData = document.getElementsByClassName("table-responsive")[0];
+
+  xhttp.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      replaceBook(this.responseText);
+      replaceBook2(this.responseText);
+    } else if (this.readyState == 4) {
+      tableData.innerHTML = this.responseText;
+    }
+  };
+
+  xhttp.open("GET", api_link, true);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.send();
+}
+
+function replaceBook(products) {
+  // console.log("boo ", products);
+  products = JSON.parse(products);
+
+  var template = $("#handlebars-demo").html();
+
+  //Compile the template data into a function
+  var templateScript = Handlebars.compile(template);
+  products.books = products.book;
+
+  var html = templateScript(products);
+  //html = 'My name is Ritesh Kumar . I am a developer.'
+  console.log("html pag : ", html);
+  document.getElementById("pagination").innerHTML = html;
+}
+
+function replaceBook2(products) {
+  Handlebars.registerHelper("join", function (arr) {
+    let result = "";
+    for (let i = 0; i < arr.length - 1; i++) {
+      result += arr[i] + " ,";
+    }
+    result += arr[arr.length - 1];
+    return result;
+  });
+
+  products = JSON.parse(products);
+  products = products.book;
+
+  var template = $("#table_data").html();
+
+  //Compile the template data into a function
+  var templateScript = Handlebars.compile(template);
+
+  var html = templateScript({ products: products });
+
+  document.getElementById("tbody__data").innerHTML = html;
 }
