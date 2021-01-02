@@ -13,13 +13,12 @@
             <div class="col-sm-3 input-group d-inline-flex">            
                 <div class="dropdown">
                     {{#if curentCategoryView}}
-                        <button class="btn btn-light dropdown-toggle col-sm-12" type="button" id="dropdownCategory" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <input class="d-none" id="id_Current_category" value={{curentCategoryView._id}}></input>
+                        <button class="btn btn-light dropdown-toggle col-sm-12" value="{{curentCategoryView._id}}" type="button" id="dropdownCategory" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             {{curentCategoryView.nameOfCategory}}
                         </button>
                     {{else}}
-                       <input class="d-none" id="id_Current_category" value="{{curentCategoryView._id}}"></input>
-                        <button class="btn btn-light dropdown-toggle col-sm-12" type="button" id="dropdownCategory" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     
+                        <button value="{{curentCategoryView._id}}" class="btn btn-light dropdown-toggle col-sm-12" type="button" id="dropdownCategory" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             All
                         </button>
                     {{/if}}
@@ -138,7 +137,7 @@
                             <button class="btn--pagination page-link"
                                 value="{{nextPage}}"
                                 onclick='getAPIBooks(value)'>{{nextPage}}
-                                </button>
+                                </button> 
                         </li>
 
 

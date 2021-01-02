@@ -144,19 +144,17 @@ function unBlockAccount(id) {
 // get data of books from server by page
 // @param : page : the page number to get data
 function getAPIBooks(page) {
-  let id_category = document.getElementById("id_Current_category").value;
-  let api_link = "/admin/book/api/list?page=" + page + "&idCat=" + id_category;
-
+  let id_category = document.getElementById("dropdownCategory").value;
+  let api_link = "/admin/book/api/lists?page=" + page + "&idCat=" + id_category;
   let xhttp = new XMLHttpRequest();
-
-  let tableData = document.getElementsByClassName("table-responsive")[0];
 
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
       replaceBook(this.responseText);
       replaceBook2(this.responseText);
     } else if (this.readyState == 4) {
-      tableData.innerHTML = this.responseText;
+      $("#message-from-sever").removeClass("d-none");
+      $("#message-from-sever").html("error when get data category from server");
     }
   };
 
@@ -168,7 +166,6 @@ function getAPIBooks(page) {
 // update new data got from server by using AJAX
 // @param products : data got from server
 function replaceBook(products) {
-  // console.log("boo ", products);
   products = JSON.parse(products);
 
   var template = $("#handlebars-demo").html();
@@ -216,18 +213,24 @@ function replaceBook2(products) {
     element.onclick = function () {
       let api_link = "/admin/book/api/list?page=1&&idCat=" + element.value;
       let xhttp = new XMLHttpRequest();
-      console.log("------------", api_link);
       xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
           replaceBook(this.responseText);
           replaceBook2(this.responseText);
           let data = JSON.parse(this.responseText);
-          console.log(data.curentCategoryView.nameOfCategory);
-          $("#dropdownCategory").html(data.curentCategoryView.nameOfCategory);
+          if (data.curentCategoryView) {
+            $("#dropdownCategory").html(data.curentCategoryView.nameOfCategory);
+            document.getElementById("dropdownCategory").value =
+              data.curentCategoryView._id;
+          } else {
+            $("#dropdownCategory").html("All");
+            document.getElementById("dropdownCategory").value = 0;
+          }
         } else if (this.readyState == 4) {
           $("#message-from-sever").removeClass("d-none");
-          $("#message-from-sever").innerHTML =
-            "error when get data category from server";
+          $("#message-from-sever").html(
+            "error when get data category from server"
+          );
         }
       };
 

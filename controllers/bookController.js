@@ -39,12 +39,13 @@ module.exports.listBook = async function (req, res, next) {
 };
 
 module.exports.getAPIBook = async function (req, res, next) {
+  console.log("satus ", res.statusCode);
   const page = +req.query.page || 1;
   let currCategoryView = undefined;
   const filter = { isDelete: false };
   const listCategory = await catalog.getAllCategory();
 
-  if (req.query.idCat) {
+  if (req.query.idCat != 0) {
     filter.idCategory = req.query.idCat;
 
     listCategory.forEach((cat) => {
@@ -60,6 +61,7 @@ module.exports.getAPIBook = async function (req, res, next) {
   let NotLastPage = !(listOfBook.page == listOfBook.totalPages);
   //let hasPrevPage = listOfBook.hasPrevPage > 1;
   res.statusCode = 200;
+  console.log("satus ", res.statusCode);
   res.send({
     book: listOfBook.docs,
     hasNextPage: listOfBook.hasNextPage,

@@ -34,6 +34,7 @@ router.get(
 );
 
 /* GET list book page. */
+router.get("/api/lists", bookController.getAPIBook);
 router.get("/api/list", bookController.getAPIBook);
 
 /* GET add book page. */
