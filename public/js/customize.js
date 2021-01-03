@@ -189,6 +189,9 @@ function replaceBook2(products) {
     result += arr[arr.length - 1];
     return result;
   });
+  Handlebars.registerHelper("append", function (str1, str2) {
+    return str1 + str2;
+  });
 
   products = JSON.parse(products);
   products = products.book;

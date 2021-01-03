@@ -33,11 +33,9 @@
             </div>
             <form action="/admin/book/search" method="GET" class="col-sm-6 search-box">
                <div class="input-group mb-3">
-                   <input type="text" id="input__search" name="value" class="form-control" placeholder="Tìm trên toàn bộ danh sách" aria-label="Default" aria-describedby="inputGroup-sizing-default">
-                    <div class="input-group-prepend">
-                        <button type="submit" class="input-group-text " >Tìm kiếm</button>
-                    </div>
-                    
+                   <input type="text" id="input__search" name="value" 
+                   class="form-control" placeholder="Tìm trên toàn bộ danh sách" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                    <button type="submit" class="input-group-text btn__search" >Tìm kiếm</button>                    
                 </div>
             </form>
             <div class="col-sm-3">
@@ -126,7 +124,7 @@
                     </table>
                 </div>
                  <nav id="pagination" aria-label="Page navigation example" style="margin-top: 20px;">
-                    <ul class="pagination justify-content-center">
+                    <ul class="pagination justify-content-center"   style="display: flex">
 
                         <li class="page-item active">
                             <button class=" page-link" href="javascript:void(0)" tabindex="-1">{{currentPage}}</button>
@@ -151,7 +149,6 @@
                             </button>
                         </li>
                         {{/gt}}
-
                     </ul>
                 </nav>
             </div>
@@ -166,6 +163,7 @@
 <!-- Include Handlebars from a CDN -->
 <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 
 <script  type="text/x-handlebars-template" id="table_data">
 
@@ -184,7 +182,7 @@
             <td>\{{orders}}</td>
 
             <td>
-                <button type="button" data-toggle="modal" data-target=\{{_id}}
+                <button type="button" data-toggle="modal" data-target=\{{append "#" _id }}
                     class="btn btn-sm btn-icon btn-flat btn-default" data-original-title="Edit">
                     <i class="fas fa-trash-alt text-danger"aria-hidden="true"></i>
                 </button>
@@ -221,8 +219,8 @@
 </script>
 
 <script  type="text/x-handlebars-template" id="handlebars-demo">
-	  <nav id="pagination" aria-label="Page navigation example" style="margin-top: 20px;">
-                    <ul class="pagination justify-content-center">
+	  <nav id="pagination" aria-label="Page navigation example" style="margin-top: 20px; display: inline">
+                    <ul class="pagination justify-content-center"  style="display: flex">
                         <!-- icon << -->
                        \{{#if this.NotFirstPage}}
                             <li class="page-item">
@@ -271,5 +269,3 @@
                     </ul>
                 </nav>
 </script>
-
-<script src="/js/customize.js"></script>

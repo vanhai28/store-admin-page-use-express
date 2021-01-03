@@ -46,3 +46,12 @@
 }
 
 /*--------------- END OF EDIT PAGE ---------------*/
+#input__search {
+  width: 80%;
+}
+.btn__search {
+  font-size: 14px;
+  padding: 0.55rem 0.75rem;
+  border-left: 0px solid #ced4da;
+  border-radius: 0px 0.25rem 0.25rem 0px;
+}
