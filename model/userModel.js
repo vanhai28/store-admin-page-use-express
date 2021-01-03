@@ -1,11 +1,33 @@
 const userModel = require("../model/mongooseModel/userModel");
 const userMongoose = require("../model/mongooseModel/userModel");
 
-module.exports.getListUser = async () => {
-  const listUser = await userMongoose.find({});
+module.exports.getListUserByPage = async (filter, pageIndex, numberItem) => {
+  const options = {
+    page: pageIndex,
+    limit: numberItem,
+    select: [
+      "_id",
+      "user_name",
+      "user_email",
+      "status",
+      "avatar_image",
+      "Lastest_Time_Access",
+    ],
+    collection: "users",
+  };
+
+  let listUser = null;
+
+  await userModel.paginate(filter, options, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      listUser = result;
+    }
+  }); //add auther
+  console.log("user get ", listUser);
   return listUser;
 };
-
 module.exports.removeUserAcc = async (_id) => {
   try {
     await userMongoose.findByIdAndRemove({ _id: _id });

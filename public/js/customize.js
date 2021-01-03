@@ -27,18 +27,20 @@
 // });
 
 function modifyStatusAccount() {
-  let status = document.getElementsByClassName("status-account");
+  let status = document.getElementsByClassName("status_account_active");
+  console.log("modify status");
+  for (let index = 0; index < status.length; index++) {
+    const element = status[index];
+    element.className += " badge badge-success";
+    element.innerHTML = "Hoạt động";
+  }
 
+  status = document.getElementsByClassName("status_account_blocked");
   for (let index = 0; index < status.length; index++) {
     const element = status[index];
 
-    if (element.className.includes("active")) {
-      element.className += " badge-success";
-      element.innerHTML = "Hoạt động";
-    } else {
-      element.className += " badge-danger";
-      element.innerHTML = "Đã khoá";
-    }
+    element.className += " badge badge-danger";
+    element.innerHTML = "Đã khoá";
   }
 }
 modifyStatusAccount();
@@ -74,7 +76,7 @@ function deleteUserAcc(id) {
     }
   };
 
-  xhttp.open("post", "/admin/user/delete", true);
+  xhttp.open("post", "/admin/users/delete", true);
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhttp.send("id=" + id);
 }
@@ -98,7 +100,7 @@ function blockAccount(id) {
     }
   };
 
-  xhttp.open("post", "/admin/user/block", true);
+  xhttp.open("post", "/admin/users/block", true);
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhttp.send("id=" + id);
 }
@@ -122,7 +124,7 @@ function unBlockAccount(id) {
     }
   };
 
-  xhttp.open("post", "/admin/user/unblock", true);
+  xhttp.open("post", "/admin/users/unblock", true);
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhttp.send("id=" + id);
 }
@@ -246,3 +248,36 @@ function replaceBook2(products) {
     };
   }
 })();
+
+function getAPI_Users(page) {
+  let api_link = "/admin/users/api/list?page=" + page;
+  let xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      replaceUser(this.responseText);
+    } else if (this.readyState == 4) {
+      $("#message-from-sever").removeClass("d-none");
+      $("#message-from-sever").html("error when get data user from server");
+    }
+  };
+
+  xhttp.open("GET", api_link, true);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.send();
+}
+
+function replaceUser(data) {
+  data = JSON.parse(data);
+  Handlebars.registerHelper("append", function (str1, str2) {
+    return str1 + str2;
+  });
+  let template = $("#replaceDataUser").html();
+
+  let templateScript = Handlebars.compile(template);
+  data = data.data;
+  console.log("data sâsassa ", data);
+  let html = templateScript({ data: data });
+  console.log("html : ", html);
+  document.getElementById("cart__body").innerHTML = html;
+  modifyStatusAccount();
+}

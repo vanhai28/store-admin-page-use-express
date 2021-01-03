@@ -13,7 +13,7 @@
                 <i class="fas fa-table mr-1"></i>
                 Danh sách tài khoản
             </div>
-            <div class="card-body">
+            <div class="card-body" id="cart__body">
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
@@ -35,7 +35,7 @@
                             </tr>
                         </tfoot>
                         <tbody>
-                            {{#each user}}
+                            {{#each data.docs}}
                             <tr>
                                 <td>{{user_name}}</td>
                                 <td>{{user_email}}</td> 
@@ -73,7 +73,7 @@
       
                                         {{!-- <button type="button" class="btn btn-success">Hoạt động</button>       --}}
                                         <div class="input-group-append">
-                                             <span class="badge status-account {{status}}" id="{{_id}}"></span>
+                                             <span class="status_account_{{status}}" id="{{_id}}"></span>
                                         <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <span class="sr-only">Toggle Dropdown</span>
                                         </button>
@@ -89,6 +89,30 @@
                         </tbody>
                     </table>
                 </div>
+                <nav id="pagination" aria-label="Page navigation example" style="margin-top: 20px;">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item active">
+                            <button class=" page-link" href="javascript:void(0)" tabindex="-1">
+                                {{data.page}}</button>
+                        </li>                
+                        <li class="page-item ">
+                            <button class="btn--pagination page-link"
+                                value="{{data.nextPage}}"
+                                onclick='getAPI_Users(value)'>{{data.nextPage}}
+                                </button>
+                        </li>
+                        {{#gt data.totalPages data.page }}
+                            <li class="page-item">
+                                <button class="btn--pagination page-link" 
+                                value="{{data.nextPage}}"
+                                onclick="getAPI_Users(value)" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span class="sr-only">Next</span>
+                                </button>
+                            </li>
+                        {{/gt}}
+                    </ul>
+                </nav>
             </div>
         </div>
     </div>
@@ -105,5 +129,119 @@
         </div>
     </div>
 </div>
+
 <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
-<script src="/js/customize.js"></script>
+
+<!-- Include Handlebars from a CDN -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script type="text/x-handlebars-template" id="replaceDataUser">
+    <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Tên đăng nhập</th>
+                    <th>Email</th>
+                    <th>Ngày truy cập gần nhất</th>
+                    <th>Xóa</th>
+                    <th>Khoá</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th>Tên đăng nhập</th>
+                    <th>Email</th>
+                    <th>Ngày truy cập gần nhất</th>
+                    <th>Xoá</th>
+                    <th>Khoá</th>
+                </tr>
+            </tfoot>
+            <tbody>
+
+                \{{#each data.docs}}
+                <tr>
+                    <td>\{{user_name}}</td>
+                    <td>\{{user_email}}</td> 
+                    <td>\{{Lastest_Time_Access}}</td> <!-- variable -->
+                     <td class="text-center">
+                        <button type="button" data-toggle="modal" data-target=\{{append '#user_' _id}} 
+                            class="btn btn-sm btn-icon btn-flat btn-default" data-original-title="Edit">
+                            <i class="fas fa-trash-alt text-danger"aria-hidden="true"></i>
+                        </button>
+                        <!-- Modal -->
+                      <div class="modal fade" id=\{{append 'user_' _id}} tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Tài khoản sẽ bị xoá vĩnh viễn ra khỏi cơ sở dữ liệu
+                                Bạn có chắc muốn xoá tài khoản này?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Quay lại</button>
+                                <button type="button" class="btn btn-danger" name=\{{_id}} onclick="deleteUserAcc(name)" >Xoá</button>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="input-group">   
+                            
+
+                            {{!-- <button type="button" class="btn btn-success">Hoạt động</button>       --}}
+                            <div class="input-group-append">
+                                    <span class=\{{append 'status_account_' status}} id=\{{_id}}>\{{status}}</span>
+                            <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <div class="dropdown-menu">
+                                <button class="dropdown-item" onclick="blockAccount(name)"  name=\{{_id}}>Khoá tài khoản <i class="fas fa-ban text-danger"></i> </button>
+                                <button class="dropdown-item" onclick="unBlockAccount(name)" name=\{{_id}}>Mở tài khoản <i class="fas fa-check text-success"></i></button>
+                            </div>
+                        </div>
+                        </div>
+                    </td> 
+                </tr>
+                \{{/each}}
+            </tbody>
+        </table>
+    </div>
+    <nav id="pagination" aria-label="Page navigation example" style="margin-top: 20px;">
+        <ul class="pagination justify-content-center">
+            \{{#if data.hasPrevPage}}
+            <li class="page-item">
+                <button class=" page-link" value=\{{data.prevPage}}
+                    onclick='getAPI_Users(value)' tabindex="-1">
+                    \{{data.prevPage}}</button>
+            </li>                
+            \{{/if}}
+            <li class="page-item active">
+                <button class=" page-link" href="javascript:void(0)" tabindex="-1">
+                    \{{data.page}}</button>
+            </li>                
+            
+            \{{#if data.hasNextPage }}
+                <li class="page-item ">
+                <button class="btn--pagination page-link"
+                    value=\{{data.nextPage}}
+                    onclick='getAPI_Users(value)'>\{{data.nextPage}}
+                    </button>
+                </li>
+                <li class="page-item">
+                    <button class="btn--pagination page-link" 
+                    value=\{{data.nextPage}}
+                    onclick="getAPI_Users(value)" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </button>
+                </li>
+            \{{/if}}
+        </ul>
+    </nav>
+</script>

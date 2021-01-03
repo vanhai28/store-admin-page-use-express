@@ -82,7 +82,7 @@ app.use(
 //--------- USE ROUTER ------------
 app.use("/", loginRouter);
 app.use("/admin", adminRouter);
-app.use("/admin/user", userRouter);
+app.use("/admin/users", userRouter);
 app.use("/admin/book", bookRouter);
 
 // --- Create default account for admin
