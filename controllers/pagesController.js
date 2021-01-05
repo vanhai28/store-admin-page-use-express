@@ -45,6 +45,14 @@ module.exports.changeAvatar = async function (req, res, next) {
     }
   });
 };
-module.exports.changePassword = function (req, res, next) {
-  console.log(req);
+module.exports.changePassword = async function (req, res, next) {
+  let result = await accountModel.changePassword(req);
+
+  if (result) {
+    res.statusCode = 200;
+    res.send();
+  } else {
+    res.statusCode = 500;
+    res.send();
+  }
 };

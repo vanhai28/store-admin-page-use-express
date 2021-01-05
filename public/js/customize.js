@@ -1,27 +1,3 @@
-// Save change avatar
-$("#change_avatar_form").submit(function (e) {
-  e.preventDefault();
-
-  let data = new FormData();
-  data.append("file", $("#input_avatar")[0].files[0]);
-  var request = new XMLHttpRequest();
-
-  request.onreadystatechange = function () {
-    if (this.readyState == 4 && this.status == 200) {
-      $("#message__result").addClass(" alert-success");
-      $("#message__result").html("Thay đổi thành công");
-      $("#message__result").removeClass(" d-none");
-      $("#avatar-image").attr("src", this.responseText);
-    } else if (this.readyState == 4) {
-      $("#message__result").addClass(" alert-danger");
-      $("#message__result").html("Thay đổi Thất bại");
-      $("#message__result").removeClass(" d-none");
-    }
-  };
-  request.open("POST", "/admin/change/avatar");
-  request.send(data);
-});
-
 (function modifyStatusAccount() {
   let status = document.getElementsByClassName("status_account_active");
   for (let index = 0; index < status.length; index++) {
@@ -347,3 +323,73 @@ function saveInforAccount(value, index) {
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhttp.send();
 }
+
+// check is password match !!
+function checkMatchPassword() {
+  let password = document.getElementById("new_password");
+  let re_password = document.getElementById("re_enter_password");
+
+  if (password.value !== re_password.value) {
+    re_password.setCustomValidity("Password is not match !!");
+    return false;
+  }
+
+  return true;
+}
+
+// handle send request change password
+$("#form__change_password").submit(function (e) {
+  e.preventDefault();
+
+  if (!checkMatchPassword()) {
+    return;
+  }
+
+  let oldPassword = document.getElementById("old_password");
+  let newPassword = document.getElementById("new_password");
+
+  let api_link =
+    "/admin/change/password?oldpass=" +
+    oldPassword.value +
+    "&newpass=" +
+    newPassword.value;
+  let request = new XMLHttpRequest();
+
+  request.onreadystatechange = function () {
+    if (this.status == 200 && this.readyState == 4) {
+      $("#result_change_password").html("Thay đổi thành công");
+      $("#result_change_password").removeClass(" d-none");
+    } else if (this.readyState == 4) {
+      $("#result_change_password").html("Thay đổi Thất bại");
+      $("#result_change_password").removeClass(" d-none");
+    }
+  };
+
+  request.open("POST", api_link, true);
+  request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  request.send();
+});
+
+// Save change avatar
+$("#change_avatar_form").submit(function (e) {
+  e.preventDefault();
+
+  let data = new FormData();
+  data.append("file", $("#input_avatar")[0].files[0]);
+  var request = new XMLHttpRequest();
+
+  request.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      $("#message__result").addClass(" alert-success");
+      $("#message__result").html("Thay đổi thành công");
+      $("#message__result").removeClass(" d-none");
+      $("#avatar-image").attr("src", this.responseText);
+    } else if (this.readyState == 4) {
+      $("#message__result").addClass(" alert-danger");
+      $("#message__result").html("Thay đổi Thất bại");
+      $("#message__result").removeClass(" d-none");
+    }
+  };
+  request.open("POST", "/admin/change/avatar");
+  request.send(data);
+});

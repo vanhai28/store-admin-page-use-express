@@ -16,6 +16,6 @@ router.get("/api/account", pagesController.editInfor);
 router.post("/change/avatar", pagesController.changeAvatar);
 
 // /* change password . */
-router.get("/change/password", pagesController.changePassword);
+router.post("/change/password", pagesController.changePassword);
 
 module.exports = router;

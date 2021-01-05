@@ -1,12 +1,13 @@
 const bcrypt = require("bcrypt");
 const formidable = require("formidable");
 const upload = require("../service/uploadFile");
-
 const adminMongooseModel = require("./mongooseModel/adminModel");
+
+const SALT_ROUNDS = 10;
 
 exports.createDefaultAcc = async () => {
   //---------- Add user into database ---------
-  const saltRounds = 10;
+  const saltRounds = SALT_ROUNDS;
   const isExist = await adminMongooseModel.exists({ name: "admin" });
   if (isExist) {
     return;
@@ -114,4 +115,43 @@ module.exports.changeAvatar = async (req, next) => {
       }
     });
   });
+};
+
+module.exports.changePassword = async (req) => {
+  if (!req.query.oldpass || !req.query.newpass) {
+    return false;
+  }
+
+  let account = await adminMongooseModel.findOne({
+    name: "admin",
+  });
+  let result = true;
+
+  if (account) {
+    let checkPassword = await bcrypt.compare(
+      req.query.oldpass,
+      account.password
+    );
+
+    if (!checkPassword) {
+      return false; //right password
+    }
+  }
+  const saltRounds = SALT_ROUNDS;
+
+  await bcrypt.genSalt(saltRounds, function (err, salt) {
+    bcrypt.hash(req.query.newpass, salt, async function (err, hash) {
+      await adminMongooseModel.findOneAndUpdate(
+        { name: "admin" },
+        { password: hash },
+        (err, docs) => {
+          if (err) {
+            result = false;
+          }
+        }
+      );
+    });
+  });
+
+  return result;
 };
