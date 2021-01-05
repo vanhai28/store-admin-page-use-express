@@ -46,12 +46,132 @@
 }
 
 /*--------------- END OF EDIT PAGE ---------------*/
-#input__search {
-  width: 80%;
+
+/*--------------- PROFILE PAGE --------------------*/
+
+.image__avatar {
+  position: relative;
 }
-.btn__search {
-  font-size: 14px;
-  padding: 0.55rem 0.75rem;
-  border-left: 0px solid #ced4da;
-  border-radius: 0px 0.25rem 0.25rem 0px;
+.image__avatar img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+}
+.infor-content {
+  border: 1px solid #333;
+  padding: 8px 10px;
+  border-radius: 10px;
+}
+label.btn__upload-file {
+  position: relative;
+}
+.btn__upload-file {
+  background-color: aliceblue;
+  position: absolute;
+  padding: 10px;
+  top: 60px;
+  left: 20px;
+  z-index: 10;
+  display: none;
+}
+.btn__upload-file button {
+  display: inline;
+}
+img#avatar-image:hover {
+  filter: brightness(50%);
+}
+img#avatar-image:focus,
+img#avatar-image:hover + .btn__upload-file {
+  display: inline;
+  animation: move-up 0.3s;
+}
+#button-group-avatar {
+  display: none;
+}
+.btn__upload-file:hover {
+  display: inline;
+}
+@keyframes move-up {
+  0% {
+    top: 70px;
+    opacity: 0;
+    left: 20px;
+  }
+  99% {
+    opacity: 1;
+    top: 60px;
+    left: 20px;
+  }
+}
+.file-upload {
+  border-radius: 5px;
+  text-align: center;
+}
+
+.file-upload-btn:active {
+  border: 0;
+  transition: all 0.2s ease;
+}
+
+.file-upload-content {
+  display: none;
+  text-align: center;
+}
+
+.file-upload-input {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  transform: translateX(-50%);
+  opacity: 0;
+  cursor: pointer;
+  padding: 20px 0px;
+}
+
+.image-upload-wrap {
+  margin-top: 20px;
+  border: 1px solid #a3a3a3;
+  position: relative;
+}
+
+.image-title-wrap {
+  padding: 0 15px 15px 15px;
+  color: #222;
+}
+
+.drag-text {
+  text-align: center;
+  padding: 20px 0px;
+}
+
+.drag-text h3 {
+  font-weight: 100;
+  text-transform: uppercase;
+  color: #333;
+}
+
+.file-upload-image {
+  max-height: 200px;
+  max-width: 200px;
+  margin: auto;
+  padding: 20px;
+}
+
+.remove-image:hover {
+  background: #c13b2a;
+  color: #ffffff;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.remove-image:active {
+  border: 0;
+  transition: all 0.2s ease;
+}
+
+.btn__save-infor {
+  margin: auto 5px;
+  display: none;
 }

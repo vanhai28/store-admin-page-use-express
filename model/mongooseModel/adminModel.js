@@ -15,8 +15,10 @@ const adminAccount = new Schema({
     type: String,
     required: true,
   },
-  phoneNumber: String,
+  fullname: String,
+  phone: String,
   dateOfBirth: Date,
+  address: String,
 });
 
 module.exports = mongoose.model("adminAccount", adminAccount);

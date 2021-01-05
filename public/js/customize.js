@@ -281,3 +281,78 @@ function replaceUser(data) {
   document.getElementById("cart__body").innerHTML = html;
   modifyStatusAccount();
 }
+
+function readURL(input) {
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+      $(".image-upload-wrap").hide();
+      console.log("target", e.target);
+      console.log("target resul t", e.target.result);
+      $(".file-upload-image").attr("src", e.target.result);
+      $(".file-upload-content").show();
+
+      $(".image-title").html(input.files[0].name);
+    };
+
+    reader.readAsDataURL(input.files[0]);
+  } else {
+    removeUpload();
+  }
+}
+
+function removeUpload() {
+  $(".file-upload-input").replaceWith($(".file-upload-input").clone());
+  $(".file-upload-content").hide();
+  $(".image-upload-wrap").show();
+}
+
+const editBtn = document.getElementsByClassName("btn__edit-user");
+for (let index = 0; index < editBtn.length; index++) {
+  const element = editBtn[index];
+  element.onclick = function () {
+    let btnSave = document.getElementsByClassName("btn__save-infor")[index];
+    let inputInfor = document.getElementsByClassName("input__infor")[index];
+    btnSave.style.display = "block";
+    inputInfor.removeAttribute("disabled");
+    console.log(btnSave);
+  };
+}
+const saveBtn = document.getElementsByClassName("btn__save-infor");
+
+for (let index = 0; index < saveBtn.length; index++) {
+  const element = saveBtn[index];
+  element.onclick = function () {
+    let inputInfor = document.getElementsByClassName("input__infor")[index];
+    let infor = {
+      field: inputInfor.name,
+      value: inputInfor.value,
+    };
+    console.log(inputInfor.name, "value " + inputInfor.value);
+    saveInforAccount(infor, index);
+  };
+}
+
+function saveInforAccount(value, index) {
+  let api_link =
+    "/admin/api/account?field=" + value.field + "&value=" + value.value;
+  console.log("api link", api_link);
+  let xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      console.log("success");
+      let inputInfor = document.getElementsByClassName("input__infor")[index];
+      inputInfor.setAttribute("disabled", "true");
+      document.getElementsByClassName("btn__save-infor")[index].style.display =
+        "none";
+    } else if (this.readyState == 4) {
+      $("#message-from-sever").removeClass("d-none");
+      $("#message-from-sever").html("error when get data user from server");
+    }
+  };
+
+  xhttp.open("GET", api_link, true);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.send();
+}

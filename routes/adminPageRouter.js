@@ -9,6 +9,9 @@ router.get("/dashboard", pagesController.index);
 /* GET table page. */
 router.get("/profile", pagesController.profile);
 
+/* GET table page. */
+router.get("/api/account", pagesController.editInfor);
+
 // /* GET chart page. */
 // router.get("/charts", pagesController.chart);
 

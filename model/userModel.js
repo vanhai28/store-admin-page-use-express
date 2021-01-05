@@ -25,7 +25,7 @@ module.exports.getListUserByPage = async (filter, pageIndex, numberItem) => {
       listUser = result;
     }
   }); //add auther
-  console.log("user get ", listUser);
+
   return listUser;
 };
 module.exports.removeUserAcc = async (_id) => {

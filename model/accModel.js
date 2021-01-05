@@ -29,3 +29,39 @@ exports.createDefaultAcc = async () => {
 
   return;
 };
+
+exports.getAccountInfor = async () => {
+  let accInfor = await adminMongooseModel.findOne({ name: "admin" });
+  return accInfor;
+};
+
+exports.saveAccountInfor = async (field, value) => {
+  switch (field) {
+    case "fullname":
+      await adminMongooseModel.findOneAndUpdate(
+        { name: "admin" },
+        { fullname: value }
+      );
+      break;
+    case "phone":
+      await adminMongooseModel.findOneAndUpdate(
+        { name: "admin" },
+        { phone: value }
+      );
+      break;
+    case "email":
+      await adminMongooseModel.findOneAndUpdate(
+        { name: "admin" },
+        { email: value }
+      );
+      break;
+    case "address": {
+      await adminMongooseModel.findOneAndUpdate(
+        { name: "admin" },
+        { address: value }
+      );
+      break;
+    }
+  }
+  return;
+};

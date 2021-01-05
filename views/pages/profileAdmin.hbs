@@ -1,0 +1,138 @@
+      <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+
+<main>
+    <div class="container-fluid">
+        <h1 class="mt-4">Thông tin cá nhân</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+            <li class="breadcrumb-item active">Cá nhân</li>
+        </ol>
+        <div class="main-container">
+          <div class="top-content row mb-4 container">
+              <div class="image__container col-sm-10">        
+                  <div class="image__avatar mb-2">
+                      <div id="button-group-avatar">
+                       <input  id="btn-upload-image" type="file"  name="upload-avata" ></input>
+                    </div>
+                    <img id="avatar-image" src="https://www.talkwalker.com/images/2020/blog-headers/image-analysis.png" alt="" srcset="">            
+                    <!-- Button trigger modal -->
+              
+                       <button type="button" class="btn btn__upload-file" data-toggle="modal" 
+                    data-target="#exampleModalCenter"for="upload-avatar">
+                    <i class="far fa-edit"></i>
+                    </button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <div class="file-upload">
+                              <button class="file-upload-btn btn-primary" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Add Image</button>
+
+                              <div class="image-upload-wrap">
+                                <input class="file-upload-input" type='file' onchange="readURL(this);" multiple accept="image/*" />
+                                <div class="drag-text">
+                                  <p>Drag and drop a file or select add Image</p>
+                                </div>
+                              </div>
+                              <div class="file-upload-content">
+                                <img class="file-upload-image" src="#" alt="your image" />
+                                <div class="image-title-wrap">
+                                  <button type="button" onclick="removeUpload()" class="remove-image btn-danger">Remove <span class="image-title">Uploaded Image</span></button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>          
+                  </div> 
+                  </button>      
+              </div>         
+          </div>
+          <div class="input-group col-sm-8 mb-3 row ">
+            <label for="infor__fullname"  class="col-sm-4 ">Họ tên</label>
+                <input type="text" id="infor__fullname" name="fullname" disabled
+                    class="form-control input__infor col-sm-8"  aria-label="Default" aria-describedby="inputGroup-sizing-default" value="{{account.fullname}}">
+                <button type="submit" class="input-group-text btn__edit-user" ><i class="far fa-edit"></i></button>               
+                <button class="btn btn-success btn__save-infor"><i class="far fa-save"></i></button>       
+          </div>
+          <div class="input-group col-sm-8 mb-3 row">
+            <label for="infor__email" class="col-sm-4 ">Email</label>
+                <input type="email" id="infor__email" name="email" disabled
+                    class="form-control input__infor col-sm-8" aria-label="Default" 
+                    aria-describedby="inputGroup-sizing-default" value="{{account.email}}" >
+                <button type="submit" class="input-group-text btn__edit-user" ><i class="far fa-edit"></i></button>             
+                <button class="btn btn-success btn__save-infor"><i class="far fa-save"></i></button>         
+          </div>
+          <div class="input-group col-sm-8 mb-3 row">
+            <label for="infor__phone" class="col-sm-4 ">Số điện thoại</label>
+                <input type="text" id="infor__phone" name="phone" disabled
+                    class="form-control input__infor col-sm-8" aria-label="Default" 
+                    aria-describedby="inputGroup-sizing-default"value="{{account.phone}}" >
+                <button type="submit" class="input-group-text btn__edit-user" ><i class="far fa-edit"></i></button>            
+                <button class="btn btn-success btn__save-infor"><i class="far fa-save"></i></button>          
+          </div>
+          <div class="input-group col-sm-8 mb-3 row">
+            <label for="infor__address" class="col-sm-4 ">Địa chỉ</label>
+                <input type="text" id="infor__address" name="address" disabled
+                    class="form-control input__infor col-sm-8" aria-label="Default" aria-describedby="inputGroup-sizing-default" value="{{account.address}}">
+                <button type="submit " class="input-group-text btn__edit-user" ><i class="far fa-edit"></i></button> 
+                <button class="btn btn-success btn__save-infor"><i class="far fa-save"></i></button>                   
+          </div>
+         
+      </div>
+    </div>
+
+    <!-- Change Password-->
+      <button class="btn btn-success btn__change-password"
+      data-toggle="modal" data-target="#change_password_modal">Đổi mật khẩu</button>
+          <!-- Button trigger modal -->
+      <button type="button" class="btn btn-primary" >
+        Launch demo modal
+      </button>
+
+      <!-- Modal -->
+      <div class="modal fade" id="change_password_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <form class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div id="form__change_password">
+                <div class="form-group">
+                <label for="enter-old-password" class="form-label">Nhập mật khẩu hiện tại</label>
+                <input required minlength="8" type="password" id='enter-old-password' name="old_password" class="form-control">
+              </div>
+              <div class="form-group">
+                <label for="enter-new-password" class="form-label">Nhập mật khẩu mới</label>
+                <input required minlength="8" type="password" id="enter-new-password" name='new_pass' class="form-control">
+              </div>
+              <div class="form-group">
+                <label for="re-enter-password" class="form-label">Nhập lại mật khẩu mới</label>
+                <input required  minlength="8"type="password" id="re-enter-password" name="re_new_pass" class="form-control">
+              </div>
+              </div>    
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+</main>
