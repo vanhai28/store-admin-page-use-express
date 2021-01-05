@@ -1,4 +1,6 @@
 const bcrypt = require("bcrypt");
+const formidable = require("formidable");
+const upload = require("../service/uploadFile");
 
 const adminMongooseModel = require("./mongooseModel/adminModel");
 
@@ -32,6 +34,10 @@ exports.createDefaultAcc = async () => {
 
 exports.getAccountInfor = async () => {
   let accInfor = await adminMongooseModel.findOne({ name: "admin" });
+  if (accInfor.password) {
+    delete accInfor.password;
+  }
+
   return accInfor;
 };
 
@@ -62,6 +68,50 @@ exports.saveAccountInfor = async (field, value) => {
       );
       break;
     }
+    default: {
+      return false;
+    }
   }
-  return;
+  return true;
+};
+
+module.exports.changeAvatar = async (req, next) => {
+  const form = new formidable.IncomingForm({ multiples: true });
+  let result = false;
+
+  form.parse(req, async (err, fields, files) => {
+    if (err || !files.file) {
+      result = false;
+      next(false, null);
+      return;
+    }
+
+    files = Array(files.file);
+
+    upload.uploadFile(files, async (error, url) => {
+      if (!url) {
+        result = false;
+        return false;
+      }
+
+      try {
+        await adminMongooseModel.findOneAndUpdate(
+          { name: "admin" },
+          { avatar_image: url[0] },
+          (err, docs) => {
+            if (err) result = false;
+            else {
+              result = true;
+            }
+          }
+        );
+      } catch (error) {
+        result = false;
+      }
+
+      if (next) {
+        next(result, url);
+      }
+    });
+  });
 };

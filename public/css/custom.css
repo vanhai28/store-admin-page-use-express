@@ -65,6 +65,10 @@
 label.btn__upload-file {
   position: relative;
 }
+.btn__edit-user {
+  border-radius: 0px 3px 3px 0px;
+  border-left: 0px;
+}
 .btn__upload-file {
   background-color: aliceblue;
   position: absolute;

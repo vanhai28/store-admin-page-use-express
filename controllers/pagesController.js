@@ -33,3 +33,18 @@ module.exports.editInfor = async (req, res, next) => {
 
   res.send();
 };
+
+module.exports.changeAvatar = async function (req, res, next) {
+  await accountModel.changeAvatar(req, (result, url) => {
+    if (result) {
+      res.statusCode = 200;
+      res.send(url[0]);
+    } else {
+      res.statusCode = 500;
+      res.send(null);
+    }
+  });
+};
+module.exports.changePassword = function (req, res, next) {
+  console.log(req);
+};

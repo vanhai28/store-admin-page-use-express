@@ -1,34 +1,29 @@
-// $(document).ready(function () {
-//   var result;
+// Save change avatar
+$("#change_avatar_form").submit(function (e) {
+  e.preventDefault();
 
-//   Handlebars.registerHelper("uppercase", function (val) {
-//     return val.toUpperCase();
-//   });
+  let data = new FormData();
+  data.append("file", $("#input_avatar")[0].files[0]);
+  var request = new XMLHttpRequest();
 
-//   $.ajax({
-//     url: "http://107.109.98.48:8080/test.json",
-//     jsonpCallback: "my_callback",
-//     contentType: "application/json",
-//     dataType: "s",
-//     success: function (data) {
-//       result = data;
-//       console.log(result);
-//       var currentTemplateHtml = $("#mytemplate").html();
-//       var compliledTemplateHtml = Handlebars.compile(currentTemplateHtml);
+  request.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      $("#message__result").addClass(" alert-success");
+      $("#message__result").html("Thay đổi thành công");
+      $("#message__result").removeClass(" d-none");
+      $("#avatar-image").attr("src", this.responseText);
+    } else if (this.readyState == 4) {
+      $("#message__result").addClass(" alert-danger");
+      $("#message__result").html("Thay đổi Thất bại");
+      $("#message__result").removeClass(" d-none");
+    }
+  };
+  request.open("POST", "/admin/change/avatar");
+  request.send(data);
+});
 
-//       var contextualHtml = compliledTemplateHtml(result);
-//       $(".content-placeholder").html(contextualHtml);
-//       console.log(result);
-//     },
-//     error: function (e) {
-//       console.log(e.message);
-//     },
-//   });
-// });
-
-function modifyStatusAccount() {
+(function modifyStatusAccount() {
   let status = document.getElementsByClassName("status_account_active");
-  console.log("modify status");
   for (let index = 0; index < status.length; index++) {
     const element = status[index];
     element.className += " badge badge-success";
@@ -42,8 +37,7 @@ function modifyStatusAccount() {
     element.className += " badge badge-danger";
     element.innerHTML = "Đã khoá";
   }
-}
-modifyStatusAccount();
+})();
 
 function deleteBook(id) {
   let xhttp = new XMLHttpRequest();
@@ -275,9 +269,9 @@ function replaceUser(data) {
 
   let templateScript = Handlebars.compile(template);
   data = data.data;
-  console.log("data sâsassa ", data);
+
   let html = templateScript({ data: data });
-  console.log("html : ", html);
+
   document.getElementById("cart__body").innerHTML = html;
   modifyStatusAccount();
 }
@@ -288,8 +282,6 @@ function readURL(input) {
 
     reader.onload = function (e) {
       $(".image-upload-wrap").hide();
-      console.log("target", e.target);
-      console.log("target resul t", e.target.result);
       $(".file-upload-image").attr("src", e.target.result);
       $(".file-upload-content").show();
 
@@ -316,20 +308,20 @@ for (let index = 0; index < editBtn.length; index++) {
     let inputInfor = document.getElementsByClassName("input__infor")[index];
     btnSave.style.display = "block";
     inputInfor.removeAttribute("disabled");
-    console.log(btnSave);
   };
 }
 const saveBtn = document.getElementsByClassName("btn__save-infor");
 
 for (let index = 0; index < saveBtn.length; index++) {
   const element = saveBtn[index];
+
   element.onclick = function () {
     let inputInfor = document.getElementsByClassName("input__infor")[index];
     let infor = {
       field: inputInfor.name,
       value: inputInfor.value,
     };
-    console.log(inputInfor.name, "value " + inputInfor.value);
+
     saveInforAccount(infor, index);
   };
 }
@@ -337,11 +329,10 @@ for (let index = 0; index < saveBtn.length; index++) {
 function saveInforAccount(value, index) {
   let api_link =
     "/admin/api/account?field=" + value.field + "&value=" + value.value;
-  console.log("api link", api_link);
   let xhttp = new XMLHttpRequest();
+
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
-      console.log("success");
       let inputInfor = document.getElementsByClassName("input__infor")[index];
       inputInfor.setAttribute("disabled", "true");
       document.getElementsByClassName("btn__save-infor")[index].style.display =
