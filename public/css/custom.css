@@ -48,11 +48,16 @@
 /*--------------- END OF EDIT PAGE ---------------*/
 
 /*--------------- PROFILE PAGE --------------------*/
-
+#result_change_password {
+  display: none;
+}
 .image__avatar {
   position: relative;
 }
 .image__avatar img {
+  width: 100%;
+}
+#avatar-image {
   width: 150px;
   height: 150px;
   border-radius: 50%;
@@ -73,8 +78,8 @@ label.btn__upload-file {
   background-color: aliceblue;
   position: absolute;
   padding: 10px;
-  top: 60px;
-  left: 20px;
+  top: 80px;
+  left: 50px;
   z-index: 10;
   display: none;
 }
@@ -82,12 +87,13 @@ label.btn__upload-file {
   display: inline;
 }
 img#avatar-image:hover {
-  filter: brightness(50%);
+  filter: brightness(30%);
 }
 img#avatar-image:focus,
 img#avatar-image:hover + .btn__upload-file {
   display: inline;
   animation: move-up 0.3s;
+  left: 50px;
 }
 #button-group-avatar {
   display: none;
@@ -97,14 +103,14 @@ img#avatar-image:hover + .btn__upload-file {
 }
 @keyframes move-up {
   0% {
-    top: 70px;
+    top: 90px;
     opacity: 0;
-    left: 20px;
+    left: 50px;
   }
   99% {
     opacity: 1;
-    top: 60px;
-    left: 20px;
+    top: 80px;
+    left: 50px;
   }
 }
 .file-upload {

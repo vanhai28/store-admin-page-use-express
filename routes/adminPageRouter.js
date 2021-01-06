@@ -9,13 +9,15 @@ router.get("/dashboard", pagesController.index);
 /* GET table page. */
 router.get("/profile", pagesController.profile);
 
+// ---------  API  ----------------
+
 /* GET table page. */
 router.get("/api/account", pagesController.editInfor);
 
-// /* change avatar . */
-router.post("/change/avatar", pagesController.changeAvatar);
+/* change avatar . */
+router.post("/api/change/avatar", pagesController.changeAvatar);
 
-// /* change password . */
-router.post("/change/password", pagesController.changePassword);
+/* change password . */
+router.post("/api/change/password", pagesController.changePassword);
 
 module.exports = router;

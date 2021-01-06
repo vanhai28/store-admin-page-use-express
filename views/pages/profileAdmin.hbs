@@ -15,14 +15,16 @@
                       <div id="button-group-avatar">
                        <input  id="btn-upload-image" type="file"  name="upload-avata" ></input>
                     </div>
-                    <img id="avatar-image" src="{{account.avatar_image}}" alt="" srcset="">            
+                    <img id="avatar-image" src="{{account.avatar_image}}" alt="avatar image"
+                    type="button" class="btn__watch-avatar" data-toggle="modal" 
+                    data-target="#watch_avatar_modal"for="upload-avatar">            
                     <!-- Button trigger modal -->
                        <button type="button" class="btn btn__upload-file" data-toggle="modal" 
-                    data-target="#exampleModalCenter"for="upload-avatar">
+                    data-target="#upload_avatar_modal"for="upload-avatar">
                     <i class="far fa-edit"></i>
                     </button>
                     <!-- Modal -->
-                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal fade" id="upload_avatar_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                       <div class="modal-dialog modal-dialog-centered" role="document">
                         <form id="change_avatar_form" class="modal-content" enctype="multipart/form-data" action="/admin/change/avatar" method="POST">
                           <div class="modal-header">
@@ -32,7 +34,7 @@
                             </button>
                           </div>
                           <div class="modal-body">
-                            <p class="alert d-none" id="message__result"></p>
+                            <p class="alert alert-primary d-none" id="message__result"></p>
                             <div  class="file-upload" >
                               <button class="file-upload-btn btn-primary" type="button" 
                               onclick="$('.file-upload-input').trigger( 'click' )">Thêm ảnh</button>
@@ -56,6 +58,26 @@
                             <button type="submit" class="btn btn-primary" id="btn__change-avatar">Lưu thay đổi</button>
                           </div>
                         </form>
+                      </div>
+                    </div>          
+                    <div class="modal fade" id="watch_avatar_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div  class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Ảnh đại diện</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <div class="watch_avatar">
+                              <img src="{{account.avatar_image}}" alt="avatar full image">
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                          </div>
+                        </div>
                       </div>
                     </div>          
                   </div>     
@@ -111,7 +133,7 @@
               </button>
             </div>
             <div class="modal-body">
-                 <p class="alert alert-primary d-none" id="result_change_password"></p>
+                 <p class="alert alert-primary" id="result_change_password"></p>
                 <div class="form-group">
                 <label for="enter-old-password" class="form-label">Nhập mật khẩu hiện tại</label>
                 <input required type="password" id='old_password' name="old_password" class="form-control">

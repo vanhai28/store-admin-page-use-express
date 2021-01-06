@@ -1,5 +1,17 @@
+/*
+
+ Auther : Nguyen Van Hai 
+ Email : vanhai.qtv@gmail.com
+ 
+ */
+
+//----------------- START PAGE LIST USER ----------------
+
+// Modifile status of user (active or block)
 (function modifyStatusAccount() {
   let status = document.getElementsByClassName("status_account_active");
+
+  // display badge for actived user
   for (let index = 0; index < status.length; index++) {
     const element = status[index];
     element.className += " badge badge-success";
@@ -7,6 +19,8 @@
   }
 
   status = document.getElementsByClassName("status_account_blocked");
+
+  // display badge for blocked user
   for (let index = 0; index < status.length; index++) {
     const element = status[index];
 
@@ -15,24 +29,7 @@
   }
 })();
 
-function deleteBook(id) {
-  let xhttp = new XMLHttpRequest();
-
-  xhttp.onreadystatechange = function () {
-    if (this.readyState == 4 && this.status == 200) {
-      location.reload();
-    } else if (this.readyState == 4) {
-      let mesg = document.getElementsByClassName("messageDelete")[0];
-      mesg.innerHTML = this.responseText;
-      mesg.className = mesg.className.replace("d-none", " ");
-    }
-  };
-
-  xhttp.open("post", "/admin/book/delete", true);
-  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhttp.send("id=" + id);
-}
-
+// send request delete account of user
 function deleteUserAcc(id) {
   let xhttp = new XMLHttpRequest();
 
@@ -40,6 +37,7 @@ function deleteUserAcc(id) {
     if (this.readyState == 4 && this.status == 200) {
       location.reload();
     } else if (this.readyState == 4) {
+      // display error message
       let mesg = document.getElementsByClassName("messageDelete")[0];
       mesg.innerHTML = this.responseText;
       mesg.className = mesg.className.replace("d-none", " ");
@@ -98,18 +96,62 @@ function unBlockAccount(id) {
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhttp.send("id=" + id);
 }
-// function setOnclickPaginate() {
-//   let pageLinkClass = document.getElementsByClassName("btn--pagination");
-//   for (let index = 0; index < pageLinkClass.length; index++) {
-//     let page = pageLinkClass[index].value;
-//     pageLinkClass[index].onclick = function (event) {
-//       event.preventDefault();
-//       getAPIBooks(page);
-//     };
-//   }
-// }
 
-//-------------  USE ajax for list of BOOKS page
+//
+//--------------  START LIST BOOK PAGE --------------
+//
+// send request delete a book
+function deleteBook(id) {
+  let xhttp = new XMLHttpRequest();
+
+  xhttp.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      location.reload();
+    } else if (this.readyState == 4) {
+      // display error message
+      let mesg = document.getElementsByClassName("messageDelete")[0];
+      mesg.innerHTML = this.responseText;
+      mesg.className = mesg.className.replace("d-none", " ");
+    }
+  };
+
+  xhttp.open("post", "/admin/book/delete", true);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.send("id=" + id);
+}
+
+function getAPI_Users(page) {
+  let api_link = "/admin/users/api/list?page=" + page;
+  let xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      replaceUser(this.responseText);
+    } else if (this.readyState == 4) {
+      $("#message-from-sever").removeClass("d-none");
+      $("#message-from-sever").html("error when get data user from server");
+    }
+  };
+
+  xhttp.open("GET", api_link, true);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.send();
+}
+
+function replaceUser(data) {
+  data = JSON.parse(data);
+  Handlebars.registerHelper("append", function (str1, str2) {
+    return str1 + str2;
+  });
+  let template = $("#replaceDataUser").html();
+
+  let templateScript = Handlebars.compile(template);
+  data = data.data;
+
+  let html = templateScript({ data: data });
+
+  document.getElementById("cart__body").innerHTML = html;
+  modifyStatusAccount();
+}
 
 //-------------- FOR PAGINATION ----------------
 
@@ -178,7 +220,7 @@ function replaceBook2(products) {
   document.getElementById("tbody__data").innerHTML = html;
 }
 
-// use AJAX for category book -------------------------
+// use AJAX for category book
 
 // Get data of books by category from server
 (function getAPIBooksByCategory(category) {
@@ -218,40 +260,10 @@ function replaceBook2(products) {
     };
   }
 })();
-
-function getAPI_Users(page) {
-  let api_link = "/admin/users/api/list?page=" + page;
-  let xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function () {
-    if (this.readyState == 4 && this.status == 200) {
-      replaceUser(this.responseText);
-    } else if (this.readyState == 4) {
-      $("#message-from-sever").removeClass("d-none");
-      $("#message-from-sever").html("error when get data user from server");
-    }
-  };
-
-  xhttp.open("GET", api_link, true);
-  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhttp.send();
-}
-
-function replaceUser(data) {
-  data = JSON.parse(data);
-  Handlebars.registerHelper("append", function (str1, str2) {
-    return str1 + str2;
-  });
-  let template = $("#replaceDataUser").html();
-
-  let templateScript = Handlebars.compile(template);
-  data = data.data;
-
-  let html = templateScript({ data: data });
-
-  document.getElementById("cart__body").innerHTML = html;
-  modifyStatusAccount();
-}
-
+//
+//-----   START PROFILE PAGE --------------
+//
+// Read URL of uploaded image
 function readURL(input) {
   if (input.files && input.files[0]) {
     var reader = new FileReader();
@@ -269,13 +281,13 @@ function readURL(input) {
     removeUpload();
   }
 }
-
+// remove uploaded image
 function removeUpload() {
   $(".file-upload-input").replaceWith($(".file-upload-input").clone());
   $(".file-upload-content").hide();
   $(".image-upload-wrap").show();
 }
-
+// Set onclick event for  edit button
 const editBtn = document.getElementsByClassName("btn__edit-user");
 for (let index = 0; index < editBtn.length; index++) {
   const element = editBtn[index];
@@ -286,6 +298,7 @@ for (let index = 0; index < editBtn.length; index++) {
     inputInfor.removeAttribute("disabled");
   };
 }
+// Set onclick event for  save-edit button
 const saveBtn = document.getElementsByClassName("btn__save-infor");
 
 for (let index = 0; index < saveBtn.length; index++) {
@@ -302,6 +315,7 @@ for (let index = 0; index < saveBtn.length; index++) {
   };
 }
 
+// send request to save changed information
 function saveInforAccount(value, index) {
   let api_link =
     "/admin/api/account?field=" + value.field + "&value=" + value.value;
@@ -324,7 +338,7 @@ function saveInforAccount(value, index) {
   xhttp.send();
 }
 
-// check is password match !!
+// check is password match
 function checkMatchPassword() {
   let password = document.getElementById("new_password");
   let re_password = document.getElementById("re_enter_password");
@@ -334,12 +348,17 @@ function checkMatchPassword() {
     return false;
   }
 
+  re_password.setCustomValidity("");
   return true;
 }
+document.getElementById("re_enter_password").onchange = function () {
+  checkMatchPassword();
+};
 
 // handle send request change password
 $("#form__change_password").submit(function (e) {
   e.preventDefault();
+  $("#result_change_password").css("display", "none");
 
   if (!checkMatchPassword()) {
     return;
@@ -347,22 +366,27 @@ $("#form__change_password").submit(function (e) {
 
   let oldPassword = document.getElementById("old_password");
   let newPassword = document.getElementById("new_password");
-
+  let reNewPassword = document.getElementById("re_enter_password");
   let api_link =
-    "/admin/change/password?oldpass=" +
+    "/admin/api/change/password?oldpass=" +
     oldPassword.value +
     "&newpass=" +
     newPassword.value;
+
   let request = new XMLHttpRequest();
 
   request.onreadystatechange = function () {
     if (this.status == 200 && this.readyState == 4) {
       $("#result_change_password").html("Thay đổi thành công");
-      $("#result_change_password").removeClass(" d-none");
+      $("#result_change_password").css("display", "block");
     } else if (this.readyState == 4) {
       $("#result_change_password").html("Thay đổi Thất bại");
-      $("#result_change_password").removeClass(" d-none");
+      $("#result_change_password").css("display", "block");
     }
+
+    oldPassword.value = "";
+    newPassword.value = "";
+    reNewPassword.value = "";
   };
 
   request.open("POST", api_link, true);
@@ -380,16 +404,15 @@ $("#change_avatar_form").submit(function (e) {
 
   request.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
-      $("#message__result").addClass(" alert-success");
       $("#message__result").html("Thay đổi thành công");
       $("#message__result").removeClass(" d-none");
       $("#avatar-image").attr("src", this.responseText);
+      $(".watch_avatar img").attr("src", this.responseText);
     } else if (this.readyState == 4) {
-      $("#message__result").addClass(" alert-danger");
       $("#message__result").html("Thay đổi Thất bại");
       $("#message__result").removeClass(" d-none");
     }
   };
-  request.open("POST", "/admin/change/avatar");
+  request.open("POST", "/admin/api/change/avatar");
   request.send(data);
 });
