@@ -242,3 +242,18 @@ module.exports.searchBook = async (req, res, next) => {
     mesg: mesg,
   });
 };
+
+/**
+ * Get category
+ */
+module.exports.getAllCategory = async (req, res, next) => {
+  const listCategory = await catalog.getAllCategory();
+
+  if (listCategory) {
+    res.statusCode = 200;
+    res.send(listCategory);
+  } else {
+    res.statusCode = 404;
+    res.send("error when get data");
+  }
+};

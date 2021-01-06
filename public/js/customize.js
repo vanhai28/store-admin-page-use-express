@@ -97,6 +97,23 @@ function unBlockAccount(id) {
   xhttp.send("id=" + id);
 }
 
+function getAPI_Users(page) {
+  let api_link = "/admin/users/api/list?page=" + page;
+  let xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      replaceUser(this.responseText);
+    } else if (this.readyState == 4) {
+      $("#message-from-sever").removeClass("d-none");
+      $("#message-from-sever").html("error when get data user from server");
+    }
+  };
+
+  xhttp.open("GET", api_link, true);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.send();
+}
+
 //
 //--------------  START LIST BOOK PAGE --------------
 //
@@ -118,23 +135,6 @@ function deleteBook(id) {
   xhttp.open("post", "/admin/book/delete", true);
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhttp.send("id=" + id);
-}
-
-function getAPI_Users(page) {
-  let api_link = "/admin/users/api/list?page=" + page;
-  let xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function () {
-    if (this.readyState == 4 && this.status == 200) {
-      replaceUser(this.responseText);
-    } else if (this.readyState == 4) {
-      $("#message-from-sever").removeClass("d-none");
-      $("#message-from-sever").html("error when get data user from server");
-    }
-  };
-
-  xhttp.open("GET", api_link, true);
-  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhttp.send();
 }
 
 function replaceUser(data) {
@@ -351,12 +351,12 @@ function checkMatchPassword() {
   re_password.setCustomValidity("");
   return true;
 }
-document.getElementById("re_enter_password").onchange = function () {
-  checkMatchPassword();
-};
 
 // handle send request change password
 $("#form__change_password").submit(function (e) {
+  document.getElementById("re_enter_password").onchange = function () {
+    checkMatchPassword();
+  };
   e.preventDefault();
   $("#result_change_password").css("display", "none");
 
@@ -416,3 +416,88 @@ $("#change_avatar_form").submit(function (e) {
   request.open("POST", "/admin/api/change/avatar");
   request.send(data);
 });
+
+//
+//  ------  PAGE DASHBOARD ---------
+//
+function generateColorRGB(numberOfColor) {
+  let color = "#";
+  let colorComponent = "123456789ABCDEF";
+  let result = [];
+
+  for (let index = 0; index < numberOfColor; index++) {
+    for (let i = 0; i < 6; i++) {
+      let randNumber = Math.floor(Math.random() * 16);
+      color += colorComponent.charAt(randNumber);
+    }
+
+    result.push(color);
+    color = "#";
+  }
+
+  return result;
+}
+
+(function () {
+  if (window.location.href.includes("/admin/dashboard")) {
+    let canvas = document.getElementById("category_chart").getContext("2d");
+    let request = new XMLHttpRequest();
+
+    if (!canvas) {
+      return;
+    }
+
+    request.onreadystatechange = function () {
+      if (this.status == 200 && this.readyState == 4) {
+        let data = JSON.parse(this.responseText);
+        createPieChart(canvas, data, "Các loại sản phẩm");
+      }
+    };
+    request.open("GET", "/admin/book/api/category/all");
+    request.send();
+  }
+})();
+
+function createPieChart(canvas, dataRender, title) {
+  let labels = [];
+  let dataArray = [];
+  let colorList = generateColorRGB(dataRender.length);
+
+  dataRender.forEach((element) => {
+    labels.push(element.nameOfCategory);
+    dataArray.push(element.numberOfProduct);
+  });
+
+  var myChart = new Chart(canvas, {
+    type: "doughnut",
+    data: {
+      labels: labels,
+
+      datasets: [
+        {
+          label: "# of Votes",
+          data: dataArray,
+          backgroundColor: colorList,
+          borderColor: colorList,
+          borderWidth: 1,
+        },
+      ],
+    },
+    options: {
+      title: {
+        display: true,
+        text: title,
+      },
+
+      scales: {
+        yAxes: [
+          {
+            ticks: {
+              beginAtZero: true,
+            },
+          },
+        ],
+      },
+    },
+  });
+}

@@ -1,8 +1,13 @@
 const accountModel = require("../model/accModel");
+const userModel = require("../model/userModel");
+const ITEM_PER_PAGE = 5;
+//Render page dashboard
+module.exports.index = async function (req, res, next) {
+  let listOfUser = await userModel.getListUserByPage({}, 1, ITEM_PER_PAGE);
 
-module.exports.index = function (req, res, next) {
   res.render("index", {
     title: "Dashboard",
+    data: listOfUser,
   });
 };
 

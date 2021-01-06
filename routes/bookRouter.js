@@ -44,4 +44,9 @@ router.get(
   bookController.addBookPage
 );
 
+/**
+ * get api all category
+ */
+router.get("/api/category/all", bookController.getAllCategory);
+
 module.exports = router;
