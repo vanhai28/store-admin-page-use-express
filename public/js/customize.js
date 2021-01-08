@@ -281,6 +281,7 @@ function readURL(input) {
     removeUpload();
   }
 }
+
 // remove uploaded image
 function removeUpload() {
   $(".file-upload-input").replaceWith($(".file-upload-input").clone());
@@ -500,4 +501,33 @@ function createPieChart(canvas, dataRender, title) {
       },
     },
   });
+}
+
+/**
+ * ADD BOOK Page
+ */
+//update input category
+function selectCategory(value) {
+  document.getElementById("input__category").value = value;
+}
+//read Image URL on addbook page
+function readImageURL(input, classDestination) {
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+      let imagesName = [];
+      let images = input.files;
+
+      for (let index = 0; index < images.length; index++) {
+        let element = images[index];
+        imagesName.push(element.name);
+      }
+
+      let destinaion = "label." + classDestination;
+      $(destinaion).html(imagesName.join(", "));
+    };
+
+    reader.readAsDataURL(input.files[0]);
+  }
 }
