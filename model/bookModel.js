@@ -2,7 +2,14 @@ const bookModel = require("../model/mongooseModel/bookModel");
 const catalogModel = require("../model/categoryModel");
 const catalog = require("../model/mongooseModel/catalogModel");
 
-module.exports.getBookByPage = async (filter, pageIndex, numberItem) => {
+/**
+ * get books by page
+ * @param {object} filter condition to filt
+ * @param {number} pageIndex page to get books
+ * @param {number} numberItem number books got per page
+ * @returns {object}
+ */
+module.exports.getBooksByPage = async (filter, pageIndex, numberItem) => {
   const options = {
     page: pageIndex,
     limit: numberItem,
@@ -21,6 +28,11 @@ module.exports.getBookByPage = async (filter, pageIndex, numberItem) => {
   return bookList;
 };
 
+/**
+ * add a book to database
+ * @param {object} bookInfor information of a book
+ * @returns {boolean}
+ */
 module.exports.addBook = async (bookInfor) => {
   let author = bookInfor.author ? bookInfor.author.split(",") : "";
   // remove element is invalid
@@ -75,7 +87,10 @@ module.exports.addBook = async (bookInfor) => {
 
   return result;
 };
-
+/**
+ * set isDelete of a book is true
+ * @param {any} id id of book which will be deleted
+ */
 module.exports.deleteBook = async (id) => {
   let book = await bookModel.findById(id);
   let category = await catalog.findOne({ nameOfCategory: book.category });
@@ -88,7 +103,11 @@ module.exports.deleteBook = async (id) => {
 
   await bookModel.findByIdAndUpdate(id, { isDelete: true });
 };
-
+/**
+ * get infomation of a book
+ * @param {any} _id id of book
+ * @return {object} object
+ */
 module.exports.getOneBook = async (_id) => {
   let book;
   try {
@@ -100,12 +119,15 @@ module.exports.getOneBook = async (_id) => {
 
   return book;
 };
-
+/**
+ * save changed information of a book
+ * @param {object} book book with new information
+ * @return {boolean}
+ */
 module.exports.modifyBook = async (book) => {
   let oldBook = await bookModel.findById(book._id);
   let oldCategory = await catalog.findOne({ nameOfCategory: oldBook.category });
-  console.log("loai ", oldCategory.nameOfCategory);
-  console.log("loai moi ", book.category);
+
   if (oldCategory.nameOfCategory != book.category) {
     // update numberOfProduct of old category
 
@@ -142,7 +164,11 @@ module.exports.modifyBook = async (book) => {
 
   return true;
 };
-
+/**
+ * search a book with string
+ * @param {string} value name of book want to search
+ * @return {object}
+ */
 module.exports.searchBook = async (value) => {
   const options = {
     page: 1,

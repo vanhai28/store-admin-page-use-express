@@ -15,7 +15,7 @@ router.post(
 
 /* GET add book page. */
 router.post("/add", (req, res, next) => {
-  bookController.addBook(req, res, next);
+  bookController.SaveNewBook(req, res, next);
 });
 
 /* Post delete book page. */
@@ -24,13 +24,13 @@ router.post("/delete", bookController.deleteBook);
 router.get("/search", bookController.searchBook);
 
 /* GET edit book page. */
-router.get("/edit", bookController.editBook);
+router.get("/edit", bookController.RenderEditBookPage);
 
 /* GET list book page. */
 router.get(
   "/list",
 
-  bookController.listBook
+  bookController.RenderListBookPage
 );
 
 /* GET list book page. */
@@ -41,7 +41,7 @@ router.get("/api/list", bookController.getAPIBook);
 router.get(
   "/add",
 
-  bookController.addBookPage
+  bookController.RenderAddBookPage
 );
 
 /**

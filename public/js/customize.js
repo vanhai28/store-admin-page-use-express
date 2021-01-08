@@ -180,21 +180,6 @@ function getAPIBooks(page) {
 // update new data got from server by using AJAX
 // @param products : data got from server
 function replaceBook(products) {
-  products = JSON.parse(products);
-
-  var template = $("#handlebars-demo").html();
-
-  //Compile the template data into a function
-  var templateScript = Handlebars.compile(template);
-  products.books = products.book;
-
-  var html = templateScript(products);
-
-  document.getElementById("pagination").innerHTML = html;
-}
-
-// FOR test , this will be added into function replaceBook
-function replaceBook2(products) {
   Handlebars.registerHelper("join", function (arr) {
     let result = "";
     for (let i = 0; i < arr.length - 1; i++) {
@@ -208,7 +193,6 @@ function replaceBook2(products) {
   });
 
   products = JSON.parse(products);
-  products = products.book;
 
   var template = $("#table_data").html();
 
@@ -217,7 +201,7 @@ function replaceBook2(products) {
 
   var html = templateScript({ products: products });
 
-  document.getElementById("tbody__data").innerHTML = html;
+  document.getElementById("cart__data").innerHTML = html;
 }
 
 // use AJAX for category book

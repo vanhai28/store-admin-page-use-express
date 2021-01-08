@@ -4,12 +4,19 @@ const catalog = require("../model/categoryModel");
 const upload = require("../service/uploadFile");
 const ITEM_PER_PAGE = 10;
 
-module.exports.listBook = async function (req, res, next) {
+/**
+ * Render list Books Page
+ * @param {*} req request from client
+ * @param {*} res response from server
+ * @param {*} next callback function
+ */
+module.exports.RenderListBookPage = async function (req, res, next) {
   const page = +req.query.page || 1;
   let currCategoryView = undefined;
   const filter = { isDelete: false };
   const listCategory = await catalog.getAllCategory();
 
+  //get infomation of current category
   if (req.query.idCat) {
     filter.idCategory = req.query.idCat;
 
@@ -21,25 +28,22 @@ module.exports.listBook = async function (req, res, next) {
     });
   }
 
-  let listOfBook = await bookModel.getBookByPage(filter, page, ITEM_PER_PAGE);
+  let listOfBook = await bookModel.getBooksByPage(filter, page, ITEM_PER_PAGE);
 
   res.render("pages/listOfBook", {
     title: "Sách",
-    book: listOfBook.docs,
+    listBook: listOfBook,
     category: listCategory,
-    hasNextPage: listOfBook.hasNextPage,
-    hasPreviousPage: listOfBook.hasPrevPage > 1,
-    nextPage: listOfBook.nextPage,
-    prevPage: listOfBook.prevPage,
-    lastPage: listOfBook.totalPages,
-    ITEM_PER_PAGE: ITEM_PER_PAGE,
-    currentPage: listOfBook.page,
     curentCategoryView: currCategoryView,
   });
 };
-
+/**
+ * Return books at specifical page
+ * @param {*} req request from client
+ * @param {*} res response from server
+ * @param {*} next callback function
+ */
 module.exports.getAPIBook = async function (req, res, next) {
-  console.log("satus ", res.statusCode);
   const page = +req.query.page || 1;
   let currCategoryView = undefined;
   const filter = { isDelete: false };
@@ -56,28 +60,26 @@ module.exports.getAPIBook = async function (req, res, next) {
     });
   }
 
-  let listOfBook = await bookModel.getBookByPage(filter, page, ITEM_PER_PAGE);
+  let listOfBook = await bookModel.getBooksByPage(filter, page, ITEM_PER_PAGE);
   let NotFirstPage = listOfBook.nextPage > 2;
   let NotLastPage = !(listOfBook.page == listOfBook.totalPages);
-  //let hasPrevPage = listOfBook.hasPrevPage > 1;
+
   res.statusCode = 200;
-  console.log("satus ", res.statusCode);
+
   res.send({
-    book: listOfBook.docs,
-    hasNextPage: listOfBook.hasNextPage,
-    hasPreviousPage: listOfBook.hasPrevPage,
-    nextPage: listOfBook.nextPage,
-    prevPage: listOfBook.prevPage,
-    lastPage: listOfBook.totalPages,
-    ITEM_PER_PAGE: ITEM_PER_PAGE,
-    currentPage: listOfBook.page,
+    listBook: listOfBook,
     curentCategoryView: currCategoryView,
     NotFirstPage: NotFirstPage,
     NotLastPage: NotLastPage,
   });
 };
-
-module.exports.addBookPage = async (req, res, next) => {
+/**
+ * Render Add Book Page
+ * @param {*} req request from client
+ * @param {*} res response from server
+ * @param {*} next callback function
+ */
+module.exports.RenderAddBookPage = async (req, res, next) => {
   let categoryList = await catalog.getAllCategory();
 
   res.render("pages/addBook", {
@@ -85,15 +87,22 @@ module.exports.addBookPage = async (req, res, next) => {
     catalog: categoryList,
   });
 };
-module.exports.addBook = (req, res, next) => {
+
+/**
+ * save a new Book
+ * @param {*} req request from client
+ * @param {*} res response from server
+ * @param {*} next callback function
+ */
+module.exports.SaveNewBook = (req, res, next) => {
   const form = new formidable.IncomingForm({ multiples: true });
+
   form.parse(req, async (err, fields, files) => {
     if (err) {
       res.send("error " + err);
       return;
     }
-    // res.send(fields);
-    // return;
+
     let newBook = fields;
     let images = files.upload;
 
@@ -130,6 +139,7 @@ module.exports.addBook = (req, res, next) => {
         }
 
         let categoryList = await catalog.getAllCategory();
+
         res.render("pages/addBook", {
           titlePage: "Thêm sách",
           result: result,
@@ -140,6 +150,12 @@ module.exports.addBook = (req, res, next) => {
   });
 };
 
+/**
+ * set isDelete attribute of book is true
+ * @param {*} req request from client
+ * @param {*} res response from server
+ * @param {*} next callback function
+ */
 module.exports.deleteBook = async function (req, res, next) {
   if (req.body.id) {
     await bookModel.deleteBook(req.body.id);
@@ -150,8 +166,13 @@ module.exports.deleteBook = async function (req, res, next) {
     res.send();
   }
 };
-
-module.exports.editBook = async function (req, res, next) {
+/**
+ * Render edit book page
+ * @param {req} req request from client
+ * @param {res} res response from server
+ * @param {next} next callback function
+ */
+module.exports.RenderEditBookPage = async function (req, res, next) {
   let _id = req.query.id;
   let book = await bookModel.getOneBook(_id);
   let categoryList = await catalog.getAllCategory();
@@ -166,7 +187,12 @@ module.exports.editBook = async function (req, res, next) {
     catalog: categoryList,
   });
 };
-
+/**
+ *  save changed information of book
+ * @param {} req request from client
+ * @param {*} res response of server
+ * @param {*} next callback function
+ */
 module.exports.saveEditBook = async (req, res, next) => {
   let newBook = {};
   const form = new formidable.IncomingForm({ multiples: true });
@@ -218,7 +244,12 @@ module.exports.saveEditBook = async (req, res, next) => {
     });
   });
 };
-
+/**
+ *
+ * @param {*} req request from client
+ * @param {*} res response from server
+ * @param {*} next callback function
+ */
 module.exports.searchBook = async (req, res, next) => {
   const listCategory = await catalog.getAllCategory();
 
@@ -229,22 +260,18 @@ module.exports.searchBook = async (req, res, next) => {
 
   res.render("pages/listOfBook", {
     title: "Sách",
-    book: listOfBook.docs,
+    listBook: listOfBook,
     category: listCategory,
-    hasNextPage: listOfBook.hasNextPage,
-    hasPreviousPage: listOfBook.hasPrevPage > 1,
-    nextPage: listOfBook.nextPage,
-    prevPage: listOfBook.prevPage,
-    lastPage: listOfBook.totalPages,
-    ITEM_PER_PAGE: ITEM_PER_PAGE,
-    currentPage: 1,
-    curentCategoryView: "",
+    curentCategoryView: currCategoryView,
     mesg: mesg,
   });
 };
 
 /**
- * Get category
+ *
+ * @param {*} req request from client
+ * @param {*} res response from server
+ * @param {*} next callback function
  */
 module.exports.getAllCategory = async (req, res, next) => {
   const listCategory = await catalog.getAllCategory();
