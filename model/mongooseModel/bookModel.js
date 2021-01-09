@@ -8,8 +8,8 @@ const book = new Schema(
     category: String,
     author: Array,
     detail: String,
-    price: String,
-    old_price: String,
+    price: Number,
+    old_price: Number,
     images: Array,
     cover: String,
     best_seller: Boolean,
@@ -20,6 +20,6 @@ const book = new Schema(
   },
   { collection: "books" }
 );
-book.index({title: 'text'});
+book.index({ title: "text" });
 book.plugin(mongoosePaginate);
 module.exports = mongoose.model("books", book);
