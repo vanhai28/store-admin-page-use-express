@@ -1,5 +1,5 @@
 const bcrypt = require("bcrypt");
-const adminMongooseModel = require("./mongooseModel/adminModel");
+const adminMongooseModel = require("../model/adminModel");
 
 exports.authLoginAcc = async (email, pass) => {
   //----------------- find in database ---------------

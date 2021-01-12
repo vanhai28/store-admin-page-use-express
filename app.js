@@ -19,7 +19,7 @@ const userRouter = require("./routes/userRouter");
 const bookRouter = require("./routes/bookRouter");
 
 //import module create default account for admin
-const defaultAcc = require("./model/accModel");
+const defaultAcc = require("./services/accountService");
 
 // import module connect database
 const mongoose = require("./config/db");

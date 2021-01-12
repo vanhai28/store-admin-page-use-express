@@ -1,5 +1,5 @@
-const accModel = require("../model/accModel");
-const userModel = require("../model/userModel");
+const accModel = require("../services/accountService");
+const userModel = require("../services/userService");
 const ITEM_PER_PAGE = 5;
 module.exports.getAPI_ListUser = async (req, res, next) => {
   const page = +req.query.page || 1;

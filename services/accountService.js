@@ -1,8 +1,8 @@
 const bcrypt = require("bcrypt");
 const formidable = require("formidable");
 
-const upload = require("../service/uploadFile");
-const adminMongooseModel = require("./mongooseModel/adminModel");
+const upload = require("./uploadFile");
+const adminMongooseModel = require("../model/adminModel");
 
 const SALT_ROUNDS = 10; // used for generator hash password
 //---------- Add user into database ---------

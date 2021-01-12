@@ -1,5 +1,5 @@
 const { request } = require("express");
-const sessionModel = require("../model/mongooseModel/sessionModel");
+const sessionModel = require("../model/sessionModel");
 
 exports.authenUser = async (req, res, next) => {
   let req_session = req.session;

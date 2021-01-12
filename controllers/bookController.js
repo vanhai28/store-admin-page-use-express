@@ -1,7 +1,7 @@
 const formidable = require("formidable");
-const bookModel = require("../model/bookModel");
-const catalog = require("../model/categoryModel");
-const upload = require("../service/uploadFile");
+const bookModel = require("../services/bookService");
+const catalog = require("../services/categoryService");
+const upload = require("../services/uploadFile");
 const ITEM_PER_PAGE = 10;
 
 /**

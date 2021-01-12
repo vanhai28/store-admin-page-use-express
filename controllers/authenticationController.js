@@ -1,4 +1,4 @@
-const authModel = require("../model/authModel");
+const authModel = require("../services/authenticationService");
 
 module.exports.login = function (req, res, next) {
   res.render("pages/login", {
