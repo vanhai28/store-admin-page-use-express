@@ -7,27 +7,27 @@
 
 //----------------- START PAGE LIST USER ----------------
 
-// Modifile status of user (active or block)
-(function modifyStatusAccount() {
-  let status = document.getElementsByClassName("status_account_active");
+// // Modifile status of user (active or block)
+// (function modifyStatusAccount() {
+//   let status = document.getElementsByClassName("status_account_active");
 
-  // display badge for actived user
-  for (let index = 0; index < status.length; index++) {
-    const element = status[index];
-    element.className += " badge badge-success";
-    element.innerHTML = "Hoạt động";
-  }
+//   // display badge for actived user
+//   for (let index = 0; index < status.length; index++) {
+//     const element = status[index];
+//     element.className += " badge badge-success";
+//     element.innerHTML = "Hoạt động";
+//   }
 
-  status = document.getElementsByClassName("status_account_blocked");
+//   status = document.getElementsByClassName("status_account_blocked");
 
-  // display badge for blocked user
-  for (let index = 0; index < status.length; index++) {
-    const element = status[index];
+//   // display badge for blocked user
+//   for (let index = 0; index < status.length; index++) {
+//     const element = status[index];
 
-    element.className += " badge badge-danger";
-    element.innerHTML = "Đã khoá";
-  }
-})();
+//     element.className += " badge badge-danger";
+//     element.innerHTML = "Đã khoá";
+//   }
+// })();
 
 // send request delete account of user
 function deleteUserAcc(id) {
@@ -56,11 +56,8 @@ function blockAccount(id) {
 
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
-      badge.innerHTML = "Đã khoá";
-      badge.className = badge.className.replace(
-        "badge-success",
-        "badge-danger"
-      );
+      badge.innerHTML = "blocked";
+      badge.className = badge.className.replace("active", "blocked");
     } else if (this.readyState == 4) {
       let mesg = document.getElementsByClassName("messageBlock")[0];
       mesg.innerHTML = this.responseText;
@@ -80,11 +77,8 @@ function unBlockAccount(id) {
 
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
-      badge.innerHTML = "Hoạt động";
-      badge.className = badge.className.replace(
-        "badge-danger",
-        "badge-success"
-      );
+      badge.innerHTML = "active";
+      badge.className = badge.className.replace("blocked", "active");
     } else if (this.readyState == 4) {
       let mesg = document.getElementsByClassName("messageBlock")[0];
       mesg.innerHTML = this.responseText;
@@ -361,10 +355,10 @@ $("#form__change_password").submit(function (e) {
   request.onreadystatechange = function () {
     if (this.status == 200 && this.readyState == 4) {
       $("#result_change_password").html("Thay đổi thành công");
-      $("#result_change_password").css("display", "block");
+      $("#result_change_password").css("display", "blocked");
     } else if (this.readyState == 4) {
       $("#result_change_password").html("Thay đổi Thất bại");
-      $("#result_change_password").css("display", "block");
+      $("#result_change_password").css("display", "blocked");
     }
 
     oldPassword.value = "";

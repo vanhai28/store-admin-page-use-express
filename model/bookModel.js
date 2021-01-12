@@ -16,6 +16,13 @@ module.exports.getBooksByPage = async (filter, pageIndex, numberItem) => {
   };
 
   let bookList;
+  let books = await bookModel.find({});
+  for (let index = 0; index < books.length; index++) {
+    const element = books[index];
+    if (element.status == "block") {
+      await bookModel.findByIdAndUpdate(element._id, { status: "blocked" });
+    }
+  }
 
   await bookModel.paginate(filter, options, (err, result) => {
     if (err) {
