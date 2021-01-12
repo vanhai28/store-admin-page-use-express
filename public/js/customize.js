@@ -165,7 +165,6 @@ function getAPIBooks(page) {
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
       replaceBook(this.responseText);
-      replaceBook2(this.responseText);
     } else if (this.readyState == 4) {
       $("#message-from-sever").removeClass("d-none");
       $("#message-from-sever").html("error when get data category from server");
@@ -217,7 +216,6 @@ function replaceBook(products) {
       xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
           replaceBook(this.responseText);
-          replaceBook2(this.responseText);
           let data = JSON.parse(this.responseText);
           if (data.curentCategoryView) {
             $("#dropdownCategory").html(data.curentCategoryView.nameOfCategory);
