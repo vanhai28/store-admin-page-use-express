@@ -14,7 +14,7 @@ const bodyParser = require("body-parser");
 
 // -------- Import router ----------
 const adminRouter = require("./routes/adminPageRouter");
-const loginRouter = require("./routes/loginRouter");
+const loginRouter = require("./routes/authenticateRouter");
 const userRouter = require("./routes/userRouter");
 const bookRouter = require("./routes/bookRouter");
 
