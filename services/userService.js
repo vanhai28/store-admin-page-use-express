@@ -11,7 +11,7 @@ module.exports.getListUserByPage = async (filter, pageIndex, numberItem) => {
       "user_email",
       "status",
       "avatar_image",
-      "Lastest_Time_Access",
+      "lastest_access_date",
     ],
     collection: "users",
   };
