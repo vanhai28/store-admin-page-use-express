@@ -60,3 +60,7 @@ module.exports.unBlockAccount = async (_id) => {
 
   return true;
 };
+
+module.exports.getUser = async(id)=>{
+  return await userMongoose.findById(id);
+}
