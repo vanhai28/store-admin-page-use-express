@@ -1,0 +1,44 @@
+<main>
+    <div class="container-fluid">
+        <h1 class="mt-4">Quản lí đơn hàng</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+            <li class="breadcrumb-item active">Đơn hàng</li>
+        </ol>
+        <div class="main-container">
+
+          <div class="input-group col-sm-10 mb-4 row ">
+            <label for="infor__fullname"  class="col-sm-3 ">Họ tên</label>
+            <input type="text" id="infor__fullname" name="fullname" disabled
+                class="form-control input__infor col-sm-6"  aria-label="Default" aria-describedby="inputGroup-sizing-default" value="{{account.fullname}}">
+              <button type="button " class="input-group-text btn__edit-user" ><i class="far fa-edit"></i></button> 
+            <button class="btn btn-success btn__save-infor"><i class="far fa-save"></i></button>   
+          </div>
+          <div class="input-group col-sm-10 mb-4 row">
+            <label for="infor__email" class="col-sm-3 ">Email</label>
+            <input type="email" id="infor__email" name="email" disabled
+                class="form-control input__infor col-sm-6" aria-label="Default" 
+                aria-describedby="inputGroup-sizing-default"  >
+            <button type="button " class="input-group-text btn__edit-user" ><i class="far fa-edit"></i></button> 
+            <button class="btn btn-success btn__save-infor"><i class="far fa-save"></i></button>          
+          </div>
+          <div class="input-group col-sm-10 mb-4 row">
+            <label for="infor__phone" class="col-sm-3 ">Số điện thoại</label>
+            <input type="text" id="infor__phone" name="phone" disabled
+                class="form-control input__infor col-sm-6" aria-label="Default" 
+                aria-describedby="inputGroup-sizing-default" >
+            <button type="button " class="input-group-text btn__edit-user" ><i class="far fa-edit"></i></button> 
+            <button class="btn btn-success btn__save-infor"><i class="far fa-save"></i></button>   
+          </div>
+          <div class="input-group col-sm-10 mb-4 row">
+            <label for="infor__address" class="col-sm-3 ">Địa chỉ</label>
+            <input type="text" id="infor__address" name="address" disabled
+                    class="form-control input__infor col-sm-6" aria-label="Default" aria-describedby="inputGroup-sizing-default" value="{{account.address}}">
+            <button type="button " class="input-group-text btn__edit-user" ><i class="far fa-edit"></i></button> 
+            <button class="btn btn-success btn__save-infor"><i class="far fa-save"></i></button>                   
+          </div>
+         
+      </div>
+    </div> 
+
+</main>

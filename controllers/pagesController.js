@@ -11,6 +11,12 @@ module.exports.index = async function (req, res, next) {
   });
 };
 
+module.exports.renderOrderPage = async function (req, res, next) {
+  res.render("pages/orders", {
+    title: "Dashboard",
+  });
+};
+
 module.exports.profile = async function (req, res, next) {
   let account = await accountModel.getAccountInfor();
 

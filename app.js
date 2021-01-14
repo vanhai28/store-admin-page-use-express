@@ -51,6 +51,13 @@ app.engine(
   })
 );
 
+var hbsCustom = hbs.create({});
+
+// register new function
+hbsCustom.handlebars.registerHelper("formatNumber", function (number) {
+  return number.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+});
+
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

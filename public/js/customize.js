@@ -184,7 +184,9 @@ function replaceBook(products) {
   Handlebars.registerHelper("append", function (str1, str2) {
     return str1 + str2;
   });
-
+  Handlebars.registerHelper("formatNumber", function (number) {
+    return number.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+  });
   products = JSON.parse(products);
 
   var template = $("#table_data").html();

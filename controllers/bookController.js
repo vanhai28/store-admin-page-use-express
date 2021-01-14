@@ -3,7 +3,7 @@ const bookModel = require("../services/bookService");
 const catalog = require("../services/categoryService");
 const upload = require("../services/uploadFile");
 const ITEM_PER_PAGE = 10;
-
+const numberService = require("../services/numberService");
 /**
  * Render list Books Page
  * @param {*} req request from client
@@ -29,6 +29,13 @@ module.exports.RenderListBookPage = async function (req, res, next) {
   }
 
   let listOfBook = await bookModel.getBooksByPage(filter, page, ITEM_PER_PAGE);
+  for (let index = 0; index < listOfBook.docs.length; index++) {
+    let price = listOfBook.docs[index].price;
+
+    //re-format
+    price = numberService.formatNumber(price);
+    listOfBook.docs[index].priceString = price + " ";
+  }
 
   res.render("pages/listOfBook", {
     title: "Sách",
@@ -61,6 +68,7 @@ module.exports.getAPIBook = async function (req, res, next) {
   }
 
   let listOfBook = await bookModel.getBooksByPage(filter, page, ITEM_PER_PAGE);
+
   let NotFirstPage = listOfBook.nextPage > 2;
   let NotLastPage = !(listOfBook.page == listOfBook.totalPages);
 

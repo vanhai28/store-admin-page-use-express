@@ -9,6 +9,13 @@ router.get("/dashboard", autheMiddleware.authenUser, pagesController.index);
 /* GET table page. */
 router.get("/profile", autheMiddleware.authenUser, pagesController.profile);
 
+/* GET ORDERS  page. */
+router.get(
+  "/orders",
+  autheMiddleware.authenUser,
+  pagesController.renderOrderPage
+);
+
 // ---------  API  ----------------
 
 /* GET table page. */
