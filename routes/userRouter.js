@@ -25,6 +25,8 @@ router.post(
 /* GET user page. */
 router.get("/list", userController.listUser);
 
+router.get("/detail", userController.detailUser);
+
 router.get("/api/list", userController.getAPI_ListUser);
 
 module.exports = router;

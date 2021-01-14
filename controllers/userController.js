@@ -44,6 +44,14 @@ module.exports.listUser = async (req, res, next) => {
   });
 };
 
+module.exports.detailUser = async (req, res) =>{
+  const userId = req.query.id;
+  const user = await userModel.getUser(userId);
+  res.render("pages/userInformation",{
+    user,
+  });
+}
+
 module.exports.deleteUser = async (req, res, next) => {
   let isSuccess = await userModel.removeUserAcc(req.body.id);
 
