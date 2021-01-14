@@ -14,12 +14,12 @@ const bodyParser = require("body-parser");
 
 // -------- Import router ----------
 const adminRouter = require("./routes/adminPageRouter");
-const loginRouter = require("./routes/loginRouter");
+const loginRouter = require("./routes/authenticateRouter");
 const userRouter = require("./routes/userRouter");
 const bookRouter = require("./routes/bookRouter");
 
 //import module create default account for admin
-const defaultAcc = require("./model/accModel");
+const defaultAcc = require("./services/accountService");
 
 // import module connect database
 const mongoose = require("./config/db");
@@ -50,6 +50,13 @@ app.engine(
     },
   })
 );
+
+var hbsCustom = hbs.create({});
+
+// register new function
+hbsCustom.handlebars.registerHelper("formatNumber", function (number) {
+  return number.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+});
 
 app.use(logger("dev"));
 app.use(express.json());

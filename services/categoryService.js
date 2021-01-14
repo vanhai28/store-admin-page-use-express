@@ -1,4 +1,4 @@
-const catalog = require("../model/mongooseModel/catalogModel");
+const catalog = require("../model/catalogModel");
 
 module.exports.addCategory = async (name) => {
   let newCategory = new catalog({

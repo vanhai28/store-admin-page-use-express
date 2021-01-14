@@ -1,5 +1,5 @@
-const accountModel = require("../model/accModel");
-const userModel = require("../model/userModel");
+const accountModel = require("../services/accountService");
+const userModel = require("../services/userService");
 const ITEM_PER_PAGE = 5;
 //Render page dashboard
 module.exports.index = async function (req, res, next) {
@@ -8,6 +8,12 @@ module.exports.index = async function (req, res, next) {
   res.render("index", {
     title: "Dashboard",
     data: listOfUser,
+  });
+};
+
+module.exports.renderOrderPage = async function (req, res, next) {
+  res.render("pages/orders", {
+    title: "Dashboard",
   });
 };
 

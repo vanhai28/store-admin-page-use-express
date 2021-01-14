@@ -1,8 +1,8 @@
 const bcrypt = require("bcrypt");
 const formidable = require("formidable");
 
-const upload = require("../service/uploadFile");
-const adminMongooseModel = require("./mongooseModel/adminModel");
+const upload = require("./uploadFile");
+const adminMongooseModel = require("../model/adminModel");
 
 const SALT_ROUNDS = 10; // used for generator hash password
 //---------- Add user into database ---------
@@ -28,7 +28,9 @@ exports.createDefaultAcc = async () => {
         .save()
         .then((doc) => {})
         .then((err) => {
-          console.log(err);
+          if (err) {
+            console.log(err);
+          }
         });
     });
   });
@@ -102,6 +104,7 @@ module.exports.changeAvatar = async (req, next) => {
     upload.uploadFile(files, async (error, url) => {
       if (!url) {
         result = false;
+        console.log("cannot upload file");
         return false;
       }
       //convert to HTTPS
@@ -113,8 +116,10 @@ module.exports.changeAvatar = async (req, next) => {
           { name: "admin" },
           { avatar_image: url[0] },
           (err, docs) => {
-            if (err) result = false;
-            else {
+            if (err) {
+              result = false;
+              console.log("cannot save url");
+            } else {
               result = true;
             }
           }

@@ -184,7 +184,9 @@ function replaceBook(products) {
   Handlebars.registerHelper("append", function (str1, str2) {
     return str1 + str2;
   });
-
+  Handlebars.registerHelper("formatNumber", function (number) {
+    return number.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+  });
   products = JSON.parse(products);
 
   var template = $("#table_data").html();
@@ -355,10 +357,10 @@ $("#form__change_password").submit(function (e) {
   request.onreadystatechange = function () {
     if (this.status == 200 && this.readyState == 4) {
       $("#result_change_password").html("Thay đổi thành công");
-      $("#result_change_password").css("display", "blocked");
+      $("#result_change_password").css("display", "block");
     } else if (this.readyState == 4) {
       $("#result_change_password").html("Thay đổi Thất bại");
-      $("#result_change_password").css("display", "blocked");
+      $("#result_change_password").css("display", "block");
     }
 
     oldPassword.value = "";
@@ -506,4 +508,40 @@ function readImageURL(input, classDestination) {
 
     reader.readAsDataURL(input.files[0]);
   }
+}
+
+function sendResetPassword(event, form) {
+  event.preventDefault();
+  document.getElementById("message").style.display = "none";
+  let request = new XMLHttpRequest();
+  let verifyCode = form.verify_code.value;
+
+  request.onreadystatechange = function () {
+    if (this.status == 200 && this.readyState == 4) {
+      form.innerHTML = "New password is sent to your email.";
+    } else if (this.readyState == 4) {
+      $("#message").html("Verify code is ircorrect!!");
+      document.getElementById("message").style.display = "block";
+    }
+  };
+
+  request.open("POST", "/reset/password?verify_code=" + verifyCode, true);
+  request.send();
+}
+function sendEmailToVerify(event, form) {
+  event.preventDefault();
+  let request = new XMLHttpRequest();
+  let email = form.email.value;
+
+  request.onreadystatechange = function () {
+    if (this.status == 200 && this.readyState == 4) {
+      window.location.href = "/get/verify/code";
+    } else if (this.readyState == 4) {
+      $("#message").html("Tài khoản không tồn tại!");
+      document.getElementById("message").style.display = "block";
+    }
+  };
+
+  request.open("POST", "/recovery/password?email=" + email, true);
+  request.send();
 }

@@ -82,7 +82,7 @@
                                            
                                     </td>
                                     <td>{{item.category}}</td>
-                                    <td>{{toFloat item.price}}đ</td>
+                                    <td>{{item.priceString}}<u>đ</u> </td>
                                     <td>{{item.views}}</td>
                                     <td>{{item.orders}}</td>
                                     <td>
@@ -199,7 +199,7 @@
                         </td>
                 
                         <td>\{{this.category}}</td>
-                        <td>\{{price}}đ</td>
+                        <td>\{{formatNumber price}}<u>đ</u></td>
                         <td>\{{views}}</td>
                         <td>\{{orders}}</td>
 
