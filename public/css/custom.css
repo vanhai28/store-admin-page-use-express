@@ -222,3 +222,21 @@ img#avatar-image:hover + .btn__upload-file {
 a {
   text-decoration: none !important;
 }
+
+/*
+      USER DETAIL PAGE
+*/
+.container-indent {
+  display: flex;
+  justify-content: center;
+}
+.container-fluid-custom-mobile-padding {
+  padding: 0px 30px 10px 30px;
+  background-color: #fafafa;
+  border-radius: 20px;
+}
+.user_infor__body .user_infor__item {
+  padding: 15px 15px;
+  background-color: #fff;
+  border-radius: 10px;
+}
