@@ -250,7 +250,9 @@ for (let index = 0; index < editBtn.length; index++) {
   const element = editBtn[index];
   element.onclick = function () {
     let btnSave = document.getElementsByClassName("btn__save-infor")[index];
-    let inputInfor = document.getElementsByClassName("input__infor")[index];
+    let inputInfor = document.getElementsByClassName("profile_input__infor")[
+      index
+    ];
     btnSave.style.display = "block";
     inputInfor.removeAttribute("disabled");
   };
@@ -262,7 +264,9 @@ for (let index = 0; index < saveBtn.length; index++) {
   const element = saveBtn[index];
 
   element.onclick = function () {
-    let inputInfor = document.getElementsByClassName("input__infor")[index];
+    let inputInfor = document.getElementsByClassName("profile_input__infor")[
+      index
+    ];
     let infor = {
       field: inputInfor.name,
       value: inputInfor.value,
@@ -280,7 +284,9 @@ function saveInforAccount(value, index) {
 
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
-      let inputInfor = document.getElementsByClassName("input__infor")[index];
+      let inputInfor = document.getElementsByClassName("profile_input__infor")[
+        index
+      ];
       inputInfor.setAttribute("disabled", "true");
       document.getElementsByClassName("btn__save-infor")[index].style.display =
         "none";

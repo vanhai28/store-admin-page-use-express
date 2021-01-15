@@ -51,6 +51,22 @@
 /*--------------- END OF EDIT PAGE ---------------*/
 
 /*--------------- PROFILE PAGE --------------------*/
+.input-group .profile_input__infor {
+  padding: 15px 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  border: none;
+}
+.btn__edit-user {
+  background-color: #fafafa;
+  border: 0px;
+  color: green;
+}
+.btn__edit-user :hover,
+.btn__edit-user :focus {
+  color: #0bf542;
+}
+
 #result_change_password {
   display: none;
 }
@@ -73,10 +89,7 @@
 label.btn__upload-file {
   position: relative;
 }
-.btn__edit-user {
-  border-radius: 0px 3px 3px 0px;
-  border-left: 0px;
-}
+
 .btn__upload-file {
   background-color: aliceblue;
   position: absolute;
