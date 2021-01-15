@@ -12,7 +12,7 @@ module.exports.getAPI_ListUser = async (req, res, next) => {
   );
 
   if (!listOfUser) {
-    res.render("pages/user", {});
+    res.render("pages/users/user", {});
     return;
   }
 
@@ -34,11 +34,11 @@ module.exports.listUser = async (req, res, next) => {
   );
 
   if (!listOfUser) {
-    res.render("pages/user", {});
+    res.render("pages/users/user", {});
     return;
   }
 
-  res.render("pages/user", {
+  res.render("pages/users/user", {
     title: "Quản Lí Tài Khoản Khách hàng",
     data: listOfUser,
   });
@@ -47,7 +47,7 @@ module.exports.listUser = async (req, res, next) => {
 module.exports.detailUser = async (req, res) => {
   const userId = req.query.id;
   const user = await userModel.getUser(userId);
-  res.render("pages/userInformation", {
+  res.render("pages/users/userInformation", {
     user,
   });
 };

@@ -3,7 +3,7 @@ const accountModel = require("../services/accountService");
 module.exports.profile = async function (req, res, next) {
   let account = await accountModel.getAccountInfor();
 
-  res.render("pages/profileAdmin", {
+  res.render("pages/admin/profileAdmin", {
     title: "Thông tin Admin",
     account,
   });

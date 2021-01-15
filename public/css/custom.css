@@ -253,3 +253,14 @@ a {
   background-color: #fff;
   border-radius: 10px;
 }
+
+/*
+      bestseller page
+
+*/
+a.book_title {
+  color: #222;
+}
+a.book_title:hover {
+  color: rgb(104, 103, 103);
+}

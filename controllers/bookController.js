@@ -29,21 +29,32 @@ module.exports.RenderListBookPage = async function (req, res, next) {
   }
 
   let listOfBook = await bookModel.getBooksByPage(filter, page, ITEM_PER_PAGE);
-  for (let index = 0; index < listOfBook.docs.length; index++) {
-    let price = listOfBook.docs[index].price;
 
-    //re-format
-    price = numberService.formatNumber(price);
-    listOfBook.docs[index].priceString = price + " ";
-  }
-
-  res.render("pages/listOfBook", {
+  res.render("pages/books/listOfBook", {
     title: "Sách",
     listBook: listOfBook,
     category: listCategory,
     curentCategoryView: currCategoryView,
   });
 };
+
+/**
+ * Render list Books Page
+ * @param {*} req request from client
+ * @param {*} res response from server
+ * @param {*} next callback function
+ */
+module.exports.renderBestsellerPage = async function (req, res, next) {
+  const filter = { isDelete: false, best_seller: true };
+
+  let listOfBook = await bookModel.getBooksByPage(filter, 1, 10);
+
+  res.render("pages/books/bestseller", {
+    title: "Sách",
+    listBook: listOfBook,
+  });
+};
+
 /**
  * Return books at specifical page
  * @param {*} req request from client
@@ -90,7 +101,7 @@ module.exports.getAPIBook = async function (req, res, next) {
 module.exports.RenderAddBookPage = async (req, res, next) => {
   let categoryList = await catalog.getAllCategory();
 
-  res.render("pages/addBook", {
+  res.render("pages/books/addBook", {
     titlePage: "Thêm sách",
     catalog: categoryList,
   });
@@ -148,7 +159,7 @@ module.exports.SaveNewBook = (req, res, next) => {
 
         let categoryList = await catalog.getAllCategory();
 
-        res.render("pages/addBook", {
+        res.render("pages/books/addBook", {
           titlePage: "Thêm sách",
           result: result,
           catalog: categoryList,
@@ -189,7 +200,7 @@ module.exports.RenderEditBookPage = async function (req, res, next) {
     return;
   }
 
-  res.render("pages/editBook", {
+  res.render("pages/books/editBook", {
     titlePage: "Chỉnh sửa thông tin sách",
     book: book,
     catalog: categoryList,
@@ -242,7 +253,7 @@ module.exports.saveEditBook = async (req, res, next) => {
         let currentBook = await bookModel.getOneBook(newBook._id);
         let categoryList = await catalog.getAllCategory();
 
-        res.render("pages/editBook", {
+        res.render("pages/books/editBook", {
           titlePage: "Chinh sửa sách",
           book: currentBook,
           result: result,
@@ -279,7 +290,7 @@ module.exports.searchBook = async (req, res, next) => {
 
   let mesg = "tìm thấy " + listOfBook.docs.length + " kết quả";
 
-  res.render("pages/listOfBook", {
+  res.render("pages/books/listOfBook", {
     title: "Sách",
     listBook: listOfBook,
     category: listCategory,

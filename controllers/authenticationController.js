@@ -6,19 +6,19 @@ const accModel = require("../model/adminModel");
 const mailer = require("../misc/mailer");
 
 module.exports.login = function (req, res, next) {
-  res.render("pages/login", {
+  res.render("pages/admin/login", {
     layout: "loginLayout",
     title: "Login",
   });
 };
 module.exports.recoverPassword = function (req, res, next) {
-  res.render("pages/recoveryPassword", {
+  res.render("pages/admin/recoveryPassword", {
     layout: "loginLayout",
     title: "Recovery Password",
   });
 };
 module.exports.getVerifyCode = function (req, res, next) {
-  res.render("pages/authRecoverPass", {
+  res.render("pages/admin/authRecoverPass", {
     layout: "loginLayout",
     title: "Recovery Password",
   });
@@ -31,7 +31,7 @@ exports.authLogin = async (req, res, next) => {
   const acc = await authModel.authLoginAcc(email, pass);
 
   if (!acc) {
-    res.render("pages/login", {
+    res.render("pages/admin/login", {
       title: "Login",
       err: "Username and password is not match",
       layout: "loginLayout",

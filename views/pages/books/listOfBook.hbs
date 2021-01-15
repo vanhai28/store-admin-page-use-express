@@ -57,7 +57,7 @@
                                 <th>Tác giả</th>
                                 <th>Loại sách</th>
                                 <th>Giá bán</th>
-                                <th>Lượt mua</th>
+                                <th>SL Bán</th>
                                 <th>Lượt xem</th>
                                 <th>Chỉnh sửa</th>    
                             </tr>
@@ -68,7 +68,7 @@
                                 <th>Tác giả</th>
                                 <th>Loại sách</th>
                                 <th>Giá bán</th>
-                                <th>Lượt mua</th>
+                                <th>SL Bán</th>
                                 <th>Lượt xem</th>
                                 <th>Chỉnh sửa</th>    
                             </tr>
@@ -78,11 +78,10 @@
                                 <tr>
                                     <td>{{item.title}}</td>
                                    <td>
-                                       {{join item.author }}
-                                           
+                                       {{join item.author }}      
                                     </td>
                                     <td>{{item.category}}</td>
-                                    <td>{{item.priceString}}<u>đ</u> </td>
+                                    <td>{{formatNumber item.price}}<u>đ</u> </td>
                                     <td>{{item.orders}}</td>
                                     <td>{{item.views}}</td>
                                     <td>

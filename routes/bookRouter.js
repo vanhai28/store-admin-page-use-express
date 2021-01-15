@@ -23,6 +23,12 @@ router.get(
   autheMiddleware.authenUser,
   bookController.RenderEditBookPage
 );
+/* GET edit book page. */
+router.get(
+  "/bestseller",
+  autheMiddleware.authenUser,
+  bookController.renderBestsellerPage
+);
 
 /* GET list book page. */
 router.get(

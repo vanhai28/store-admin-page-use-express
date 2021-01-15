@@ -13,7 +13,7 @@ module.exports.renderOrderPage = async function (req, res, next) {
     ITEM_PER_PAGE
   );
 
-  res.render("pages/orders", {
+  res.render("pages/orders/orders", {
     listOrder: listOrder,
     title: "Dashboard",
   });
