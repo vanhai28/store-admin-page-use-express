@@ -18,3 +18,17 @@ module.exports.getNewOrderByPage = async (filter, pageIndex, numberItem) => {
 
   return listOrders;
 };
+
+module.exports.updateOrderStatus = async (_id, order_status) => {
+  let result = null;
+
+  try {
+    result = await orderModel.findByIdAndUpdate(_id, {
+      order_status: order_status,
+    });
+  } catch (error) {
+    return error;
+  }
+
+  return result;
+};

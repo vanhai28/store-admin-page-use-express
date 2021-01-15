@@ -30,6 +30,11 @@ router.get(
   autheMiddleware.authenUser,
   pagesController.getAPIOrders
 );
+router.put(
+  "/api/orders/update/status",
+  autheMiddleware.authenUser,
+  pagesController.updateStatusOrder
+);
 
 /* change avatar . */
 router.post(

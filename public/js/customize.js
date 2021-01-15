@@ -7,28 +7,6 @@
 
 //----------------- START PAGE LIST USER ----------------
 
-// // Modifile status of user (active or block)
-// (function modifyStatusAccount() {
-//   let status = document.getElementsByClassName("status_account_active");
-
-//   // display badge for actived user
-//   for (let index = 0; index < status.length; index++) {
-//     const element = status[index];
-//     element.className += " badge badge-success";
-//     element.innerHTML = "Hoạt động";
-//   }
-
-//   status = document.getElementsByClassName("status_account_blocked");
-
-//   // display badge for blocked user
-//   for (let index = 0; index < status.length; index++) {
-//     const element = status[index];
-
-//     element.className += " badge badge-danger";
-//     element.innerHTML = "Đã khoá";
-//   }
-// })();
-
 // send request delete account of user
 function deleteUserAcc(id) {
   let xhttp = new XMLHttpRequest();
@@ -586,4 +564,23 @@ function replaceOrderData(products) {
   var html = templateScript({ products: products });
 
   document.getElementById("cart__data").innerHTML = html;
+}
+
+function updateOrderStatus(_id, status) {
+  let api_link =
+    "/admin/api/orders/update/status?_id=" + _id + "&order_status=" + status;
+  let xhttp = new XMLHttpRequest();
+
+  xhttp.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      $("#order_status_" + _id).html(status);
+    } else if (this.readyState == 4) {
+      $("#message-from-sever").removeClass("d-none");
+      $("#message-from-sever").html("error when get data category from server");
+    }
+  };
+
+  xhttp.open("PUT", api_link, true);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.send();
 }

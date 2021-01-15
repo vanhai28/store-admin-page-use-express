@@ -75,7 +75,7 @@
                         </tfoot>
                         <tbody id="tbody__data">
                              {{#eachIndex listOrder.docs}}
-                                <tr>
+                                <tr >
                                     <td>{{item.orderCODE}}</td>
                                    <td>
                                        {{item.nameCustomer }}
@@ -83,25 +83,23 @@
                                     <td>{{item.phone}}</td>
                                     <td>{{item.date}}</td>
                                     <td>{{formatNumber item.bill.costAfterAddShippingCost}}<u>đ</u> </td>
-                                    <td>Chưa giao</td>
+                                    <td id="order_status_{{item._id}}" >{{item.order_status}}</td>
                                     
-                                    <td>   <div class="input-group">   
-                                       
-    
+                                    <td>   
+                                      <div class="input-group">   
                                         <div class="input-group-append">
-                                             {{!-- <span class="status_account_{{status}}" id="{{_id}}">{{status}}</span> --}}
-                                             <span >edit</span>
-                                        <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <span class="sr-only">Toggle Dropdown</span>
+                                        <button type="button" class="btn__dropdown btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                          Cập nhật
                                         </button>
                                         <div class="dropdown-menu">
-                                            <button class="dropdown-item"  >Xác nhận <i class="fas fa-ban text-danger"></i> </button>
-                                            <button class="dropdown-item"  >Đang vận chuyển <i class="fas fa-check text-success"></i></button>
-                                            <button class="dropdown-item"  >Đã giao thành công <i class="fas fa-check text-success"></i></button>
+                                            <button class="dropdown-item" value="{{item._id}}" onclick="updateOrderStatus(value, 'Xác nhận')">Xác nhận <i class="fas fa-ban text-danger"></i> </button>
+                                            <button class="dropdown-item" value="{{item._id}}" onclick="updateOrderStatus(value, 'Dừng')">Dừng <i class="fas fa-ban text-danger"></i> </button>
+                                            <button class="dropdown-item" value="{{item._id}}" onclick="updateOrderStatus(value, 'Đang vận chuyển')">Đang vận chuyển <i class="fas fa-check text-success"></i></button>
+                                            <button class="dropdown-item" value="{{item._id}}" onclick="updateOrderStatus(value, 'Giao hàng thành công')">Giao hàng thành công <i class="fas fa-check text-success"></i></button>
                                         </div>
-                                    </div>
-                                    </div></td>
-
+                                      </div>
+                                      </div>
+                                    </td>
                                 </tr>
                             {{/eachIndex}}
                              
@@ -170,7 +168,7 @@
             </tfoot>
             <tbody id="tbody__data">
                   \{{#each products.listOrder.docs}}
-                    <tr>
+                    <tr >
                         <td>\{{orderCODE}} </td>
                         <td>
                             \{{nameCustomer }}
@@ -178,20 +176,21 @@
                         <td>\{{phone}}</td>
                         <td>\{{date}}</td>
                         <td>\{{formatNumber bill.costAfterAddShippingCost}}<u>đ</u> </td>
-                        <td id="status_order">Chưa giao</td>
+                        <td id=\{{append 'order_status_' _id}} >\{{order_status}}</td>
                         
                         <td>   <div class="input-group">   
                             
 
                             <div class="input-group-append">
-                                  <span >edit</span>
-                            <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                             
+                                
+                            <button type="button" class="btn__dropdown btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Cập nhật
                             </button>
                             <div class="dropdown-menu">
-                                <button class="dropdown-item"  >Xác nhận <i class="fas fa-ban text-danger"></i> </button>
-                                <button class="dropdown-item"  >Đang vận chuyển <i class="fas fa-check text-success"></i></button>
-                                <button class="dropdown-item"  >Đã giao thành công <i class="fas fa-check text-success"></i></button>
+                                <button class="dropdown-item" onclick="updateOrderStatus(value, 'Xác nhận')" value=\{{_id}}>Xác nhận <i class="fas fa-ban text-danger"></i> </button>
+                                <button class="dropdown-item" onclick="updateOrderStatus(value, 'Dừng')" value=\{{_id}}>Dừng <i class="fas fa-ban text-danger"></i> </button>
+                                <button class="dropdown-item"  onclick="updateOrderStatus(value, 'Đang vận chuyển')" value=\{{_id}}>Đang vận chuyển <i class="fas fa-check text-success"></i></button>
+                                <button class="dropdown-item" onclick="updateOrderStatus(value, 'Giao hàng thành công')" value=\{{_id}}>Giao hàng thành công <i class="fas fa-check text-success"></i></button>
                             </div>
                         </div>
                         </div></td>

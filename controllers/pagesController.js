@@ -44,7 +44,7 @@ module.exports.getAPIOrders = async function (req, res, next) {
 
   let NotFirstPage = listOrder.nextPage > 2;
   let NotLastPage = !(listOrder.page == listOrder.totalPages);
-  console.log(listOrder);
+
   res.statusCode = 200;
 
   res.send({
@@ -52,6 +52,21 @@ module.exports.getAPIOrders = async function (req, res, next) {
     NotFirstPage: NotFirstPage,
     NotLastPage: NotLastPage,
   });
+};
+module.exports.updateStatusOrder = async (req, res, next) => {
+  let _id = req.query._id;
+  let order_status = req.query.order_status;
+
+  if (!_id || !order_status) {
+    res.status = 400;
+    res.send();
+  }
+
+  await orderService.updateOrderStatus(_id, order_status);
+
+  res.statusCode = 200;
+
+  res.send();
 };
 ///////
 

@@ -8,6 +8,7 @@ const orders = new Schema({
   address: String,
   phone: String,
   orderCODE: String,
+  order_status: String,
   bill: {
     product: Array,
     costBeforAddShippingCost: Number,
