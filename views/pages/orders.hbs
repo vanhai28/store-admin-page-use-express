@@ -8,39 +8,6 @@
 
         <div class="alert alert-primary d-none " id="message-from-sever" role="alert"></div>
 
-        {{!-- <div class="row text-right mb-4"> 
-            <div class="col-sm-3 input-group d-inline-flex">            
-                <div class="dropdown">
-                    {{#if curentCategoryView}}
-                        <button class="btn btn-light dropdown-toggle col-sm-12" value="{{curentCategoryView._id}}" type="button" id="dropdownCategory" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {{curentCategoryView.nameOfCategory}}
-                        </button>
-                    {{else}}
-                     
-                        <button value="{{curentCategoryView._id}}" class="btn btn-light dropdown-toggle col-sm-12" type="button" id="dropdownCategory" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            All
-                        </button>
-                    {{/if}}
-                   
-                    <div class="dropdown-menu" aria-labelledby="dropdownCategory">
-                        <button  value="0" class="dropdown-item btn--category" >All </button>
-                        {{#each category}}
-                            <button name="{{nameOfCategory}}" value="{{_id}}"   class="dropdown-item btn--category"  >{{nameOfCategory}} - {{numberOfProduct}} </button>
-                        {{/each}}                        
-                    </div>
-                </div>
-            </div>
-            <form action="/admin/book/search" method="GET" class="col-sm-6 search-box">
-               <div class="input-group mb-3">
-                   <input type="text" id="input__search" name="value" 
-                   class="form-control" placeholder="Tìm trên toàn bộ danh sách" aria-label="Default" aria-describedby="inputGroup-sizing-default">
-                    <button type="submit" class="input-group-text btn__search" >Tìm kiếm</button>                    
-                </div>
-            </form>
-            <div class="col-sm-3">
-                    <a href="/admin/book/add" class=" btn btn-success ">Thêm sản phẩm</a>
-            </div> 
-        </div> --}}
         <div class="alert alert-danger d-none messageDelete"></div>
         <div class="card mb-4">
             <div class="card-header">

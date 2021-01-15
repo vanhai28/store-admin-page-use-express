@@ -191,6 +191,10 @@ module.exports.searchBook = async (value) => {
       bookList = result;
     }
   }); //add auther
-
+  bookList.totalPages = 1;
+  bookList.hasNextPage = false;
+  bookList.nextPage = undefined;
+  bookList.totalPage = 1;
+  bookList.page = 1;
   return bookList;
 };

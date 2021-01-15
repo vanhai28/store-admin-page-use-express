@@ -260,10 +260,23 @@ module.exports.saveEditBook = async (req, res, next) => {
  */
 module.exports.searchBook = async (req, res, next) => {
   const listCategory = await catalog.getAllCategory();
+  let currCategoryView = undefined;
+  const filter = { isDelete: false };
 
+  //get infomation of current category
+  if (req.query.idCat) {
+    filter.idCategory = req.query.idCat;
+
+    listCategory.forEach((cat) => {
+      if (req.query.idCat == cat._id) {
+        currCategoryView = cat;
+        return true;
+      }
+    });
+  }
   let value = req.query.value || "";
   let listOfBook = await bookModel.searchBook(value);
-
+  console.log(listOfBook);
   let mesg = "tìm thấy " + listOfBook.docs.length + " kết quả";
 
   res.render("pages/listOfBook", {

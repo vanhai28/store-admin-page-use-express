@@ -1,6 +1,6 @@
 const accModel = require("../services/accountService");
 const userModel = require("../services/userService");
-const ITEM_PER_PAGE = 5;
+const ITEM_PER_PAGE = 10;
 module.exports.getAPI_ListUser = async (req, res, next) => {
   const page = +req.query.page || 1;
   const filter = {};
@@ -44,13 +44,13 @@ module.exports.listUser = async (req, res, next) => {
   });
 };
 
-module.exports.detailUser = async (req, res) =>{
+module.exports.detailUser = async (req, res) => {
   const userId = req.query.id;
   const user = await userModel.getUser(userId);
-  res.render("pages/userInformation",{
+  res.render("pages/userInformation", {
     user,
   });
-}
+};
 
 module.exports.deleteUser = async (req, res, next) => {
   let isSuccess = await userModel.removeUserAcc(req.body.id);

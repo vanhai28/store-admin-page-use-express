@@ -129,25 +129,22 @@
                             <button class=" page-link" href="javascript:void(0)" tabindex="-1">{{listBook.page}}</button>
                         </li>
 
-                        
-                        <li class="page-item ">
+                        {{#if listBook.hasNextPage }}
+                          <li class="page-item ">
                             <button class="btn--pagination page-link"
                                 value="{{listBook.nextPage}}"
                                 onclick='getAPIBooks(value)'>{{listBook.nextPage}}
                                 </button> 
-                        </li>
-
-
-                        {{#gt listBook.totalPages listBook.page }}
-                        <li class="page-item">
-                            <button class="btn--pagination page-link" 
-                            value="{{listBook.nextPage}}"
-                            onclick="getAPIBooks(value)" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                                <span class="sr-only">Next</span>
-                            </button>
-                        </li>
-                        {{/gt}}
+                            </li>
+                            <li class="page-item">
+                                <button class="btn--pagination page-link" 
+                                value="{{listBook.nextPage}}"
+                                onclick="getAPIBooks(value)" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span class="sr-only">Next</span>
+                                </button>
+                            </li>
+                        {{/if}}
                     </ul>
                 </nav>
             </div>

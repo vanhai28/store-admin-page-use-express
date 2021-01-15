@@ -9,7 +9,10 @@
 .forget_pass {
   display: inline;
 }
-
+#dataTable_length,
+#dataTable_filter {
+  display: none;
+}
 .box-delete-item {
   height: 100vh;
   width: 100vw;

@@ -13,10 +13,12 @@ const MongoDBStore = require("connect-mongodb-session")(session);
 const bodyParser = require("body-parser");
 
 // -------- Import router ----------
-const adminRouter = require("./routes/adminPageRouter");
+const adminRouter = require("./routes/accountRouter");
 const loginRouter = require("./routes/authenticateRouter");
 const userRouter = require("./routes/userRouter");
 const bookRouter = require("./routes/bookRouter");
+const orderRouter = require("./routes/ordersRouter");
+const dashboardRouter = require("./routes/dashboardRouter");
 
 //import module create default account for admin
 const defaultAcc = require("./services/accountService");
@@ -89,6 +91,8 @@ app.use(
 //--------- USE ROUTER ------------
 app.use("/", loginRouter);
 app.use("/admin", adminRouter);
+app.use("/admin", dashboardRouter);
+app.use("/admin", orderRouter);
 app.use("/admin/users", userRouter);
 app.use("/admin/book", bookRouter);
 
