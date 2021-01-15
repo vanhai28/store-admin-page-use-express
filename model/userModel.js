@@ -6,9 +6,14 @@ const user = new Schema(
   {
     user_name: String,
     user_email: String,
+    first_name: String,
+    last_name: String,
+    phone_number: String,
     password: String,
     status: String,
-    birthday: Date,
+    avatar_image: String,
+    isVerify: Boolean,
+    verify_token: String,
     lastest_access_date: String,
   },
   { collection: "users" }

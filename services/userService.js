@@ -12,6 +12,7 @@ module.exports.getListUserByPage = async (filter, pageIndex, numberItem) => {
       "status",
       "avatar_image",
       "lastest_access_date",
+      "isVerify"
     ],
     collection: "users",
   };
@@ -60,3 +61,7 @@ module.exports.unBlockAccount = async (_id) => {
 
   return true;
 };
+
+module.exports.getUser = async(id)=>{
+  return await userMongoose.findById(id);
+}

@@ -18,6 +18,8 @@ router.post("/delete", autheMiddleware.authenUser, userController.deleteUser);
 /* GET user page. */
 router.get("/list", autheMiddleware.authenUser, userController.listUser);
 
+router.get("/detail", userController.detailUser);
+
 router.get(
   "/api/list",
   autheMiddleware.authenUser,

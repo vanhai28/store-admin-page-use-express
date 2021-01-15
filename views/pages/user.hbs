@@ -5,7 +5,7 @@
             <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
             <li class="breadcrumb-item active">Khách hàng</li>
         </ol>
-        <div class="alert alert-danger d-none messageBlock" ></div>
+        <div class="alert alert-danger d-none messageBlock"></div>
         <div class="card mb-4">
             <div class="card-header">
                 <i class="fas fa-table mr-1"></i>
@@ -18,6 +18,7 @@
                             <tr>
                                 <th>Tên đăng nhập</th>
                                 <th>Email</th>
+                                <th>Tình trạng xác thực</th>
                                 <th>Ngày truy cập gần nhất</th>
                                 <th>Xóa</th>
                                 <th>Khoá</th>
@@ -27,6 +28,7 @@
                             <tr>
                                 <th>Tên đăng nhập</th>
                                 <th>Email</th>
+                                <th>Tình trạng xác thực</th>
                                 <th>Ngày truy cập gần nhất</th>
                                 <th>Xoá</th>
                                 <th>Khoá</th>
@@ -35,50 +37,65 @@
                         <tbody>
                             {{#each data.docs}}
                             <tr>
-                                <td>{{user_name}}</td>
-                                <td>{{user_email}}</td> 
-                                <td>{{lastest_access_date}}</td> <!-- variable -->
+                                <td><a href="/admin/users/detail?id={{_id}}">{{user_name}}</a></td>
+                                <td>{{user_email}}</td>
+                                {{#if isVerify}}
+                                <td>Đã xác thực</td>
+                                {{else}}
+                                <td>Chưa xác thực</td>
+                                {{/if}}
+                                <td>{{lastest_access_date}}</td>
                                 <td class="text-center">
-                                    <button type="button" data-toggle="modal" data-target="#{{user_name}}" 
-                                     class="btn btn-sm btn-icon btn-flat btn-default" data-original-title="Edit">
-                                        <i class="fas fa-trash-alt text-danger"aria-hidden="true"></i>
+                                    <button type="button" data-toggle="modal" data-target="#{{user_name}}"
+                                        class="btn btn-sm btn-icon btn-flat btn-default" data-original-title="Edit">
+                                        <i class="fas fa-trash-alt text-danger" aria-hidden="true"></i>
                                     </button>
                                     <!-- Modal -->
-                                    <div class="modal fade" id="{{user_name}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel"></h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                            </button>
+                                    <div class="modal fade" id="{{user_name}}" tabindex="-1" role="dialog"
+                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel"></h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Tài khoản sẽ bị xoá vĩnh viễn ra khỏi cơ sở dữ liệu
+                                                    Bạn có chắc muốn xoá tài khoản này?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-dismiss="modal">Quay lại</button>
+                                                    <button type="button" class="btn btn-danger" name={{_id}}
+                                                        onclick="deleteUserAcc(name)">Xoá</button>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="modal-body">
-                                            Tài khoản sẽ bị xoá vĩnh viễn ra khỏi cơ sở dữ liệu
-                                            Bạn có chắc muốn xoá tài khoản này?
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Quay lại</button>
-                                            <button type="button" class="btn btn-danger" name={{_id}} onclick="deleteUserAcc(name)" >Xoá</button>
-                                        </div>
-                                        </div>
-                                    </div>
                                     </div>
                                 </td>
                                 <td>
-                                    <div class="input-group">   
-                                       
-    
+                                    <div class="input-group">
+
+
                                         <div class="input-group-append">
-                                             <span class="status_account_{{status}}" id="{{_id}}">{{status}}</span>
-                                        <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <span class="sr-only">Toggle Dropdown</span>
-                                        </button>
-                                        <div class="dropdown-menu">
-                                            <button class="dropdown-item" onclick="blockAccount(name)"  name="{{_id}}">Khoá tài khoản <i class="fas fa-ban text-danger"></i> </button>
-                                            <button class="dropdown-item" onclick="unBlockAccount(name)" name="{{_id}}">Mở tài khoản <i class="fas fa-check text-success"></i></button>
+                                            <span class="status_account_{{status}}" id="{{_id}}">{{status}}</span>
+                                            <button type="button"
+                                                class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <span class="sr-only">Toggle Dropdown</span>
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                <button class="dropdown-item" onclick="blockAccount(name)"
+                                                    name="{{_id}}">Khoá tài khoản <i class="fas fa-ban text-danger"></i>
+                                                </button>
+                                                <button class="dropdown-item" onclick="unBlockAccount(name)"
+                                                    name="{{_id}}">Mở tài khoản <i
+                                                        class="fas fa-check text-success"></i></button>
+                                            </div>
                                         </div>
-                                    </div>
                                     </div>
                                 </td>
                             </tr>
@@ -91,22 +108,20 @@
                         <li class="page-item active">
                             <button class=" page-link" href="javascript:void(0)" tabindex="-1">
                                 {{data.page}}</button>
-                        </li>                
+                        </li>
                         <li class="page-item ">
-                            <button class="btn--pagination page-link"
-                                value="{{data.nextPage}}"
+                            <button class="btn--pagination page-link" value="{{data.nextPage}}"
                                 onclick='getAPI_Users(value)'>{{data.nextPage}}
-                                </button>
+                            </button>
                         </li>
                         {{#gt data.totalPages data.page }}
-                            <li class="page-item">
-                                <button class="btn--pagination page-link" 
-                                value="{{data.nextPage}}"
+                        <li class="page-item">
+                            <button class="btn--pagination page-link" value="{{data.nextPage}}"
                                 onclick="getAPI_Users(value)" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                    <span class="sr-only">Next</span>
-                                </button>
-                            </li>
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </button>
+                        </li>
                         {{/gt}}
                     </ul>
                 </nav>
@@ -118,8 +133,8 @@
     <div class="container-content row d-flex">
         <div class="box-content col-sm-10 col-md-8 col-lg-6">
             <p>
-                 Bạn đang xoá một tài khoản người dùng,tài khoản sẽ bị xoá vĩnh viễn ra khỏi cơ sở dữ liệu.
-                Bạn có chắc muốn xoá?   
+                Bạn đang xoá một tài khoản người dùng,tài khoản sẽ bị xoá vĩnh viễn ra khỏi cơ sở dữ liệu.
+                Bạn có chắc muốn xoá?
             </p>
             <button class="btn btn-light btn__back">Quay lại</button>
             <button class="btn btn-danger btn__confirm-delete">Xoá</button>
@@ -139,6 +154,7 @@
                 <tr>
                     <th>Tên đăng nhập</th>
                     <th>Email</th>
+                    <th>Tình trạng xác thực</th>
                     <th>Ngày truy cập gần nhất</th>
                     <th>Xóa</th>
                     <th>Khoá</th>
@@ -148,6 +164,7 @@
                 <tr>
                     <th>Tên đăng nhập</th>
                     <th>Email</th>
+                    <th>Tình trạng xác thực</th>
                     <th>Ngày truy cập gần nhất</th>
                     <th>Xoá</th>
                     <th>Khoá</th>
@@ -157,9 +174,14 @@
 
                 \{{#each data.docs}}
                 <tr>
-                    <td>\{{user_name}}</td>
+                    <td><a href="/admin/users/detail?id=\{{_id}}">\{{user_name}}</a></td>
                     <td>\{{user_email}}</td> 
-                    <td>\{{Lastest_Time_Access}}</td> <!-- variable -->
+                    \{{#if isVerify}}
+                        <td>Đã xác thực</td> 
+                    \{{else}}
+                        <td>Chưa xác thực</td>
+                    \{{/if}}
+                    <td>\{{lastest_access_date}}</td>
                      <td class="text-center">
                         <button type="button" data-toggle="modal" data-target=\{{append '#user_' _id}} 
                             class="btn btn-sm btn-icon btn-flat btn-default" data-original-title="Edit">
