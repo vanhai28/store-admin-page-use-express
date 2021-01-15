@@ -7,7 +7,10 @@
 
 //----------------- START PAGE LIST USER ----------------
 
-// send request delete account of user
+/**
+ * send request to delete a account
+ * @param {string} id
+ */
 function deleteUserAcc(id) {
   let xhttp = new XMLHttpRequest();
 
@@ -26,7 +29,10 @@ function deleteUserAcc(id) {
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhttp.send("id=" + id);
 }
-
+/**
+ * send request to BLOCK account of user
+ * @param {string} id
+ */
 function blockAccount(id) {
   let xhttp = new XMLHttpRequest();
 
@@ -48,6 +54,10 @@ function blockAccount(id) {
   xhttp.send("id=" + id);
 }
 
+/**
+ * send request to unblock account of user
+ * @param {string} id
+ */
 function unBlockAccount(id) {
   let xhttp = new XMLHttpRequest();
 
@@ -69,6 +79,9 @@ function unBlockAccount(id) {
   xhttp.send("id=" + id);
 }
 
+/**
+ * Get list user use AJAX
+ */
 function getAPI_Users(page) {
   let api_link = "/admin/users/api/list?page=" + page;
   let xhttp = new XMLHttpRequest();
@@ -383,6 +396,11 @@ $("#change_avatar_form").submit(function (e) {
 //
 //  ------  PAGE DASHBOARD ---------
 //
+/**
+ * Generate colors
+ * @param {number} numberOfColor
+ * @return {[]}
+ */
 function generateColorRGB(numberOfColor) {
   let color = "#";
   let colorComponent = "123456789ABCDEF";
@@ -401,26 +419,54 @@ function generateColorRGB(numberOfColor) {
   return result;
 }
 
+/**
+ * For Render chart on dashboard page
+ */
 (function () {
-  if (window.location.href.includes("/admin/dashboard")) {
-    let canvas = document.getElementById("category_chart").getContext("2d");
-    let request = new XMLHttpRequest();
-
-    if (!canvas) {
-      return;
-    }
-
-    request.onreadystatechange = function () {
-      if (this.status == 200 && this.readyState == 4) {
-        let data = JSON.parse(this.responseText);
-        createPieChart(canvas, data, "Các loại sản phẩm");
-      }
-    };
-    request.open("GET", "/admin/book/api/category/all");
-    request.send();
+  if (!window.location.href.includes("/admin/dashboard")) {
+    return;
   }
+
+  let canvas = document.getElementById("category_chart").getContext("2d");
+  let request = new XMLHttpRequest();
+
+  if (!canvas) {
+    return;
+  }
+
+  request.onreadystatechange = function () {
+    if (this.status == 200 && this.readyState == 4) {
+      let data = JSON.parse(this.responseText);
+      createPieChart(canvas, data, "Các loại sản phẩm");
+    }
+  };
+  request.open("GET", "/admin/book/api/category/all");
+  request.send();
+
+  let canvasOrder = document
+    .getElementById("numberOrdersChart")
+    .getContext("2d");
+
+  if (!canvasOrder) {
+    return;
+  }
+  let req = new XMLHttpRequest();
+  req.onreadystatechange = function () {
+    if (this.status == 200 && this.readyState == 4) {
+      let data = JSON.parse(this.responseText);
+      createLineChart(canvasOrder, data, "Số sản phẩm mua");
+    }
+  };
+  req.open("GET", "/admin/api/orders/data/chart");
+  req.send();
 })();
 
+/**
+ *
+ * @param {HTML Elent} canvas
+ * @param {object} dataRender
+ * @param {String} title
+ */
 function createPieChart(canvas, dataRender, title) {
   let labels = [];
   let dataArray = [];
@@ -464,6 +510,48 @@ function createPieChart(canvas, dataRender, title) {
     },
   });
 }
+/**
+ *
+ * @param {HTML Elent} canvas
+ * @param {object} dataRender
+ * @param {String} title
+ */
+function createLineChart(canvas, dataRender, title) {
+  let labels = dataRender.label;
+  let dataArray = dataRender.data;
+
+  new Chart(canvas, {
+    type: "line",
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: "Số lượng sản phẩm:",
+          data: dataArray,
+          backgroundColor: "rgb(114, 245, 114)",
+          borderColor: "green",
+          borderWidth: 2,
+        },
+      ],
+    },
+    options: {
+      title: {
+        display: true,
+        text: title,
+      },
+
+      scales: {
+        yAxes: [
+          {
+            ticks: {
+              beginAtZero: true,
+            },
+          },
+        ],
+      },
+    },
+  });
+}
 
 /**
  * ADD BOOK Page
@@ -472,7 +560,12 @@ function createPieChart(canvas, dataRender, title) {
 function selectCategory(value) {
   document.getElementById("input__category").value = value;
 }
-//read Image URL on addbook page
+
+/**
+ * read Image URL on addbook page
+ * @param {any} input
+ * @param {string} classDestination
+ */
 function readImageURL(input, classDestination) {
   if (input.files && input.files[0]) {
     var reader = new FileReader();
@@ -493,7 +586,11 @@ function readImageURL(input, classDestination) {
     reader.readAsDataURL(input.files[0]);
   }
 }
-
+/**
+ * Send request to reset password
+ * @param {event} event
+ * @param {object} form
+ */
 function sendResetPassword(event, form) {
   event.preventDefault();
   document.getElementById("message").style.display = "none";
@@ -512,6 +609,11 @@ function sendResetPassword(event, form) {
   request.open("POST", "/reset/password?verify_code=" + verifyCode, true);
   request.send();
 }
+/**
+ * send request to send email for verify
+ * @param {event} event
+ * @param {object} form
+ */
 function sendEmailToVerify(event, form) {
   event.preventDefault();
   let request = new XMLHttpRequest();
@@ -531,8 +633,11 @@ function sendEmailToVerify(event, form) {
 }
 
 //------- ORDER PAGE  ---------------
-// get data of books from server by page
-// @param : page : the page number to get data
+
+/**
+ * get data of books from server by page
+ * @param {number} page  the page number to get data
+ */
 function getAPIOrders(page) {
   let api_link = "/admin/api/orders?page=" + page;
   let xhttp = new XMLHttpRequest();
@@ -551,8 +656,10 @@ function getAPIOrders(page) {
   xhttp.send();
 }
 
-// update new data got from server by using AJAX
-// @param products : data got from server
+/**
+ * update new data got from server by using AJAX
+ * @param {object} products
+ */
 function replaceOrderData(products) {
   Handlebars.registerHelper("append", function (str1, str2) {
     return str1 + str2;
@@ -572,6 +679,11 @@ function replaceOrderData(products) {
   document.getElementById("cart__data").innerHTML = html;
 }
 
+/**
+ * send request to update status of order
+ * @param {string} _id
+ * @param {string} status
+ */
 function updateOrderStatus(_id, status) {
   let api_link =
     "/admin/api/orders/update/status?_id=" + _id + "&order_status=" + status;

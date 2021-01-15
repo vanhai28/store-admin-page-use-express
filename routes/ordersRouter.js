@@ -23,4 +23,10 @@ router.put(
   orderController.updateStatusOrder
 );
 
+router.get(
+  "/api/orders/data/chart",
+  autheMiddleware.authenUser,
+  orderController.getDataForChart
+);
+
 module.exports = router;

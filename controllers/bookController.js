@@ -276,7 +276,7 @@ module.exports.searchBook = async (req, res, next) => {
   }
   let value = req.query.value || "";
   let listOfBook = await bookModel.searchBook(value);
-  console.log(listOfBook);
+
   let mesg = "tìm thấy " + listOfBook.docs.length + " kết quả";
 
   res.render("pages/listOfBook", {
