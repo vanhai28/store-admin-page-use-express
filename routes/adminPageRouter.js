@@ -11,7 +11,7 @@ router.get("/profile", autheMiddleware.authenUser, pagesController.profile);
 
 /* GET ORDERS  page. */
 router.get(
-  "/orders",
+  "/orders/new",
   autheMiddleware.authenUser,
   pagesController.renderOrderPage
 );
@@ -23,6 +23,12 @@ router.get(
   "/api/account",
   autheMiddleware.authenUser,
   pagesController.editInfor
+);
+/* GET Order  page. */
+router.get(
+  "/api/orders",
+  autheMiddleware.authenUser,
+  pagesController.getAPIOrders
 );
 
 /* change avatar . */

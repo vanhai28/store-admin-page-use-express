@@ -1,9 +1,12 @@
 const accountModel = require("../services/accountService");
-const userModel = require("../services/userService");
-const ITEM_PER_PAGE = 5;
+const userService = require("../services/userService");
+const orderService = require("../services/orderServices");
+
+const ITEM_PER_PAGE = 10;
+
 //Render page dashboard
 module.exports.index = async function (req, res, next) {
-  let listOfUser = await userModel.getListUserByPage({}, 1, ITEM_PER_PAGE);
+  let listOfUser = await userService.getListUserByPage({}, 1, ITEM_PER_PAGE);
 
   res.render("index", {
     title: "Dashboard",
@@ -12,10 +15,45 @@ module.exports.index = async function (req, res, next) {
 };
 
 module.exports.renderOrderPage = async function (req, res, next) {
+  const page = +req.query.page || 1;
+
+  const filter = {};
+
+  let listOrder = await orderService.getNewOrderByPage(
+    filter,
+    page,
+    ITEM_PER_PAGE
+  );
+
   res.render("pages/orders", {
+    listOrder: listOrder,
     title: "Dashboard",
   });
 };
+
+module.exports.getAPIOrders = async function (req, res, next) {
+  const page = +req.query.page || 1;
+
+  const filter = {};
+
+  let listOrder = await orderService.getNewOrderByPage(
+    filter,
+    page,
+    ITEM_PER_PAGE
+  );
+
+  let NotFirstPage = listOrder.nextPage > 2;
+  let NotLastPage = !(listOrder.page == listOrder.totalPages);
+  console.log(listOrder);
+  res.statusCode = 200;
+
+  res.send({
+    listOrder: listOrder,
+    NotFirstPage: NotFirstPage,
+    NotLastPage: NotLastPage,
+  });
+};
+///////
 
 module.exports.profile = async function (req, res, next) {
   let account = await accountModel.getAccountInfor();

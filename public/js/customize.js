@@ -545,3 +545,45 @@ function sendEmailToVerify(event, form) {
   request.open("POST", "/recovery/password?email=" + email, true);
   request.send();
 }
+
+//------- ORDER PAGE  ---------------
+// get data of books from server by page
+// @param : page : the page number to get data
+function getAPIOrders(page) {
+  let api_link = "/admin/api/orders?page=" + page;
+  let xhttp = new XMLHttpRequest();
+
+  xhttp.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      replaceOrderData(this.responseText);
+    } else if (this.readyState == 4) {
+      $("#message-from-sever").removeClass("d-none");
+      $("#message-from-sever").html("error when get data category from server");
+    }
+  };
+
+  xhttp.open("GET", api_link, true);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.send();
+}
+
+// update new data got from server by using AJAX
+// @param products : data got from server
+function replaceOrderData(products) {
+  Handlebars.registerHelper("append", function (str1, str2) {
+    return str1 + str2;
+  });
+  Handlebars.registerHelper("formatNumber", function (number) {
+    return number.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+  });
+  products = JSON.parse(products);
+
+  var template = $("#table_data").html();
+
+  //Compile the template data into a function
+  var templateScript = Handlebars.compile(template);
+
+  var html = templateScript({ products: products });
+
+  document.getElementById("cart__data").innerHTML = html;
+}
