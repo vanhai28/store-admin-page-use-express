@@ -240,7 +240,7 @@
     <nav id="pagination" aria-label="Page navigation example" style="margin-top: 20px; display: inline">
         <ul class="pagination justify-content-center"  style="display: flex">
             <!-- icon << -->
-            \{{#if products.NotFirstPage}}
+            \{{#if products.listBook.hasPrevPage}}
                 <li class="page-item">
                     <button class="btn--pagination page-link"  
                     value=\{{products.listBook.prevPage}}
@@ -273,7 +273,7 @@
                         </button></li>
             \{{/if}}
 
-            \{{#if products.NotLastPage }}
+            \{{#if products.listBook.nextPage }}
             <li class="page-item">
                 <button class="btn--pagination page-link" 
                 value=\{{products.listBook.nextPage}}

@@ -3,7 +3,7 @@ const bookModel = require("../services/bookService");
 const catalog = require("../services/categoryService");
 const upload = require("../services/uploadFile");
 const ITEM_PER_PAGE = 10;
-const numberService = require("../services/numberService");
+
 /**
  * Render list Books Page
  * @param {*} req request from client
@@ -80,8 +80,8 @@ module.exports.getAPIBook = async function (req, res, next) {
 
   let listOfBook = await bookModel.getBooksByPage(filter, page, ITEM_PER_PAGE);
 
-  let NotFirstPage = listOfBook.nextPage > 2;
-  let NotLastPage = !(listOfBook.page == listOfBook.totalPages);
+  let NotFirstPage = listOfBook.page != 1;
+  let NotLastPage = listOfBook.page != listOfBook.totalPages;
 
   res.statusCode = 200;
 
